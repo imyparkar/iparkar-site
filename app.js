@@ -189,6 +189,7 @@
             ${btn(pl.button, pl.color === "white" ? "ghost" : "dark")}
           </article>`).join("")}
       </section>
+            ${p.member ? `<p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>` : ""}
       ${best != null ? `<p class="fineprint">Your best free-sample score on this device: <strong>${best} / ${p.freeCount}</strong></p>` : ""}
       <p class="fineprint">${esc(p.note)}</p>`;
   }

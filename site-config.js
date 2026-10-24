@@ -371,11 +371,17 @@ window.SITE = {
     topics: ["Permit to Work", "Heat stress", "Fleet safety", "Hazard identification", "Fire protection", "Confined spaces"],
   },
 
-  /* ---------- Tab 4: Practice exam ---------- */
+    /* ---------- Tab 4: Practice exam ----------
+     The premium exams run in the iParkar LMS at app.iparkar.com
+     (sign-in, timed blueprint-weighted exams, calculator, analytics).
+     Each premium button opens that course in the LMS; the LMS shows the
+     checkout or the exams depending on the student's access. */
   practice: {
     title: "Practice exam",
-    lead: "Start free with 10 random questions. Unlock the full bank when you’re ready.",
+    lead: "Start free with 10 random questions. Unlock a full course bank for timed, blueprint-weighted mock exams.",
     freeCount: 10,
+    appUrl: "https://app.iparkar.com",
+    member: { text: "Already enrolled?", label: "Sign in to your dashboard", href: "https://app.iparkar.com/login" },
     plans: [
       {
         name: "Free sample",
@@ -388,27 +394,35 @@ window.SITE = {
       },
       {
         name: "ASP premium",
-        price: "US$29",
+        price: "US$99",
         period: "90 days",
-        status: "Coming soon",
-        features: ["Full ASP question bank", "Timed mock exams", "Progress and score history", "Domain-by-domain breakdown"],
-        // Replace with your Paddle / Lemon Squeezy checkout link:
-        button: { label: "Get ASP access", href: "#", disabled: true },
+        status: "Available",
+        features: [
+          "Full ASP bank, weighted to the 9 blueprint domains",
+          "100-question / 150-minute mock exams",
+          "20-question domain exams (30 minutes)",
+          "On-screen scientific calculator, flagging and review",
+          "Score history and domain-by-domain analytics",
+        ],
+        button: { label: "Get ASP access", href: "https://app.iparkar.com/courses/ASP" },
         color: "marigold",
       },
       {
-        name: "CSP premium",
-        price: "US$39",
-        period: "90 days",
+        name: "CSP & CIH",
+        price: "US$99",
+        period: "90 days each",
         status: "Coming soon",
-        features: ["Full CSP question bank", "Timed mock exams", "Progress and score history", "Domain-by-domain breakdown"],
-        button: { label: "Get CSP access", href: "#", disabled: true },
+        features: [
+          "Separate CSP and CIH banks — never mixed",
+          "CIH: 50 / 35 / 15 domain weighting with task-level analytics",
+          "Same timed exams, calculator and analytics as ASP",
+        ],
+        button: { label: "Coming soon", href: "#", disabled: true },
         color: "sky",
       },
     ],
-    note: "Practice questions are original and written for study only. They are not actual exam questions and do not guarantee a pass.",
+    note: "Practice questions are original and written for study only. They are not actual exam questions, and practice scores do not guarantee a pass.",
   },
-
   /* ---------- Footer ---------- */
   footer: {
     links: [

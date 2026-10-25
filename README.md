@@ -1,4 +1,4 @@
-# iParkar HSE Academy — www.iparkar.com
+# iParkar Learning — www.iparkar.com
 
 Static landing site (4 tabs) styled with the iParkar design system.
 

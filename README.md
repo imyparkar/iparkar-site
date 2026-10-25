@@ -31,7 +31,7 @@ You should rarely need `index.html` or `app.js`.
 ## Before you take payments (checklist)
 
 - [ ] Fill in the [BRACKETED] placeholders in `terms.html`, `privacy.html` and `refunds.html`, and have a lawyer review them.
-- [ ] Replace `hello@iparkar.com` and the LinkedIn link in `site-config.js`.
+- [x] Contact email set to `imran@iparkar.com`.
 - [ ] Merchant-of-record account approved (Paddle or Lemon Squeezy).
 - [ ] Accounts + progress tracking live at `app.iparkar.com` (see roadmap).
 

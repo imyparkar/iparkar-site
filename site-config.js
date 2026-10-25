@@ -1,5 +1,5 @@
 /* =====================================================================
-   iParkar HSE Academy — SITE CONTENT
+   iParkar Learning — SITE CONTENT
    ---------------------------------------------------------------------
    This is the ONLY file you need to edit for day-to-day changes:
    text, links, certifications, prices and buttons all live here.
@@ -18,7 +18,9 @@ window.SITE = {
   /* ---------- Brand & global ---------- */
   brand: {
     name: "iParkar",
-    fullName: "iParkar HSE Academy",
+    fullName: "iParkar Learning",
+    wordmark: "Learning",                         // second word in the nav logo
+    tagline: "HSE Training & Certification Prep", // shown in the browser tab title
     logo: "assets/iparkar-mark-primary.svg",
     contactEmail: "imran@iparkar.com",          // <-- change to your real address
     linkedin: "https://www.linkedin.com/in/imran-parkar-181745160/",      // <-- your LinkedIn profile URL
@@ -30,32 +32,52 @@ window.SITE = {
   /* ---------- Tabs (order = order on the page) ----------
      id must match a section below. Set show:false to hide a tab. */
   tabs: [
-    { id: "about",          label: "About me",               show: true },
+    { id: "about",          label: "About us",               show: true },
     { id: "certifications", label: "Certification pathways", show: true },
     { id: "courses",        label: "Certificate courses",    show: true },
     { id: "quiz",           label: "Live quiz",              show: true },
     { id: "practice",       label: "Practice exam",          show: true },
   ],
 
-  /* ---------- Tab 1: About me ---------- */
+  /* ---------- Tab 1: About us ---------- */
   about: {
     // Hero line. The word in `highlight` gets the marigold pill.
     heroBefore: "Learn safety.",
     highlight: "Pass",
     heroAfter: "with confidence.",
-    lead: "Practical HSE training, quizzes and exam practice from a working HSE Manager in the oil and gas sector.",
+    lead: "Practical HSE training, quizzes and exam practice from a working HSE professional in the oil and gas sector.",
     heroButtons: [
       { label: "Try 10 free questions", href: "#practice", style: "ghost" },
       { label: "See certification pathways", href: "#certifications", style: "text" },
     ],
 
     name: "Imran Parkar",
-    role: "HSE Professional",
+    role: "Founder · HSE Professional",
+
+    sectionTitle: "About us",
     paragraphs: [
-      "I’m Imran Parkar, an HSE Professional based in Kuwait with 16 years of experience in health, safety and environmental management across the oil and gas sector. I currently lead HSE for NBTC on Kuwait Oil Company’s gas facilities maintenance and operations contract, covering sites in North Kuwait, West Kuwait and CNT Subiya. My work spans HSE compliance, Permit to Work, fleet safety, heat stress management and building practical documentation that keeps people safe on site.",
-      "I hold the CSP, CIH, CIT, CFPS and PMP credentials and am a Chartered Member of IOSH. I believe that safety is learned best through clear, practical training. That’s why I built this site: to share HSE training materials, quizzes and resources that help emerging safety professionals build their knowledge and confidence.",
+      "iParkar Learning helps emerging HSE professionals and certification candidates build real competence and pass their exams with confidence.",
+      "Health and safety is learned best through clear explanations, realistic practice and guidance from people who have done the work. Our training materials, quizzes and practice exams are designed around that idea: practical, exam-relevant and grounded in field experience rather than theory alone.",
     ],
-    closing: "If you’re starting out in HSE or preparing for a certification, you’re in the right place.",
+    // Extra blocks under the intro. Each needs a heading plus paragraphs and/or a list.
+    sections: [
+      {
+        heading: "Our founder",
+        paragraphs: [
+          "iParkar Learning was founded by Imran Parkar, an HSE professional with 16 years of experience in the oil and gas industry in Kuwait. He currently leads HSE for NBTC on Kuwait Oil Company’s gas facilities maintenance and operations contract, covering North Kuwait, West Kuwait and CNT Subiya. His work spans HSE compliance, Permit to Work, fleet safety and heat stress management.",
+          "Imran holds the CSP, CIH, CIT, CFPS and PMP credentials and is a Chartered Member of IOSH. Having prepared for these demanding exams himself, he understands what candidates need: focused content, realistic questions and a clear path forward.",
+        ],
+      },
+      {
+        heading: "What we offer",
+        list: [
+          "Practice exams and quizzes for professional HSE certifications",
+          "Training resources for people starting out in safety",
+          "Practical guidance drawn from real-world industrial work",
+        ],
+      },
+    ],
+    closing: "Whether you’re entering the HSE field or preparing for your next credential, we’re here to help you take the next step.",
 
     credentials: ["CSP", "CIH", "CIT", "CFPS", "PMP", "CMIOSH"],
 
@@ -430,6 +452,6 @@ window.SITE = {
       { label: "Privacy",        href: "privacy.html" },
       { label: "Refund policy",  href: "refunds.html" },
     ],
-    copyright: "© 2026 iParkar HSE Academy",
+    copyright: "© 2026 iParkar Learning",
   },
 };

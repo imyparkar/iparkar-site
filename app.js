@@ -1,5 +1,5 @@
 /* =====================================================================
-   iParkar HSE Academy — page behaviour
+   iParkar Learning — page behaviour
    Reads everything from site-config.js and questions-free.js.
    You normally don't need to edit this file.
    ===================================================================== */
@@ -32,10 +32,10 @@
 
   /* ---------- shell: nav + footer ---------- */
   const tabs = S.tabs.filter((t) => t.show !== false);
-  document.title = S.brand.fullName;
+  document.title = S.brand.tagline ? `${S.brand.fullName} · ${S.brand.tagline}` : S.brand.fullName;
   $("#brand").innerHTML = `
     <img src="${esc(S.brand.logo)}" alt="" width="36" height="36">
-    <span class="brand__name">${esc(S.brand.name)} <span>HSE Academy</span></span>`;
+    <span class="brand__name">${esc(S.brand.name)} <span>${esc(S.brand.wordmark || "")}</span></span>`;
   $("#nav-links").innerHTML = tabs.map((t) => `<a class="ip-nav-link" href="#${t.id}" data-tab="${t.id}">${esc(t.label)}</a>`).join("");
   $("#nav-actions").innerHTML = S.navAction ? btn(S.navAction, "primary") : "";
   $("#footer").innerHTML = `
@@ -66,9 +66,13 @@
       </section>
 
       <section class="bio">
-        ${header("About me")}
+        ${header(a.sectionTitle || "About us")}
         <div class="bio__text">
           ${a.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}
+          ${(a.sections || []).map((sec) => `
+            <h3 class="bio__heading">${esc(sec.heading)}</h3>
+            ${(sec.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join("")}
+            ${sec.list ? `<ul class="bio__list">${sec.list.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`).join("")}
           <p class="bio__closing">${esc(a.closing)}</p>
         </div>
       </section>

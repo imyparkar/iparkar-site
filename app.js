@@ -79,10 +79,10 @@
 
       <section class="grid grid--3">
         ${a.highlights.map((h) => `
-          <article class="${cardClass(h.color)}">
+          ${h.href ? `<a class="${cardClass(h.color)} card-link" href="${esc(h.href)}">` : `<article class="${cardClass(h.color)}">`}
             <h3 class="ip-card__title">${esc(h.title)}</h3>
             <p class="ip-card__body">${esc(h.body)}</p>
-          </article>`).join("")}
+            ${h.href ? `<span class="card-link__cta">${esc(h.linkLabel || "Learn more")} <span aria-hidden="true">→</span></span></a>` : `</article>`}`).join("")}
       </section>`;
   }
 

@@ -68,24 +68,17 @@ window.SITE = {
           "Imran holds the CSP, CIH, CIT, CFPS and PMP credentials and is a Chartered Member of IOSH. Having prepared for these demanding exams himself, he understands what candidates need: focused content, realistic questions and a clear path forward.",
         ],
       },
-      {
-        heading: "What we offer",
-        list: [
-          "Practice exams and quizzes for professional HSE certifications",
-          "Training resources for people starting out in safety",
-          "Practical guidance drawn from real-world industrial work",
-        ],
-      },
     ],
     closing: "Whether you’re entering the HSE field or preparing for your next credential, we’re here to help you take the next step.",
 
     credentials: ["CSP", "CIH", "CIT", "CFPS", "PMP", "CMIOSH"],
 
-    // Feature cards under the bio. color: marigold | coral | sky | dark | white
+    // Feature cards under the bio: what iParkar Learning offers.
+    // color: marigold | coral | sky | dark | white. `href` makes the whole card a link.
     highlights: [
-      { title: "16 years in HSE",        body: "Oil and gas operations, maintenance and contractor safety.", color: "marigold" },
-      { title: "Permit to Work",         body: "Compliance, audits and awareness sessions that change behaviour on site.", color: "sky" },
-      { title: "Heat stress & fleet safety", body: "Practical programmes built for Gulf working conditions.", color: "dark" },
+      { title: "Certification pathways", body: "ASP, CSP, CIH, CFPS, QEP and EPI: what each asks of you, how to apply and how to prepare.", color: "marigold", href: "#certifications", linkLabel: "Explore pathways" },
+      { title: "Certificate courses",    body: "IOSH and NEBOSH qualifications explained: what they involve and where they lead.", color: "sky", href: "#courses", linkLabel: "View courses" },
+      { title: "Practice exams & live quizzes", body: "Start with 10 free questions, then take timed, blueprint-weighted mock exams or join a live quiz.", color: "dark", href: "#practice", linkLabel: "Start practising" },
     ],
   },
 

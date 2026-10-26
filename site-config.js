@@ -441,7 +441,7 @@ window.SITE = {
         name: "CIH premium",
         price: "US$99",
         period: "90 days",
-        status: "Coming soon",
+        status: "Available",
         features: [
           "1,000-question CIH bank, weighted 50 / 35 / 15 across the three domains",
           "Task-level analytics across all nine blueprint tasks",
@@ -449,7 +449,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Timed mock exams plus topic-by-topic practice",
         ],
-        button: { label: "Coming soon", href: "#", disabled: true },
+        button: { label: "Get CIH access", href: "https://app.iparkar.com/courses/CIH" },
         color: "coral",
       },
     ],

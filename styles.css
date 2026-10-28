@@ -436,3 +436,9 @@ summary { cursor:pointer; font-weight:600; }
  .course-grid > .course { display:grid; grid-template-rows:subgrid; grid-row:span 4; gap:16px; }
  .course-grid { row-gap:16px; }
 }
+
+/* One responsive title and one summary per certification detail page. */
+.credential-heading { max-width:none; }
+.credential-heading .ip-section-header__title { max-width:none; font-size:clamp(24px,3vw,40px); line-height:1.2; letter-spacing:-.8px; }
+.credential-heading .ip-section-header__lead { max-width:100%; }
+.credential-heading + .credential-page { margin-top:24px; }

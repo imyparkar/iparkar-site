@@ -39,45 +39,8 @@
 
   /* ---------- Tab 1: About ---------- */
   function renderAbout() {
-    const a = S.about;
-    return `
-      <section class="hero">
-        <div>
-          <h1 class="hero__title">${esc(a.heroBefore)} <span class="ip-highlight ip-highlight--marigold">${esc(a.highlight)}</span> ${esc(a.heroAfter)}</h1>
-          <p class="hero__lead">${esc(a.lead)}</p>
-          <div class="ip-btn-row">${a.heroButtons.map((b) => btn(b)).join("")}</div>
-        </div>
-        <aside class="ip-card ip-card--dark profile-card" aria-label="Profile">
-          <div class="profile-card__head">
-            <img src="assets/iparkar-mark-reversed.svg" alt="" width="64" height="64">
-            <div>
-              <p class="profile-card__name">${esc(a.name)}</p>
-              <p class="profile-card__role">${esc(a.role)}</p>
-            </div>
-          </div>
-          <div class="pill-row cred-row">${a.credentials.map((c) => `<span class="ip-pill">${esc(c)}</span>`).join("")}</div>
-        </aside>
-      </section>
-
-      <section class="bio">
-        ${header(a.sectionTitle || "About us")}
-        <div class="bio__text">
-          ${a.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}
-          ${(a.sections || []).map((sec) => `
-            <h3 class="bio__heading">${esc(sec.heading)}</h3>
-            ${(sec.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join("")}
-            ${sec.list ? `<ul class="bio__list">${sec.list.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`).join("")}
-          <p class="bio__closing">${esc(a.closing)}</p>
-        </div>
-      </section>
-
-      <section class="grid grid--3">
-        ${a.highlights.map((h) => `
-          ${h.href ? `<a class="${cardClass(h.color)} card-link" href="${esc(h.href)}">` : `<article class="${cardClass(h.color)}">`}
-            <h3 class="ip-card__title">${esc(h.title)}</h3>
-            <p class="ip-card__body">${esc(h.body)}</p>
-            ${h.href ? `<span class="card-link__cta">${esc(h.linkLabel || "Learn more")} <span aria-hidden="true">→</span></span></a>` : `</article>`}`).join("")}
-      </section>`;
+    const a = S.about.company;
+    return `<article class="company-about"><header class="ip-section-header"><h1 class="ip-section-header__title">${esc(a.title)}</h1><p class="ip-section-header__lead">${esc(a.lead)}</p></header>${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}${a.sections.map(section=>`<section><h2>${esc(section.heading)}</h2>${section.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')}<div class="ip-btn-row"><a class="ip-btn ip-btn--ghost" href="/certification-pathways/">Explore learning pathways</a><a class="ip-btn ip-btn--text" href="mailto:${esc(S.brand.contactEmail)}">Contact iParkar Learning</a></div></article>`;
   }
 
   /* ---------- Tab 2: Certifications ---------- */

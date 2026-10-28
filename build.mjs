@@ -66,7 +66,7 @@ const pages = [
  ['selection','Select certification | Safety, hygiene & environment','Choose Safety, Industrial Hygiene or Environmental certifications and review the relevant requirements.',selection],
  ...groups.map(g=>[g.id,g.title,g.lead,renderGroup(g)]),
  ['home','HSE training, certification pathways & practice','Explore HSE certification pathways, compare IOSH and NEBOSH qualifications, and practise with free questions and live quizzes.',home],
- ['about','About iParkar & Imran Parkar','Meet Imran Parkar and learn about iParkar’s practical approach to HSE learning and independent certification preparation.',R.about()],
+ ['about','About iParkar Learning','Learn about iParkar Learning, our purpose, learning resources and independent approach to HSE professional development.',R.about()],
  ['certifications','HSE certification pathways | ASP, CSP, CIH & more','Compare ASP, CSP, CIH, CFPS, QEP and EPI requirements, application steps and preparation resources.',certs],
  ['courses','HSE certificate & diploma courses | IOSH and NEBOSH','Compare IOSH and NEBOSH qualifications, with links to official awarding body information.',courseBody],
  ['resources','HSE resources | Live quizzes & official study guidance','Access live HSE quizzes and official BCSP, BGC, NFPA, IOSH and BOHS resources with iParkar Learning.',resources],

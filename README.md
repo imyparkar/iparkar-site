@@ -69,3 +69,7 @@ Indexing and rankings are not guaranteed. No Search Console property reports or 
 ## Existing services
 
 `quiz.iparkar.com` and `app.iparkar.com` remain separate services. Premium questions, account handling and payments are not changed by this redesign. Legal pages retain their existing content and need owner review before relying on them for commercial activity.
+
+## Preview build verification
+
+The owner confirmed that this project uses Cloudflare Workers Builds, with preview-branch builds enabled and `npx wrangler preview` configured. Check the build for `redesign/home-pathways-seo` before merging. The Pages deployment notes above are not confirmation that the current Worker configuration can deploy this repository; inspect the preview build log and resolve any Wrangler configuration errors first.

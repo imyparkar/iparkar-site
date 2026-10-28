@@ -416,8 +416,23 @@ summary { cursor:pointer; font-weight:600; }
 @media(min-width:1151px) and (max-width:1350px) { .site-nav__inner { gap:8px; } .ip-nav-link { padding-inline:8px; font-size:13px; } }
 
 /* Consistent course-header bands, with room for the longest qualification title. */
-.course__head { height:256px; flex-shrink:0; display:flex; flex-direction:column; justify-content:flex-start; }
+.course__head { height:auto; flex-shrink:0; display:flex; flex-direction:column; justify-content:flex-start; }
 .course__head .course__title { margin-top:16px; }
 .cert-summary h2 { margin:16px 0; }
 .cert-summary .audience { margin-top:16px; }
 .cert-summary .card-link__cta { margin-top:auto; padding-top:24px; }
+
+/* Environmental accents from the owner's Figma green palette reference. */
+:root { --forest-green:#2e6f40; --moss-green:#8a9a5b; }
+.ip-card--forest { background:var(--forest-green); color:white; border-color:transparent; }
+.ip-card--moss { background:var(--moss-green); color:var(--ink); border-color:transparent; }
+.ip-card--forest .ip-card__body,.ip-card--forest .card-link__cta { color:white; }
+.ip-card--forest:focus-visible { outline-color:var(--midnight); }
+.cert-summary > .ip-pill,.course__head .ip-pill { align-self:flex-start; flex:none; width:fit-content; }
+.course__meta { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+.course__level { text-align:right; }
+/* Subgrid shares each row's natural header height with its neighbouring card. */
+@supports(grid-template-rows:subgrid) {
+ .course-grid > .course { display:grid; grid-template-rows:subgrid; grid-row:span 4; gap:16px; }
+ .course-grid { row-gap:16px; }
+}

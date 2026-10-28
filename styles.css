@@ -451,3 +451,14 @@ summary { cursor:pointer; font-weight:600; }
 .company-about section { margin-top:32px; }
 .company-about h2 { font-size:24px; font-weight:600; margin:0 0 12px; letter-spacing:-.24px; }
 .company-about .ip-btn-row { margin-top:32px; }
+
+/* Company About page: flat brand colour, clear sections and justified copy. */
+.company-about > .ip-section-header { padding:32px; background:var(--marigold); border-radius:var(--radius-card); margin-bottom:24px; }
+.company-about > .ip-section-header p { color:var(--midnight); margin-bottom:0; }
+.company-about > section { padding:24px; border:1px solid var(--border-hairline); border-radius:var(--radius-card); }
+.company-about > section:nth-of-type(1) { background:var(--white); border-left:4px solid var(--coral); }
+.company-about > section:nth-of-type(2) { background:var(--sky-tint); border-color:transparent; }
+.company-about > section:nth-of-type(3) { background:#edf1e5; border-color:transparent; }
+.company-about > section:nth-of-type(3) h2 { color:var(--forest-green); }
+.company-about > section p:last-child { margin-bottom:0; }
+@media(max-width:640px) { .company-about > .ip-section-header { padding:24px; } }

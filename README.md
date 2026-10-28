@@ -1,6 +1,6 @@
 # iParkar Learning — iparkar.com
 
-Static website deployed with Cloudflare Workers Builds. Public pages contain their copy, navigation and metadata in HTML; JavaScript enhances only the free practice exam and on-demand live quiz.
+Static website deployed with Cloudflare Workers Builds. Public pages contain their copy, navigation and metadata in HTML; JavaScript enhances only the free practice exam only.
 
 ## Pages and navigation
 
@@ -10,7 +10,7 @@ Home, Certification pathways, Certificate courses, Resources, Practice exam, Abo
 - `/certification-pathways/` — comparison and credential guidance; no finder
 - `/certificate-courses/` — IOSH, NEBOSH and BOHS M-series courses
 - `/resources/` — live session entry and curated official resource links
-- `/resources/live-quiz/` — click-to-load quiz player within the website shell
+- `/resources/live-quiz/` — quiz information within the website shell and same-tab launch
 - `/practice-exams/` — free sample and premium links
 - `/about/` — founder and learning approach
 
@@ -18,13 +18,13 @@ Legacy hash bookmarks continue to redirect to the corresponding static pages.
 
 ## Editing
 
-Edit copy in `site-config.js`, page structure and curated BOHS/resources data in `build.mjs`, and styling in `styles.css`. Run `node build.mjs`, `node check.mjs`, `node --check app.js` and `node --check quiz-embed.js`; commit the generated HTML with the sources. No dependencies or Cloudflare build command are needed because generated files are tracked.
+Edit copy in `site-config.js`, page structure and curated BOHS/resources data in `build.mjs`, and styling in `styles.css`. Run `node build.mjs`, `node check.mjs` and `node --check app.js`; commit the generated HTML with the sources. No dependencies or Cloudflare build command are needed because generated files are tracked.
 
 `wrangler.jsonc` declares static assets at the repository root, proper 404 responses and an empty previews block. `.assetsignore` excludes development files from public assets. Production uses `main`; review the `redesign/home-pathways-seo` preview before merging.
 
 ## Quiz behaviour and performance
 
-No iframe or quiz-service request is created on initial load. Clicking Load live quiz creates one iframe with a reserved height. The current quiz endpoint redirects unauthenticated visitors to Cloudflare Access. Its sign-in screen may not work inside an iframe; a same-tab link remains available. Access policies, quiz infrastructure and authentication are unchanged. Test the authorised session in the player before relying on embedded sign-in. ASP access also navigates in the same tab.
+The quiz is linked in the same tab from its page under Resources. An on-demand embedded player was tested and failed to load with the existing Cloudflare Access setup, so the broken player was removed. No quiz-service request is made until the visitor chooses to continue. Access policies, quiz infrastructure and authentication are unchanged. Keeping the full quiz in the site shell requires a compatible sign-in or hosting setup. ASP access also navigates in the same tab.
 
 ## Sources reviewed 28 October 2026
 

@@ -368,7 +368,7 @@ window.SITE = {
         provider: "NEBOSH",
         name: "NEBOSH Level 6 International Diploma for Occupational Health and Safety Management Professionals",
         level: "RQF Level 6 · 42 credits",
-        color: "marigold",
+        color: "dark",
         officialUrl: "https://www.nebosh.org.uk/qualifications/international-diploma-for-health-and-safety-management-professionals/",
         lastChecked: "24 Oct 2026",
         summary: "For health and safety professionals, and those aiming to become one, who need in-depth knowledge.",

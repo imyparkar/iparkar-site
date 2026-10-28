@@ -89,7 +89,7 @@
         ${c.items.map((it, i) => `<button role="tab" data-cert="${it.id}" aria-selected="${i === 0}">${esc(it.short)}</button>`).join("")}
       </div>
       <div id="cert-body"></div>
-      <p class="fineprint">${esc(c.disclaimer)}</p>`;
+      <p class="fineprint page-note">${esc(c.disclaimer)}</p>`;
   }
   function renderCert(id) {
     const it = S.certifications.items.find((x) => x.id === id) || S.certifications.items[0];
@@ -138,34 +138,13 @@
             </div>
           </article>`).join("")}
       </section>
-      <p class="fineprint">${esc(c.disclaimer)}</p>`;
+      <p class="fineprint page-note">${esc(c.disclaimer)}</p>`;
   }
 
   /* ---------- Tab 3: Live quiz ---------- */
   function renderQuiz() {
     const q = S.quiz;
-    return `
-      ${header(q.title, q.lead)}
-      <section class="quiz-hero">
-        <article class="ip-card ip-card--marigold">
-          <h3 class="quiz-hero__title">Ready when the session starts.</h3>
-          <p class="ip-card__body" style="margin-bottom:24px">Open the quiz in a new tab and keep this page for reference.</p>
-          <a class="ip-btn ip-btn--dark ip-btn--lg" href="${esc(q.url)}" target="_blank" rel="noopener">${esc(q.buttonLabel)}</a>
-        </article>
-        <article class="ip-card">
-          <h3 class="ip-card__title">Topics we cover</h3>
-          <div class="pill-row" style="margin-top:12px">${q.topics.map((t) => `<span class="ip-pill ip-pill--todo">${esc(t)}</span>`).join("")}</div>
-        </article>
-      </section>
-      <section class="grid grid--3">
-        ${q.howItWorks.map((s, i) => `
-          <article class="ip-card">
-            <p class="big-num">Step ${i + 1}</p>
-            <h3 class="ip-card__title">${esc(s.title)}</h3>
-            <p class="ip-card__body">${esc(s.body)}</p>
-          </article>`).join("")}
-      </section>
-      ${q.embed ? `<iframe class="quiz-frame" src="${esc(q.url)}" title="Live HSE quiz" loading="lazy"></iframe>` : ""}`;
+    return `${header(q.title, q.lead)}<section class="ip-card ip-card--marigold"><h2 class="ip-card__title">Join the live session here</h2><p>The quiz loads only when you choose to start, keeping this page quick to open.</p><button class="ip-btn ip-btn--ghost ip-btn--lg" type="button" id="load-live-quiz">Load live quiz</button></section><section id="live-quiz-area" aria-label="Live quiz player" hidden></section><p class="fineprint page-note">The quiz uses a separate service and may require Cloudflare Access sign-in. If your browser cannot sign in inside the player, <a href="${esc(q.url)}">continue to the quiz in this tab</a>. Use your browser’s Back button to return to Resources.</p><noscript><p><a href="${esc(q.url)}">Continue to the live quiz</a></p></noscript>`;
   }
 
   /* ---------- Tab 4: Practice exam ---------- */

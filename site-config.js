@@ -18,8 +18,8 @@ window.SITE = {
   /* ---------- Brand & global ---------- */
   brand: {
     name: "iParkar",
-    fullName: "iParkar HSE Academy",
-    wordmark: "HSE Academy",                         // second word in the nav logo
+    fullName: "iParkar Learning",
+    wordmark: "Learning",                         // second word in the nav logo
     tagline: "HSE Training & Certification Prep", // shown in the browser tab title
     logo: "assets/iparkar-mark-primary.svg",
     contactEmail: "imran@iparkar.com",          // <-- change to your real address
@@ -33,11 +33,11 @@ window.SITE = {
      id must match a section below. Set show:false to hide a tab. */
   tabs: [
     { id: "home", label: "Home", show: true },
-    { id: "about",          label: "About us",               show: true },
     { id: "certifications", label: "Certification pathways", show: true },
     { id: "courses",        label: "Certificate courses",    show: true },
     { id: "resources",      label: "Resources",              show: true },
     { id: "practice",       label: "Practice exam",          show: true },
+    { id: "about",          label: "About us",               show: true },
   ],
 
   /* ---------- Tab 1: About us ---------- */
@@ -78,7 +78,7 @@ window.SITE = {
     // color: marigold | coral | sky | dark | white. `href` makes the whole card a link.
     highlights: [
       { title: "Certification pathways", body: "ASP, CSP, CIH, CFPS, QEP and EPI: what each asks of you, how to apply and how to prepare.", color: "marigold", href: "#certifications", linkLabel: "Explore pathways" },
-      { title: "Certificate courses",    body: "IOSH and NEBOSH qualifications explained: what they involve and where they lead.", color: "sky", href: "#courses", linkLabel: "View courses" },
+      { title: "Certificate courses",    body: "IOSH, NEBOSH and BOHS qualifications explained: what they involve and where they lead.", color: "sky", href: "#courses", linkLabel: "View courses" },
       { title: "Practice exams & live quizzes", body: "Start with 10 free questions, then take timed, blueprint-weighted mock exams or join a live quiz.", color: "dark", href: "#practice", linkLabel: "Start practising" },
     ],
   },
@@ -90,7 +90,7 @@ window.SITE = {
   certifications: {
     title: "Certification pathways",
     lead: "What each credential asks of you, how to apply, and how to prepare.",
-    disclaimer: "iParkar is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
     items: [
       {
         id: "asp",
@@ -297,9 +297,9 @@ window.SITE = {
      Copy a { id: ... } block to add another course. */
   courses: {
     title: "Certificate courses",
-    lead: "Recognised IOSH and NEBOSH qualifications, what they involve, and where they lead.",
+    lead: "IOSH, NEBOSH and BOHS qualifications for safety and occupational hygiene practice.",
     note: "Enrol through an approved IOSH study centre or a NEBOSH accredited Learning Partner. iParkar provides independent guidance and practice materials.",
-    disclaimer: "iParkar is independent and is not affiliated with IOSH or NEBOSH. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with IOSH, NEBOSH or BOHS. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
     items: [
       {
         id: "iosh-diploma",
@@ -463,6 +463,6 @@ window.SITE = {
       { label: "Privacy",        href: "privacy.html" },
       { label: "Refund policy",  href: "refunds.html" },
     ],
-    copyright: "© 2026 iParkar HSE Academy",
+    copyright: "© 2026 iParkar Learning",
   },
 };

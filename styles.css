@@ -400,3 +400,11 @@ summary { cursor:pointer; font-weight:600; }
  .site-footer__inner nav { display:flex; flex-wrap:wrap; gap:16px; }
  .site-footer a { margin:0; }
 }
+
+/* Full-width notes align with the table and course grid above. */
+.page-note { max-width:none; width:100%; margin:24px 0 0; text-align:left; }
+#bohs-courses { margin-top:80px; }
+.bohs-table td { width:auto; }
+#live-quiz-area { margin-top:24px; }
+#live-quiz-area iframe { display:block; width:100%; min-height:760px; border:1px solid var(--border-hairline); border-radius:12px; background:white; }
+@media(max-width:640px) { #live-quiz-area iframe { min-height:680px; } }

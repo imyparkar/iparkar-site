@@ -1,56 +1,50 @@
-# iParkar Learning — www.iparkar.com
+# iParkar Learning — iparkar.com
 
-Static landing site (4 tabs) styled with the iParkar design system.
+Static website deployed with Cloudflare Workers Builds. Public pages contain their copy, navigation and metadata in HTML; JavaScript enhances only the free practice exam only.
 
-## What to edit
+## Pages and navigation
 
-| You want to change… | Edit this file |
-|---|---|
-| Any text, link, price, button, credential, certification step, tab name/order | `site-config.js` |
-| Free sample questions (10 are drawn at random) | `questions-free.js` |
-| Colours, fonts, spacing | the `:root` block at the top of `styles.css` |
-| Logo / favicon | `assets/`, `favicon.svg`, `apple-touch-icon.png` |
+Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practice exam, About us.
 
-You should rarely need `index.html` or `app.js`.
+- `/` — overview
+- `/certification-pathways/` — comparison and Select Certification button
+- `/certification-pathways/select/` — Safety, Industrial Hygiene and Environmental cards
+- `/certification-pathways/safety/` — ASP, CSP and CFPS summary cards, each opening a detailed requirements page
+- `/certification-pathways/industrial-hygiene/` — CIH and Occupational hygiene with BOHS cards, each opening a detail page
+- `/certification-pathways/environmental/` — QEP and EPI requirements
+- `/certificate-courses/` — IOSH and NEBOSH courses; BOHS M-series now sits under Industrial Hygiene
+- `/resources/` — curated official resource links
+- `/live-quiz/` — quiz information within the website shell and same-tab launch
+- `/practice-exams/` — free sample and premium links
+- `/about/` — founder and learning approach
 
-- Hide a tab: set `show: false` in `tabs`.
-- Add a certification (e.g. CIH, CIT): copy one `{ id: "asp", ... }` block in `certifications.items`.
-- Turn on a premium plan: replace `href: "#"` with your checkout link and delete `disabled: true`.
-- Embed the live quiz in the page: set `quiz.embed: true` (only after the Cloudflare Access login is removed from quiz.iparkar.com).
+Legacy hash bookmarks continue to redirect to the corresponding static pages.
 
-## Deploy on Cloudflare Pages (free)
+## Editing
 
-1. Create a GitHub repo (e.g. `iparkar-site`) and upload every file in this folder.
-2. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git → pick the repo.
-   Framework preset: **None**. Build command: *(empty)*. Output directory: `/`.
-3. In the Pages project → Custom domains → add `iparkar.com` and `www.iparkar.com`.
-4. Every `git push` (or edit in the GitHub web editor) redeploys in about a minute.
+Edit copy in `site-config.js`, page structure and curated BOHS/resources data in `build.mjs`, and styling in `styles.css`. Run `node build.mjs`, `node check.mjs` and `node --check app.js`; commit the generated HTML with the sources. No dependencies or Cloudflare build command are needed because generated files are tracked.
 
-`quiz.iparkar.com` stays as it is. It is currently behind **Cloudflare Access**, so the public sees a login screen — in Zero Trust → Access → Applications, remove it or add a **Bypass / Everyone** policy if the quiz should be public.
+`wrangler.jsonc` declares static assets at the repository root, proper 404 responses and an empty previews block. `.assetsignore` excludes development files from public assets. Production uses `main`; review the `redesign/home-pathways-seo` preview before merging.
 
-## Before you take payments (checklist)
+## Quiz behaviour and performance
 
-- [ ] Fill in the [BRACKETED] placeholders in `terms.html`, `privacy.html` and `refunds.html`, and have a lawyer review them.
-- [x] Contact email set to `imran@iparkar.com`.
-- [ ] Merchant-of-record account approved (Paddle or Lemon Squeezy).
-- [ ] Accounts + progress tracking live at `app.iparkar.com` (see roadmap).
+The quiz is linked in the same tab from its page under Resources. An on-demand embedded player was tested and failed to load with the existing Cloudflare Access setup, so the broken player was removed. No quiz-service request is made until the visitor chooses to continue. Access policies, quiz infrastructure and authentication are unchanged. Keeping the full quiz in the site shell requires a compatible sign-in or hosting setup. ASP access also navigates in the same tab.
 
-## Premium roadmap (accounts, purchases, progress history)
+## Sources reviewed 28 October 2026
 
-Recommended stack — all have free tiers, so cost is near zero until you have sales:
+- BOHS qualifications, M200 and M501–M507: https://www.bohs.org/education/qualifications/
+- BCSP exam blueprints/reference links: https://www.bcsp.org/associate-safety-professional-asp and https://www.bcsp.org/certified-safety-professional-csp
+- BGC CIH library, including equation sheets: https://gobgc.org/applicants_CIH_library/
+- NFPA public fire safety handouts: https://www.nfpa.org/education-and-research/home-fire-safety/safety-tip-sheets
+- IOSH guides: https://iosh.com/resources/guides
+- BOHS technical guidance: https://www.bohs.org/information-guidance/technical-guidance/
 
-| Piece | Service | Job |
-|---|---|---|
-| Landing site | Cloudflare Pages (this repo) | Marketing, free sample |
-| Exam app | `app.iparkar.com` on Cloudflare Pages | Login, timed exams, dashboard |
-| Accounts + database | Supabase (Auth + Postgres) | Sign-up, sign-in, question bank, attempts, scores |
-| Payments | Paddle (merchant of record) | Checkout, global tax/VAT, invoices, refunds |
-| Webhook | Supabase Edge Function or Cloudflare Worker | On `transaction.completed`, grant access (e.g. ASP, 90 days) |
+Resource files remain with their publishers; links do not grant redistribution permission. Access conditions vary and some linked materials may require membership or payment. Course details retained from earlier site content keep their original review dates. Always confirm current awarding-body requirements.
 
-Database tables: `profiles`, `products` (asp, csp, cfps), `entitlements` (user, product, expires_at),
-`questions` (stem, options, answer, explanation, domain), `attempts`, `attempt_answers`.
-Protect `questions` with Row Level Security so only users with a live entitlement can read them —
-never ship premium questions in public JavaScript.
+## SEO follow-up
 
-Lower-effort alternative: a hosted course platform with built-in quizzes and checkout
-(less control, monthly fee, takes a cut), linked from the "Get access" buttons.
+Twenty public pages have unique titles/descriptions, canonical URLs, structured data and sitemap entries. `robots.txt` references the sitemap and missing URLs use `404.html`. Check public production HTTP responses, canonical-host redirects, Search Console URL Inspection/Page Indexing, and Core Web Vitals after rollout. Search Console reports and field performance have not been verified. Indexing and rankings are not guaranteed.
+
+Buttons and navigation follow the original flat-fill design system; the Liquid Glass experiment has been removed. Course colour bands use natural text height and CSS subgrid to align neighbouring headers without a fixed oversized band. NEBOSH and IOSH each have a provider selection card and dedicated course list. Environmental categories use Forest Green #2E6F40, with QEP in Forest and EPI in Moss Green #8A9A5B; these tokens extend the supplied palette using the owner’s Figma reference. Pills fit their labels. The IGC header includes SCQF Level 6 (comparable to RQF Level 3). Old quiz URLs redirect to /live-quiz/; old credential anchors route to the appropriate category.
+
+A fresh unauthenticated request to https://quiz.iparkar.com/ was verified to return HTTP 302 to the existing Cloudflare Access login. An already authorised browser session may open the quiz directly. The website does not change Access policies, cookies, or session duration and does not force users to log out.

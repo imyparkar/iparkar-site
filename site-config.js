@@ -32,15 +32,45 @@ window.SITE = {
   /* ---------- Tabs (order = order on the page) ----------
      id must match a section below. Set show:false to hide a tab. */
   tabs: [
-    { id: "about",          label: "About us",               show: true },
+    { id: "home", label: "Home", show: true },
     { id: "certifications", label: "Certification pathways", show: true },
     { id: "courses",        label: "Certificate courses",    show: true },
-    { id: "quiz",           label: "Live quiz",              show: true },
+    { id: "quiz", label: "Live Quiz", show: true },
+    { id: "resources",      label: "Resources",              show: true },
     { id: "practice",       label: "Practice exam",          show: true },
+    { id: "about",          label: "About us",               show: true },
   ],
 
   /* ---------- Tab 1: About us ---------- */
   about: {
+    company: {
+  "title": "About iParkar Learning",
+  "lead": "Practical learning for safer work and professional growth.",
+  "paragraphs": [
+    "iParkar Learning is an independent learning platform for health, safety, environmental and occupational hygiene professionals. We help learners understand qualification pathways, strengthen their knowledge and prepare for professional examinations."
+  ],
+  "sections": [
+    {
+      "heading": "Our purpose",
+      "paragraphs": [
+        "We aim to make professional learning clearer and more practical. Whether you are starting an HSE career or working towards your next credential, our focus is to help you understand what to learn and how to apply it."
+      ]
+    },
+    {
+      "heading": "What we offer",
+      "paragraphs": [
+        "Our website brings together certification requirements, certificate and diploma course information, practice questions, live quizzes and links to official learning resources. We organise these materials so you can explore your options and plan your next step."
+      ]
+    },
+    {
+      "heading": "Our approach",
+      "paragraphs": [
+        "We value clear explanations, realistic practice and transparent guidance. Our learning materials support understanding rather than memorisation, and our qualification guides link to awarding bodies so you can verify current requirements.",
+        "iParkar Learning provides independent guidance and study support. Qualifications and professional certifications are awarded by their respective bodies; completing practice activities does not guarantee eligibility or an examination pass."
+      ]
+    }
+  ]
+},
     // Hero line. The word in `highlight` gets the marigold pill.
     heroBefore: "Learn safety.",
     highlight: "Pass",
@@ -89,7 +119,7 @@ window.SITE = {
   certifications: {
     title: "Certification pathways",
     lead: "What each credential asks of you, how to apply, and how to prepare.",
-    disclaimer: "iParkar is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
     items: [
       {
         id: "asp",
@@ -296,9 +326,9 @@ window.SITE = {
      Copy a { id: ... } block to add another course. */
   courses: {
     title: "Certificate courses",
-    lead: "Recognised IOSH and NEBOSH qualifications, what they involve, and where they lead.",
-    note: "IOSH & NEBOSH courses can be only enrolled through Learning Partners only.",
-    disclaimer: "iParkar is independent and is not affiliated with IOSH or NEBOSH. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
+    lead: "IOSH and NEBOSH qualifications for safety and environmental practice.",
+    note: "Enrol through an approved IOSH study centre or a NEBOSH accredited Learning Partner. iParkar provides independent guidance and practice materials.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with IOSH, NEBOSH or BOHS. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
     items: [
       {
         id: "iosh-diploma",
@@ -338,7 +368,7 @@ window.SITE = {
         provider: "NEBOSH",
         name: "NEBOSH Level 6 International Diploma for Occupational Health and Safety Management Professionals",
         level: "RQF Level 6 · 42 credits",
-        color: "marigold",
+        color: "dark",
         officialUrl: "https://www.nebosh.org.uk/qualifications/international-diploma-for-health-and-safety-management-professionals/",
         lastChecked: "24 Oct 2026",
         summary: "For health and safety professionals, and those aiming to become one, who need in-depth knowledge.",
@@ -354,7 +384,7 @@ window.SITE = {
         provider: "NEBOSH",
         name: "NEBOSH International Diploma in Environmental Management",
         level: "SCQF Level 10 · comparable to RQF Level 6",
-        color: "coral",
+        color: "moss",
         officialUrl: "https://www.nebosh.org.uk/qualifications/international-diploma-in-environmental-management/",
         lastChecked: "24 Oct 2026",
         summary: "For aspiring environmental managers and safety practitioners who also manage environmental responsibilities.",
@@ -419,7 +449,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Score history and domain-by-domain analytics",
         ],
-        button: { label: "Get ASP access", href: "https://app.iparkar.com/courses/ASP" },
+        button: { label: "Get ASP access", href: "https://app.iparkar.com/courses/ASP", sameTab: true },
         color: "marigold",
       },
       {

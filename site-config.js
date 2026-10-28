@@ -420,7 +420,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Score history and domain-by-domain analytics",
         ],
-        button: { label: "Get ASP access", href: "https://app.iparkar.com/courses/ASP" },
+        button: { label: "Get ASP access", href: "https://app.iparkar.com/courses/ASP", sameTab: true },
         color: "marigold",
       },
       {

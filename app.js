@@ -17,7 +17,7 @@
     const style = b.style || fallbackStyle;
     if (b.disabled) return `<button class="ip-btn ip-btn--${style}" disabled>${esc(b.label)}</button>`;
     if (b.action) return `<button class="ip-btn ip-btn--${style}" data-action="${esc(b.action)}">${esc(b.label)}</button>`;
-    return `<a class="ip-btn ip-btn--${style}" href="${esc(b.href)}"${linkAttrs(b.href)}>${esc(b.label)}</a>`;
+    return `<a class="ip-btn ip-btn--${style}" href="${esc(b.href)}"${b.sameTab ? "" : linkAttrs(b.href)}>${esc(b.label)}</a>`;
   };
   const header = (title, lead) => `
     <header class="ip-section-header">
@@ -30,60 +30,17 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
   };
 
-  /* ---------- shell: nav + footer ---------- */
-  const tabs = S.tabs.filter((t) => t.show !== false);
-  document.title = S.brand.tagline ? `${S.brand.fullName} · ${S.brand.tagline}` : S.brand.fullName;
-  $("#brand").innerHTML = `
-    <img src="${esc(S.brand.logo)}" alt="" width="36" height="36">
-    <span class="brand__name">${esc(S.brand.name)} <span>${esc(S.brand.wordmark || "")}</span></span>`;
-  $("#nav-links").innerHTML = tabs.map((t) => `<a class="ip-nav-link" href="#${t.id}" data-tab="${t.id}">${esc(t.label)}</a>`).join("");
-  $("#nav-actions").innerHTML = S.navAction ? btn(S.navAction, "primary") : "";
-  $("#footer").innerHTML = `
-    <span>${esc(S.footer.copyright)}</span>
-    <nav aria-label="Legal">${S.footer.links.map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`).join("")}
-      ${S.brand.contactEmail ? `<a href="mailto:${esc(S.brand.contactEmail)}">Contact</a>` : ""}</nav>`;
+  // Build the public HTML ahead of time; the browser enhances only interactive tools.
+  if (window.IPARKAR_BUILD) {
+    window.IPARKAR_RENDER = { about: renderAbout, courses: renderCourses,
+      quiz: renderQuiz, practice: renderPractice, cert: renderCert };
+    return;
+  }
 
   /* ---------- Tab 1: About ---------- */
   function renderAbout() {
-    const a = S.about;
-    return `
-      <section class="hero">
-        <div>
-          <h1 class="hero__title">${esc(a.heroBefore)} <span class="ip-highlight ip-highlight--marigold">${esc(a.highlight)}</span> ${esc(a.heroAfter)}</h1>
-          <p class="hero__lead">${esc(a.lead)}</p>
-          <div class="ip-btn-row">${a.heroButtons.map((b) => btn(b)).join("")}</div>
-        </div>
-        <aside class="ip-card ip-card--dark profile-card" aria-label="Profile">
-          <div class="profile-card__head">
-            <img src="assets/iparkar-mark-reversed.svg" alt="" width="64" height="64">
-            <div>
-              <p class="profile-card__name">${esc(a.name)}</p>
-              <p class="profile-card__role">${esc(a.role)}</p>
-            </div>
-          </div>
-          <div class="pill-row cred-row">${a.credentials.map((c) => `<span class="ip-pill">${esc(c)}</span>`).join("")}</div>
-        </aside>
-      </section>
-
-      <section class="bio">
-        ${header(a.sectionTitle || "About us")}
-        <div class="bio__text">
-          ${a.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}
-          ${(a.sections || []).map((sec) => `
-            <h3 class="bio__heading">${esc(sec.heading)}</h3>
-            ${(sec.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join("")}
-            ${sec.list ? `<ul class="bio__list">${sec.list.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`).join("")}
-          <p class="bio__closing">${esc(a.closing)}</p>
-        </div>
-      </section>
-
-      <section class="grid grid--3">
-        ${a.highlights.map((h) => `
-          ${h.href ? `<a class="${cardClass(h.color)} card-link" href="${esc(h.href)}">` : `<article class="${cardClass(h.color)}">`}
-            <h3 class="ip-card__title">${esc(h.title)}</h3>
-            <p class="ip-card__body">${esc(h.body)}</p>
-            ${h.href ? `<span class="card-link__cta">${esc(h.linkLabel || "Learn more")} <span aria-hidden="true">→</span></span></a>` : `</article>`}`).join("")}
-      </section>`;
+    const a = S.about.company;
+    return `<article class="company-about"><header class="ip-section-header"><h1 class="ip-section-header__title">${esc(a.title)}</h1><p class="ip-section-header__lead">${esc(a.lead)}</p></header>${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}${a.sections.map(section=>`<section><h2>${esc(section.heading)}</h2>${section.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')}<div class="ip-btn-row"><a class="ip-btn ip-btn--ghost" href="/certification-pathways/">Explore learning pathways</a><a class="ip-btn ip-btn--text" href="mailto:${esc(S.brand.contactEmail)}">Contact iParkar Learning</a></div></article>`;
   }
 
   /* ---------- Tab 2: Certifications ---------- */
@@ -95,17 +52,16 @@
         ${c.items.map((it, i) => `<button role="tab" data-cert="${it.id}" aria-selected="${i === 0}">${esc(it.short)}</button>`).join("")}
       </div>
       <div id="cert-body"></div>
-      <p class="fineprint">${esc(c.disclaimer)}</p>`;
+      <p class="fineprint page-note">${esc(c.disclaimer)}</p>`;
   }
-  function renderCert(id) {
+  function renderCert(id, options = {}) {
     const it = S.certifications.items.find((x) => x.id === id) || S.certifications.items[0];
     const list = (arr) => `<ol class="step-list">${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>`;
     $("#cert-body").innerHTML = `
       <div class="cert-head">
         <div>
           <p class="eyebrow">${esc(it.body)} · checked ${esc(it.lastChecked)}</p>
-          <h3>${esc(it.name)} (${esc(it.short)})</h3>
-          <p>${esc(it.summary)}</p>
+          ${options.detail ? "" : `<h3>${esc(it.name)} (${esc(it.short)})</h3><p>${esc(it.summary)}</p>`}
           ${it.note ? `<p class="cert-note"><span class="ip-pill ip-pill--progress">Note</span> ${esc(it.note)}</p>` : ""}
         </div>
         <a class="ip-btn ip-btn--outlined" href="${esc(it.officialUrl)}" target="_blank" rel="noopener">Official page</a>
@@ -121,8 +77,8 @@
   }
 
   /* ---------- Tab: Certificate courses ---------- */
-  function renderCourses() {
-    const c = S.courses;
+  function renderCourses(provider) {
+    const c = provider ? {...S.courses, title:provider+" courses", lead:provider+" qualifications for safety and environmental practice.", note:provider === "NEBOSH" ? "Enrol through an approved NEBOSH accredited Learning Partner. iParkar provides independent guidance and practice materials." : "Enrol through an approved IOSH Study Centre. iParkar provides independent guidance and practice materials.", items:S.courses.items.filter(it=>it.provider===provider)} : S.courses;
     return `
       ${header(c.title, c.lead)}
       <div class="notice ip-card ip-card--tint" role="note"><span class="ip-pill ip-pill--progress">Note</span><span>${esc(c.note)}</span></div>
@@ -144,34 +100,13 @@
             </div>
           </article>`).join("")}
       </section>
-      <p class="fineprint">${esc(c.disclaimer)}</p>`;
+      <p class="fineprint page-note">${esc(c.disclaimer)}</p>`;
   }
 
   /* ---------- Tab 3: Live quiz ---------- */
   function renderQuiz() {
     const q = S.quiz;
-    return `
-      ${header(q.title, q.lead)}
-      <section class="quiz-hero">
-        <article class="ip-card ip-card--marigold">
-          <h3 class="quiz-hero__title">Ready when the session starts.</h3>
-          <p class="ip-card__body" style="margin-bottom:24px">Open the quiz in a new tab and keep this page for reference.</p>
-          <a class="ip-btn ip-btn--dark ip-btn--lg" href="${esc(q.url)}" target="_blank" rel="noopener">${esc(q.buttonLabel)}</a>
-        </article>
-        <article class="ip-card">
-          <h3 class="ip-card__title">Topics we cover</h3>
-          <div class="pill-row" style="margin-top:12px">${q.topics.map((t) => `<span class="ip-pill ip-pill--todo">${esc(t)}</span>`).join("")}</div>
-        </article>
-      </section>
-      <section class="grid grid--3">
-        ${q.howItWorks.map((s, i) => `
-          <article class="ip-card">
-            <p class="big-num">Step ${i + 1}</p>
-            <h3 class="ip-card__title">${esc(s.title)}</h3>
-            <p class="ip-card__body">${esc(s.body)}</p>
-          </article>`).join("")}
-      </section>
-      ${q.embed ? `<iframe class="quiz-frame" src="${esc(q.url)}" title="Live HSE quiz" loading="lazy"></iframe>` : ""}`;
+    return `${header(q.title, q.lead)}<section class="ip-card ip-card--marigold"><h2 class="ip-card__title">Join the live session</h2><p>Continue to the secure quiz service in this tab. Sign in if prompted, then join your session.</p><a class="ip-btn ip-btn--ghost ip-btn--lg" href="${esc(q.url)}">Sign in and open live quiz</a></section><p class="fineprint page-note">The quiz currently uses a separate service with Cloudflare Access sign-in. Embedded loading is unavailable with the current setup. Use your browser’s Back button to return to iParkar Learning.</p>`;
   }
 
   /* ---------- Tab 4: Practice exam ---------- */
@@ -263,25 +198,6 @@
           </div>`).join("")}</div>
       </section>`;
   }
-
-  /* ---------- render all panels ---------- */
-  const renderers = { about: renderAbout, certifications: renderCerts, courses: renderCourses, quiz: renderQuiz, practice: renderPractice };
-  $("#panels").innerHTML = tabs.map((t) => `<div class="tab-panel" id="panel-${t.id}" role="region" aria-label="${esc(t.label)}" hidden></div>`).join("");
-  tabs.forEach((t) => { const el = $(`#panel-${t.id}`); if (renderers[t.id]) el.innerHTML = renderers[t.id](); });
-  if ($("#cert-body")) renderCert(S.certifications.items[0].id);
-
-  /* ---------- routing (#about, #certifications, #quiz, #practice) ---------- */
-  function show() {
-    const id = (location.hash || "").slice(1);
-    const current = tabs.find((t) => t.id === id) ? id : tabs[0].id;
-    tabs.forEach((t) => { $(`#panel-${t.id}`).hidden = t.id !== current; });
-    document.querySelectorAll("[data-tab]").forEach((a) => {
-      if (a.dataset.tab === current) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-    });
-    window.scrollTo({ top: 0 });
-  }
-  window.addEventListener("hashchange", show);
-  show();
 
   /* ---------- clicks ---------- */
   document.addEventListener("click", (e) => {

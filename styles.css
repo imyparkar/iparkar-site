@@ -408,3 +408,18 @@ summary { cursor:pointer; font-weight:600; }
 #live-quiz-area { margin-top:24px; }
 #live-quiz-area iframe { display:block; width:100%; min-height:760px; border:1px solid var(--border-hairline); border-radius:12px; background:white; }
 @media(max-width:640px) { #live-quiz-area iframe { min-height:680px; } }
+
+/* Glass controls: restrained highlights over the existing brand colours. */
+.ip-btn,.ip-nav-link,.seg button,.option { border:1px solid rgba(255,255,255,.7); box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 0 rgba(2,9,58,.08),0 2px 6px rgba(2,9,58,.08); background-image:linear-gradient(155deg,rgba(255,255,255,.38),rgba(255,255,255,.04) 55%,rgba(255,255,255,.16)); transition:background-color 200ms ease,box-shadow 200ms ease; }
+.ip-nav-link { background-color:rgba(246,245,244,.55); }
+.ip-nav-link[aria-current="page"] { background-color:var(--sky-tint); color:var(--midnight); }
+.ip-btn:hover,.ip-nav-link:hover,.seg button:hover { box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 3px 10px rgba(2,9,58,.13); }
+.ip-btn--outlined { border-color:rgba(2,9,58,.55); }
+.ip-btn:disabled { box-shadow:none; background-image:none; }
+@supports (backdrop-filter:blur(8px)) { .ip-nav-link,.ip-btn { backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); } }
+@media(prefers-reduced-transparency:reduce) { .ip-btn,.ip-nav-link,.seg button,.option { backdrop-filter:none; -webkit-backdrop-filter:none; background-image:none; } }
+.category-grid .ip-card { min-height:240px; }
+.section-actions { margin-top:32px; }
+.credential-page { margin-top:64px; scroll-margin-top:144px; }
+.credential-page + .credential-page { border-top:1px solid var(--border-hairline); padding-top:64px; }
+@media(min-width:1151px) and (max-width:1350px) { .site-nav__inner { gap:8px; } .ip-nav-link { padding-inline:8px; font-size:13px; } }

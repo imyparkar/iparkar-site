@@ -35,6 +35,7 @@ window.SITE = {
     { id: "home", label: "Home", show: true },
     { id: "certifications", label: "Certification pathways", show: true },
     { id: "courses",        label: "Certificate courses",    show: true },
+    { id: "quiz", label: "Live Quiz", show: true },
     { id: "resources",      label: "Resources",              show: true },
     { id: "practice",       label: "Practice exam",          show: true },
     { id: "about",          label: "About us",               show: true },

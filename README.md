@@ -4,13 +4,17 @@ Static website deployed with Cloudflare Workers Builds. Public pages contain the
 
 ## Pages and navigation
 
-Home, Certification pathways, Certificate courses, Resources, Practice exam, About us.
+Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practice exam, About us.
 
 - `/` — overview
-- `/certification-pathways/` — comparison and credential guidance; no finder
+- `/certification-pathways/` — comparison and Select Certification button
+- `/certification-pathways/select/` — Safety, Industrial Hygiene and Environmental cards
+- `/certification-pathways/safety/` — ASP, CSP and CFPS requirements
+- `/certification-pathways/industrial-hygiene/` — CIH requirements
+- `/certification-pathways/environmental/` — QEP and EPI requirements
 - `/certificate-courses/` — IOSH, NEBOSH and BOHS M-series courses
-- `/resources/` — live session entry and curated official resource links
-- `/resources/live-quiz/` — quiz information within the website shell and same-tab launch
+- `/resources/` — curated official resource links
+- `/live-quiz/` — quiz information within the website shell and same-tab launch
 - `/practice-exams/` — free sample and premium links
 - `/about/` — founder and learning approach
 
@@ -39,4 +43,6 @@ Resource files remain with their publishers; links do not grant redistribution p
 
 ## SEO follow-up
 
-Seven public pages have unique titles/descriptions, canonical URLs, structured data and sitemap entries. `robots.txt` references the sitemap and missing URLs use `404.html`. Check public production HTTP responses, canonical-host redirects, Search Console URL Inspection/Page Indexing, and Core Web Vitals after rollout. Search Console reports and field performance have not been verified. Indexing and rankings are not guaranteed.
+Eleven public pages have unique titles/descriptions, canonical URLs, structured data and sitemap entries. `robots.txt` references the sitemap and missing URLs use `404.html`. Check public production HTTP responses, canonical-host redirects, Search Console URL Inspection/Page Indexing, and Core Web Vitals after rollout. Search Console reports and field performance have not been verified. Indexing and rankings are not guaranteed.
+
+Buttons and navigation use CSS glass highlights with a reduced-transparency fallback; the supplied flat-fill rule is overridden by the owner’s later Liquid Glass request. No animation loop or image assets are needed for this treatment. Old quiz URLs redirect to /live-quiz/; old credential anchors route to the appropriate category.

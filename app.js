@@ -144,7 +144,7 @@
   /* ---------- Tab 3: Live quiz ---------- */
   function renderQuiz() {
     const q = S.quiz;
-    return `${header(q.title, q.lead)}<section class="ip-card ip-card--marigold"><h2 class="ip-card__title">Join the live session</h2><p>Continue to the secure quiz service in this tab. Sign in if prompted, then join your session.</p><a class="ip-btn ip-btn--ghost ip-btn--lg" href="${esc(q.url)}">Continue to live quiz</a></section><p class="fineprint page-note">The quiz currently uses a separate service with Cloudflare Access sign-in. Embedded loading is unavailable with the current setup. Use your browser’s Back button to return to iParkar Learning Resources.</p>`;
+    return `${header(q.title, q.lead)}<section class="ip-card ip-card--marigold"><h2 class="ip-card__title">Join the live session</h2><p>Continue to the secure quiz service in this tab. Sign in if prompted, then join your session.</p><a class="ip-btn ip-btn--ghost ip-btn--lg" href="${esc(q.url)}">Continue to live quiz</a></section><p class="fineprint page-note">The quiz currently uses a separate service with Cloudflare Access sign-in. Embedded loading is unavailable with the current setup. Use your browser’s Back button to return to iParkar Learning.</p>`;
   }
 
   /* ---------- Tab 4: Practice exam ---------- */

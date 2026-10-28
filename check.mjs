@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-const pages=['index.html','about/index.html','certification-pathways/index.html','certificate-courses/index.html','resources/index.html','resources/live-quiz/index.html','practice-exams/index.html'];
+const pages=['certification-pathways/select/index.html','certification-pathways/safety/index.html','certification-pathways/industrial-hygiene/index.html','certification-pathways/environmental/index.html','index.html','about/index.html','certification-pathways/index.html','certificate-courses/index.html','resources/index.html','live-quiz/index.html','practice-exams/index.html'];
 const titles=new Set(), descriptions=new Set();
 for (const path of pages) {
  const html=fs.readFileSync(path,'utf8');
@@ -8,7 +8,7 @@ for (const path of pages) {
  const title=html.match(/<title>(.*?)<\/title>/)[1]; assert(!titles.has(title)); titles.add(title);
  const desc=html.match(/name="description" content="([^"]+)"/)[1]; assert(!descriptions.has(desc)); descriptions.add(desc);
  assert(html.includes('rel="canonical"')); assert(!html.includes('noindex'));
- assert.equal((html.match(/aria-current="page"/g)||[]).length,path.includes('live-quiz')?2:1);
+ assert.equal((html.match(/aria-current="page"/g)||[]).length,path==='index.html'?1:2);
  for(const match of html.matchAll(/(?:src|href)="(\/(?!\/)[^"?#]*)(?:[?#]([^" ]*))?"/g)) {
   const target=match[1].slice(1); const file=target.endsWith('/')?target+'index.html':target||'index.html';
   assert(fs.existsSync(file),`${path}: missing ${file}`);
@@ -20,6 +20,6 @@ assert(!fs.readFileSync('resources/index.html','utf8').includes('data-tab="quiz"
 assert(!fs.readFileSync('certification-pathways/index.html','utf8').includes('finder-results'));
 assert(!fs.readFileSync('resources/index.html','utf8').includes('Start practising'));
 assert(fs.readFileSync('certificate-courses/index.html','utf8').includes('M507'));
-assert(!fs.readFileSync('resources/live-quiz/index.html','utf8').includes('<iframe')); // click-to-load only
-assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,7);
-console.log('Passed: 7 pages checked for titles, descriptions, H1s, canonical links, structured data and local links.');
+assert(!fs.readFileSync('live-quiz/index.html','utf8').includes('<iframe')); // click-to-load only
+assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,11);
+console.log('Passed: 11 pages checked for titles, descriptions, H1s, canonical links, structured data and local links.');

@@ -91,15 +91,14 @@
       <div id="cert-body"></div>
       <p class="fineprint page-note">${esc(c.disclaimer)}</p>`;
   }
-  function renderCert(id) {
+  function renderCert(id, options = {}) {
     const it = S.certifications.items.find((x) => x.id === id) || S.certifications.items[0];
     const list = (arr) => `<ol class="step-list">${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>`;
     $("#cert-body").innerHTML = `
       <div class="cert-head">
         <div>
           <p class="eyebrow">${esc(it.body)} · checked ${esc(it.lastChecked)}</p>
-          <h3>${esc(it.name)} (${esc(it.short)})</h3>
-          <p>${esc(it.summary)}</p>
+          ${options.detail ? "" : `<h3>${esc(it.name)} (${esc(it.short)})</h3><p>${esc(it.summary)}</p>`}
           ${it.note ? `<p class="cert-note"><span class="ip-pill ip-pill--progress">Note</span> ${esc(it.note)}</p>` : ""}
         </div>
         <a class="ip-btn ip-btn--outlined" href="${esc(it.officialUrl)}" target="_blank" rel="noopener">Official page</a>

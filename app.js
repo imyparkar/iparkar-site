@@ -78,7 +78,7 @@
 
   /* ---------- Tab: Certificate courses ---------- */
   function renderCourses(provider) {
-    const c = provider ? {...S.courses, title:provider+" courses", items:S.courses.items.filter(it=>it.provider===provider)} : S.courses;
+    const c = provider ? {...S.courses, title:provider+" courses", lead:provider+" qualifications for safety and environmental practice.", note:provider === "NEBOSH" ? "Enrol through an approved NEBOSH accredited Learning Partner. iParkar provides independent guidance and practice materials." : "Enrol through an approved IOSH Study Centre. iParkar provides independent guidance and practice materials.", items:S.courses.items.filter(it=>it.provider===provider)} : S.courses;
     return `
       ${header(c.title, c.lead)}
       <div class="notice ip-card ip-card--tint" role="note"><span class="ip-pill ip-pill--progress">Note</span><span>${esc(c.note)}</span></div>

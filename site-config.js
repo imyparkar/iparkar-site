@@ -356,7 +356,7 @@ window.SITE = {
         provider: "NEBOSH",
         name: "NEBOSH International Diploma in Environmental Management",
         level: "SCQF Level 10 · comparable to RQF Level 6",
-        color: "coral",
+        color: "moss",
         officialUrl: "https://www.nebosh.org.uk/qualifications/international-diploma-in-environmental-management/",
         lastChecked: "24 Oct 2026",
         summary: "For aspiring environmental managers and safety practitioners who also manage environmental responsibilities.",

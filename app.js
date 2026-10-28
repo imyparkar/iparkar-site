@@ -115,8 +115,8 @@
   }
 
   /* ---------- Tab: Certificate courses ---------- */
-  function renderCourses() {
-    const c = S.courses;
+  function renderCourses(provider) {
+    const c = provider ? {...S.courses, title:provider+" courses", items:S.courses.items.filter(it=>it.provider===provider)} : S.courses;
     return `
       ${header(c.title, c.lead)}
       <div class="notice ip-card ip-card--tint" role="note"><span class="ip-pill ip-pill--progress">Note</span><span>${esc(c.note)}</span></div>

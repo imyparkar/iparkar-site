@@ -1,56 +1,71 @@
-# iParkar Learning — www.iparkar.com
+# iParkar HSE Academy — iparkar.com
 
-Static landing site (4 tabs) styled with the iParkar design system.
+Static website for Cloudflare Pages. The main pages contain their text, navigation and metadata in HTML; JavaScript enhances the pathway finder and practice exam.
 
-## What to edit
+## Pages
 
-| You want to change… | Edit this file |
-|---|---|
-| Any text, link, price, button, credential, certification step, tab name/order | `site-config.js` |
-| Free sample questions (10 are drawn at random) | `questions-free.js` |
-| Colours, fonts, spacing | the `:root` block at the top of `styles.css` |
-| Logo / favicon | `assets/`, `favicon.svg`, `apple-touch-icon.png` |
+- `/` — Home overview (default landing page)
+- `/about/` — About iParkar and its founder
+- `/certification-pathways/` — guided pathway finder, certification / certificate comparison, credential details
+- `/certificate-courses/` — IOSH and NEBOSH qualifications
+- `/resources/` — learning resources hub
+- `/resources/live-quiz/` — Live Quiz, nested under Resources
+- `/practice-exams/` — free sample and premium exam links
 
-You should rarely need `index.html` or `app.js`.
+Former `/#about`, `/#certifications`, `/#courses`, `/#quiz` and `/#practice` bookmarks are mapped to the corresponding pages by `legacy-routes.js`.
 
-- Hide a tab: set `show: false` in `tabs`.
-- Add a certification (e.g. CIH, CIT): copy one `{ id: "asp", ... }` block in `certifications.items`.
-- Turn on a premium plan: replace `href: "#"` with your checkout link and delete `disabled: true`.
-- Embed the live quiz in the page: set `quiz.embed: true` (only after the Cloudflare Access login is removed from quiz.iparkar.com).
+## Editing and validation
 
-## Deploy on Cloudflare Pages (free)
+1. Edit copy and credential details in `site-config.js`.
+2. Edit page structure in `build.mjs`, styles in `styles.css`, or finder logic in `pathway-finder.js`.
+3. Run `node build.mjs` to regenerate the HTML and sitemap.
+4. Run `node check.mjs`, `node --check app.js` and `node --check pathway-finder.js`.
+5. Commit the source and generated pages together.
 
-1. Create a GitHub repo (e.g. `iparkar-site`) and upload every file in this folder.
-2. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git → pick the repo.
-   Framework preset: **None**. Build command: *(empty)*. Output directory: `/`.
-3. In the Pages project → Custom domains → add `iparkar.com` and `www.iparkar.com`.
-4. Every `git push` (or edit in the GitHub web editor) redeploys in about a minute.
+No packages, installation or build command are required on Cloudflare. Node is needed only to regenerate pages and run local checks. Generated HTML is tracked, so existing deployments keep working with output directory `/` and framework preset None.
 
-`quiz.iparkar.com` stays as it is. It is currently behind **Cloudflare Access**, so the public sees a login screen — in Zero Trust → Access → Applications, remove it or add a **Bypass / Everyone** policy if the quiz should be public.
+## Design reference
 
-## Before you take payments (checklist)
+The signed-in iParkar design artifact supplied by the owner was inspected on 28 October 2026. The implementation follows its paper canvas, white cards, midnight / marigold / coral / sky flat fills, Inter UI, Source Serif 4 leads, 12px cards, 8px buttons, supplied logo SVGs and no photography or ad-hoc icon set. Blue fills are reserved for Sign in; secondary buttons use a light sky fill with midnight text to improve small-text contrast. Cards do not gain shadows on hover.
 
-- [ ] Fill in the [BRACKETED] placeholders in `terms.html`, `privacy.html` and `refunds.html`, and have a lawyer review them.
-- [x] Contact email set to `imran@iparkar.com`.
-- [ ] Merchant-of-record account approved (Paddle or Lemon Squeezy).
-- [ ] Accounts + progress tracking live at `app.iparkar.com` (see roadmap).
+## Finder behaviour and sources
 
-## Premium roadmap (accounts, purchases, progress history)
+Answers stay in memory in the page, are not persisted, and are not sent to a server. Reset clears the recommendations. Experience is collected independently for safety, industrial hygiene, fire-loss prevention and environmental practice. Results are preliminary guidance, never approval or a guarantee of eligibility.
 
-Recommended stack — all have free tiers, so cost is near zero until you have sales:
+Rules reviewed 28 October 2026:
 
-| Piece | Service | Job |
-|---|---|---|
-| Landing site | Cloudflare Pages (this repo) | Marketing, free sample |
-| Exam app | `app.iparkar.com` on Cloudflare Pages | Login, timed exams, dashboard |
-| Accounts + database | Supabase (Auth + Postgres) | Sign-up, sign-in, question bank, attempts, scores |
-| Payments | Paddle (merchant of record) | Checkout, global tax/VAT, invoices, refunds |
-| Webhook | Supabase Edge Function or Cloudflare Worker | On `transaction.completed`, grant access (e.g. ASP, 90 days) |
+- ASP: https://www.bcsp.org/associate-safety-professional-asp
+- CSP: https://www.bcsp.org/certified-safety-professional-csp
+- CIH: https://gobgc.org/cih/
+- CIH checklist: https://gobgc.org/wp-content/uploads/2023/08/CIH-Eligibility-Checklist-6-2023.pdf
+- QEP: https://gobgc.org/qep/
+- EPI: https://gobgc.org/applicants_epi_eligibility/
+- CFPS: https://www.nfpa.org/en/for-professionals/certification/cfps
+- NEBOSH IGC: https://www.nebosh.org.uk/qualifications/international-general-certificate/
+- IOSH Diploma: https://iosh.com/qualifications-and-courses/qualifications/iosh-diploma
 
-Database tables: `profiles`, `products` (asp, csp, cfps), `entitlements` (user, product, expires_at),
-`questions` (stem, options, answer, explanation, domain), `attempts`, `attempt_answers`.
-Protect `questions` with Row Level Security so only users with a live entitlement can read them —
-never ship premium questions in public JavaScript.
+CFPS always asks for handbook review because the tool does not establish the precise NFPA education/experience route. CIH highlights the coursework, ethics, active practice and reference checks even with four years of IH experience. QEP does not automatically apply specialist degree experience reductions. A diploma is not automatically treated as a BCSP-qualifying associate degree. EPI is explicitly an interim designation and is not recommended as a potential fit at five or more years of environmental experience.
 
-Lower-effort alternative: a hosted course platform with built-in quizzes and checkout
-(less control, monthly fee, takes a cut), linked from the "Get access" buttons.
+Existing detailed credential and course content retains its original review dates; recheck fees, syllabus versions, recognition and eligibility with each awarding body before application. iParkar is an independent guidance and practice site.
+
+## SEO and Cloudflare checks
+
+The main pages have unique titles and descriptions, one H1, canonical URLs, Open Graph metadata, WebPage / WebSite structured data and breadcrumbs on inner pages. `sitemap.xml` lists seven principal pages and `robots.txt` points to it. A real `404.html` prevents Cloudflare Pages from falling back to an SPA page for missing URLs.
+
+Before production rollout:
+
+- Check Cloudflare's branch preview on desktop and mobile, including finder submission/reset, course anchors, all credential disclosures, legacy hash links, and the ten-question exam.
+- Confirm Cloudflare serves missing pages as HTTP 404 and public pages as HTTP 200; do not add a catch-all 200 rewrite.
+- Choose `https://iparkar.com` as the canonical host and configure the www/HTTP redirects in Cloudflare if needed.
+- Verify that Cloudflare bot rules allow Googlebot to fetch the public site. This change does not alter Access policies on quiz.iparkar.com or app.iparkar.com.
+- Submit `https://iparkar.com/sitemap.xml` in the existing Search Console property, use URL Inspection on the Home and pathway pages, and review Page Indexing.
+- Measure real performance with PageSpeed Insights and the Search Console Core Web Vitals report. Target LCP <= 2.5s, INP <= 200ms and CLS <= 0.1. These measurements have not been collected in this checkout.
+
+Google Search Essentials: https://developers.google.com/search/docs/essentials
+Core Web Vitals: https://developers.google.com/search/docs/appearance/core-web-vitals
+
+Indexing and rankings are not guaranteed. No Search Console property reports or Cloudflare dashboard settings were available for this implementation.
+
+## Existing services
+
+`quiz.iparkar.com` and `app.iparkar.com` remain separate services. Premium questions, account handling and payments are not changed by this redesign. Legal pages retain their existing content and need owner review before relying on them for commercial activity.

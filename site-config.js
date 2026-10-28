@@ -79,7 +79,7 @@ window.SITE = {
     // color: marigold | coral | sky | dark | white. `href` makes the whole card a link.
     highlights: [
       { title: "Certification pathways", body: "ASP, CSP, CIH, CFPS, QEP and EPI: what each asks of you, how to apply and how to prepare.", color: "marigold", href: "#certifications", linkLabel: "Explore pathways" },
-      { title: "Certificate courses",    body: "IOSH, NEBOSH and BOHS qualifications explained: what they involve and where they lead.", color: "sky", href: "#courses", linkLabel: "View courses" },
+      { title: "Certificate courses",    body: "IOSH and NEBOSH qualifications explained: what they involve and where they lead.", color: "sky", href: "#courses", linkLabel: "View courses" },
       { title: "Practice exams & live quizzes", body: "Start with 10 free questions, then take timed, blueprint-weighted mock exams or join a live quiz.", color: "dark", href: "#practice", linkLabel: "Start practising" },
     ],
   },
@@ -298,7 +298,7 @@ window.SITE = {
      Copy a { id: ... } block to add another course. */
   courses: {
     title: "Certificate courses",
-    lead: "IOSH, NEBOSH and BOHS qualifications for safety and occupational hygiene practice.",
+    lead: "IOSH and NEBOSH qualifications for safety and environmental practice.",
     note: "Enrol through an approved IOSH study centre or a NEBOSH accredited Learning Partner. iParkar provides independent guidance and practice materials.",
     disclaimer: "iParkar Learning is independent and is not affiliated with IOSH, NEBOSH or BOHS. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
     items: [

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-const pages=['certification-pathways/select/index.html','certification-pathways/safety/index.html','certification-pathways/industrial-hygiene/index.html','certification-pathways/environmental/index.html','index.html','about/index.html','certification-pathways/index.html','certificate-courses/index.html','resources/index.html','live-quiz/index.html','practice-exams/index.html'];
+const pages=['certification-pathways/safety/asp/index.html','certification-pathways/safety/csp/index.html','certification-pathways/safety/cfps/index.html','certification-pathways/industrial-hygiene/cih/index.html','certification-pathways/industrial-hygiene/bohs/index.html','certification-pathways/select/index.html','certification-pathways/safety/index.html','certification-pathways/industrial-hygiene/index.html','certification-pathways/environmental/index.html','index.html','about/index.html','certification-pathways/index.html','certificate-courses/index.html','resources/index.html','live-quiz/index.html','practice-exams/index.html'];
 const titles=new Set(), descriptions=new Set();
 for (const path of pages) {
  const html=fs.readFileSync(path,'utf8');
@@ -19,7 +19,8 @@ for (const path of pages) {
 assert(!fs.readFileSync('resources/index.html','utf8').includes('data-tab="quiz"'));
 assert(!fs.readFileSync('certification-pathways/index.html','utf8').includes('finder-results'));
 assert(!fs.readFileSync('resources/index.html','utf8').includes('Start practising'));
-assert(fs.readFileSync('certificate-courses/index.html','utf8').includes('M507'));
+assert(!fs.readFileSync('certificate-courses/index.html','utf8').includes('M507'));
+assert(fs.readFileSync('certification-pathways/industrial-hygiene/bohs/index.html','utf8').includes('M507'));
 assert(!fs.readFileSync('live-quiz/index.html','utf8').includes('<iframe')); // click-to-load only
-assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,11);
-console.log('Passed: 11 pages checked for titles, descriptions, H1s, canonical links, structured data and local links.');
+assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,16);
+console.log('Passed: 16 pages checked for titles, descriptions, H1s, canonical links, structured data and local links.');

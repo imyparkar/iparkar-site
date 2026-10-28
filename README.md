@@ -9,10 +9,10 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/` — overview
 - `/certification-pathways/` — comparison and Select Certification button
 - `/certification-pathways/select/` — Safety, Industrial Hygiene and Environmental cards
-- `/certification-pathways/safety/` — ASP, CSP and CFPS requirements
-- `/certification-pathways/industrial-hygiene/` — CIH requirements
+- `/certification-pathways/safety/` — ASP, CSP and CFPS summary cards, each opening a detailed requirements page
+- `/certification-pathways/industrial-hygiene/` — CIH and Occupational hygiene with BOHS cards, each opening a detail page
 - `/certification-pathways/environmental/` — QEP and EPI requirements
-- `/certificate-courses/` — IOSH, NEBOSH and BOHS M-series courses
+- `/certificate-courses/` — IOSH and NEBOSH courses; BOHS M-series now sits under Industrial Hygiene
 - `/resources/` — curated official resource links
 - `/live-quiz/` — quiz information within the website shell and same-tab launch
 - `/practice-exams/` — free sample and premium links
@@ -43,6 +43,8 @@ Resource files remain with their publishers; links do not grant redistribution p
 
 ## SEO follow-up
 
-Eleven public pages have unique titles/descriptions, canonical URLs, structured data and sitemap entries. `robots.txt` references the sitemap and missing URLs use `404.html`. Check public production HTTP responses, canonical-host redirects, Search Console URL Inspection/Page Indexing, and Core Web Vitals after rollout. Search Console reports and field performance have not been verified. Indexing and rankings are not guaranteed.
+Sixteen public pages have unique titles/descriptions, canonical URLs, structured data and sitemap entries. `robots.txt` references the sitemap and missing URLs use `404.html`. Check public production HTTP responses, canonical-host redirects, Search Console URL Inspection/Page Indexing, and Core Web Vitals after rollout. Search Console reports and field performance have not been verified. Indexing and rankings are not guaranteed.
 
-Buttons and navigation use CSS glass highlights with a reduced-transparency fallback; the supplied flat-fill rule is overridden by the owner’s later Liquid Glass request. No animation loop or image assets are needed for this treatment. Old quiz URLs redirect to /live-quiz/; old credential anchors route to the appropriate category.
+Buttons and navigation follow the original flat-fill design system; the Liquid Glass experiment has been removed. Course colour bands use a common 256px height so differing title lengths do not misalign them. Old quiz URLs redirect to /live-quiz/; old credential anchors route to the appropriate category.
+
+A fresh unauthenticated request to https://quiz.iparkar.com/ was verified to return HTTP 302 to the existing Cloudflare Access login. An already authorised browser session may open the quiz directly. The website does not change Access policies, cookies, or session duration and does not force users to log out.

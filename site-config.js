@@ -43,6 +43,34 @@ window.SITE = {
 
   /* ---------- Tab 1: About us ---------- */
   about: {
+    company: {
+  "title": "About iParkar Learning",
+  "lead": "Practical learning for safer work and professional growth.",
+  "paragraphs": [
+    "iParkar Learning is an independent learning platform for health, safety, environmental and occupational hygiene professionals. We help learners understand qualification pathways, strengthen their knowledge and prepare for professional examinations."
+  ],
+  "sections": [
+    {
+      "heading": "Our purpose",
+      "paragraphs": [
+        "We aim to make professional learning clearer and more practical. Whether you are starting an HSE career or working towards your next credential, our focus is to help you understand what to learn and how to apply it."
+      ]
+    },
+    {
+      "heading": "What we offer",
+      "paragraphs": [
+        "Our website brings together certification requirements, certificate and diploma course information, practice questions, live quizzes and links to official learning resources. We organise these materials so you can explore your options and plan your next step."
+      ]
+    },
+    {
+      "heading": "Our approach",
+      "paragraphs": [
+        "We value clear explanations, realistic practice and transparent guidance. Our learning materials support understanding rather than memorisation, and our qualification guides link to awarding bodies so you can verify current requirements.",
+        "iParkar Learning provides independent guidance and study support. Qualifications and professional certifications are awarded by their respective bodies; completing practice activities does not guarantee eligibility or an examination pass."
+      ]
+    }
+  ]
+},
     // Hero line. The word in `highlight` gets the marigold pill.
     heroBefore: "Learn safety.",
     highlight: "Pass",

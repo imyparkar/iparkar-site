@@ -17,7 +17,7 @@
     const style = b.style || fallbackStyle;
     if (b.disabled) return `<button class="ip-btn ip-btn--${style}" disabled>${esc(b.label)}</button>`;
     if (b.action) return `<button class="ip-btn ip-btn--${style}" data-action="${esc(b.action)}">${esc(b.label)}</button>`;
-    return `<a class="ip-btn ip-btn--${style}" href="${esc(b.href)}"${linkAttrs(b.href)}>${esc(b.label)}</a>`;
+    return `<a class="ip-btn ip-btn--${style}" href="${esc(b.href)}"${b.sameTab ? "" : linkAttrs(b.href)}>${esc(b.label)}</a>`;
   };
   const header = (title, lead) => `
     <header class="ip-section-header">

@@ -30,18 +30,12 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
   };
 
-  /* ---------- shell: nav + footer ---------- */
-  const tabs = S.tabs.filter((t) => t.show !== false);
-  document.title = S.brand.tagline ? `${S.brand.fullName} · ${S.brand.tagline}` : S.brand.fullName;
-  $("#brand").innerHTML = `
-    <img src="${esc(S.brand.logo)}" alt="" width="36" height="36">
-    <span class="brand__name">${esc(S.brand.name)} <span>${esc(S.brand.wordmark || "")}</span></span>`;
-  $("#nav-links").innerHTML = tabs.map((t) => `<a class="ip-nav-link" href="#${t.id}" data-tab="${t.id}">${esc(t.label)}</a>`).join("");
-  $("#nav-actions").innerHTML = S.navAction ? btn(S.navAction, "primary") : "";
-  $("#footer").innerHTML = `
-    <span>${esc(S.footer.copyright)}</span>
-    <nav aria-label="Legal">${S.footer.links.map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`).join("")}
-      ${S.brand.contactEmail ? `<a href="mailto:${esc(S.brand.contactEmail)}">Contact</a>` : ""}</nav>`;
+  // Build the public HTML ahead of time; the browser enhances only interactive tools.
+  if (window.IPARKAR_BUILD) {
+    window.IPARKAR_RENDER = { about: renderAbout, courses: renderCourses,
+      quiz: renderQuiz, practice: renderPractice, cert: renderCert };
+    return;
+  }
 
   /* ---------- Tab 1: About ---------- */
   function renderAbout() {
@@ -263,25 +257,6 @@
           </div>`).join("")}</div>
       </section>`;
   }
-
-  /* ---------- render all panels ---------- */
-  const renderers = { about: renderAbout, certifications: renderCerts, courses: renderCourses, quiz: renderQuiz, practice: renderPractice };
-  $("#panels").innerHTML = tabs.map((t) => `<div class="tab-panel" id="panel-${t.id}" role="region" aria-label="${esc(t.label)}" hidden></div>`).join("");
-  tabs.forEach((t) => { const el = $(`#panel-${t.id}`); if (renderers[t.id]) el.innerHTML = renderers[t.id](); });
-  if ($("#cert-body")) renderCert(S.certifications.items[0].id);
-
-  /* ---------- routing (#about, #certifications, #quiz, #practice) ---------- */
-  function show() {
-    const id = (location.hash || "").slice(1);
-    const current = tabs.find((t) => t.id === id) ? id : tabs[0].id;
-    tabs.forEach((t) => { $(`#panel-${t.id}`).hidden = t.id !== current; });
-    document.querySelectorAll("[data-tab]").forEach((a) => {
-      if (a.dataset.tab === current) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-    });
-    window.scrollTo({ top: 0 });
-  }
-  window.addEventListener("hashchange", show);
-  show();
 
   /* ---------- clicks ---------- */
   document.addEventListener("click", (e) => {

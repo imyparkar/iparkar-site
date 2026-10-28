@@ -18,8 +18,8 @@ window.SITE = {
   /* ---------- Brand & global ---------- */
   brand: {
     name: "iParkar",
-    fullName: "iParkar Learning",
-    wordmark: "Learning",                         // second word in the nav logo
+    fullName: "iParkar HSE Academy",
+    wordmark: "HSE Academy",                         // second word in the nav logo
     tagline: "HSE Training & Certification Prep", // shown in the browser tab title
     logo: "assets/iparkar-mark-primary.svg",
     contactEmail: "imran@iparkar.com",          // <-- change to your real address
@@ -32,10 +32,11 @@ window.SITE = {
   /* ---------- Tabs (order = order on the page) ----------
      id must match a section below. Set show:false to hide a tab. */
   tabs: [
+    { id: "home", label: "Home", show: true },
     { id: "about",          label: "About us",               show: true },
     { id: "certifications", label: "Certification pathways", show: true },
     { id: "courses",        label: "Certificate courses",    show: true },
-    { id: "quiz",           label: "Live quiz",              show: true },
+    { id: "resources",      label: "Resources",              show: true },
     { id: "practice",       label: "Practice exam",          show: true },
   ],
 
@@ -297,7 +298,7 @@ window.SITE = {
   courses: {
     title: "Certificate courses",
     lead: "Recognised IOSH and NEBOSH qualifications, what they involve, and where they lead.",
-    note: "IOSH & NEBOSH courses can be only enrolled through Learning Partners only.",
+    note: "Enrol through an approved IOSH study centre or a NEBOSH accredited Learning Partner. iParkar provides independent guidance and practice materials.",
     disclaimer: "iParkar is independent and is not affiliated with IOSH or NEBOSH. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
     items: [
       {
@@ -462,6 +463,6 @@ window.SITE = {
       { label: "Privacy",        href: "privacy.html" },
       { label: "Refund policy",  href: "refunds.html" },
     ],
-    copyright: "© 2026 iParkar Learning",
+    copyright: "© 2026 iParkar HSE Academy",
   },
 };

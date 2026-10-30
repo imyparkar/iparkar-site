@@ -73,7 +73,7 @@ const pages = [
  ['courses','HSE certificate & diploma courses | IOSH and NEBOSH','Compare IOSH and NEBOSH qualifications, with links to official awarding body information.',courseBody],
  ['resources','HSE resources | Live quizzes & official study guidance','Access live HSE quizzes and official BCSP, BGC, NFPA, IOSH and BOHS resources with iParkar Learning.',resources],
  ['quiz','Live Quiz','Present a live HSE quiz from our question bank or create and save your own custom quizzes with a free account.',R.quiz()],
- ['practice','HSE practice exams | Free ASP, CSP & CIH questions','Try ten free HSE practice questions with explanations and explore ASP, CSP and CIH exam preparation.',R.practice()],
+ ['practice','HSE practice exams | Free ASP, CSP & CIH questions','Compare ASP, CSP and CIH practice exam packages: US$99 for 90 days, US$149 for 180 days or US$199 for 365 days. Try ten free questions.',R.practice()],
 ];
 function normalize(html) {
   for (const [id,url] of Object.entries(routes)) html = html.replaceAll(`href="#${id}"`, `href="${url}"`);

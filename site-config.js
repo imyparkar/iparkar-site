@@ -429,8 +429,8 @@ window.SITE = {
     member: { text: "Already enrolled?", label: "Sign in to your dashboard", href: "https://app.iparkar.com/login" },
     durations: [
       { name: "Exam Ready", days: 90, price: 99, description: "For a focused preparation window.", badge: "Focused prep", available: true },
-      { name: "Extended Prep", days: 180, price: 149, description: "More time to balance work and study.", badge: "Recommended", available: false },
-      { name: "Full-Year Prep", days: 365, price: 199, description: "Prepare at your own pace for a full year.", badge: "Best value", available: false },
+      { name: "Extended Prep", days: 180, price: 149, description: "More time to balance work and study.", badge: "Recommended", available: true },
+      { name: "Full-Year Prep", days: 365, price: 199, description: "Prepare at your own pace for a full year.", badge: "Best value", available: true },
     ],
     plans: [
       {

@@ -462,3 +462,10 @@ summary { cursor:pointer; font-weight:600; }
 .company-about > section:nth-of-type(3) h2 { color:var(--forest-green); }
 .company-about > section p:last-child { margin-bottom:0; }
 @media(max-width:640px) { .company-about > .ip-section-header { padding:24px; } }
+
+/* Align the live quiz choices while allowing their copy to wrap naturally. */
+.quiz-choices { align-items:stretch; }
+.quiz-choice { display:flex; flex-direction:column; align-items:flex-start; }
+.quiz-choice > .ip-pill { align-self:flex-end; margin:0 0 16px; }
+.quiz-choice > p { margin-bottom:24px; }
+.quiz-choice > .ip-btn { margin-top:auto; }

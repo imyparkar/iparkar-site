@@ -72,7 +72,7 @@ const pages = [
  ['certifications','HSE certification pathways | ASP, CSP, CIH & more','Compare ASP, CSP, CIH, CFPS, QEP and EPI requirements, application steps and preparation resources.',certs],
  ['courses','HSE certificate & diploma courses | IOSH and NEBOSH','Compare IOSH and NEBOSH qualifications, with links to official awarding body information.',courseBody],
  ['resources','HSE resources | Live quizzes & official study guidance','Access live HSE quizzes and official BCSP, BGC, NFPA, IOSH and BOHS resources with iParkar Learning.',resources],
- ['quiz','Live HSE quiz','Join a live HSE quiz covering permit to work, fire protection, heat stress, confined spaces and more.',R.quiz()],
+ ['quiz','Live Quiz','Present a live HSE quiz from our question bank or create and save your own custom quizzes with a free account.',R.quiz()],
  ['practice','HSE practice exams | Free ASP, CSP & CIH questions','Try ten free HSE practice questions with explanations and explore ASP, CSP and CIH exam preparation.',R.practice()],
 ];
 function normalize(html) {

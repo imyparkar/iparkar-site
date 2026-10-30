@@ -456,7 +456,7 @@ window.SITE = {
         name: "CSP premium",
         price: "US$99",
         period: "90 days",
-        status: "Coming soon",
+        status: "Available",
         features: [
           "Full CSP bank, weighted to the CSP blueprint domains",
           "Scenario-led questions on management systems, risk and leadership",
@@ -464,7 +464,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Score history and domain-by-domain analytics",
         ],
-        button: { label: "Coming soon", href: "#", disabled: true },
+        button: { label: "Get CSP access", href: "https://app.iparkar.com/courses/CSP", sameTab: true },
         color: "sky",
       },
       {

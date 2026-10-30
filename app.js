@@ -40,7 +40,7 @@
   /* ---------- Tab 1: About ---------- */
   function renderAbout() {
     const a = S.about.company;
-    return `<article class="company-about"><header class="ip-section-header"><h1 class="ip-section-header__title">${esc(a.title)}</h1><p class="ip-section-header__lead">${esc(a.lead)}</p></header>${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}${a.sections.map(section=>`<section><h2>${esc(section.heading)}</h2>${section.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')}<div class="ip-btn-row"><a class="ip-btn ip-btn--ghost" href="/certification-pathways/">Explore learning pathways</a><a class="ip-btn ip-btn--text" href="mailto:${esc(S.brand.contactEmail)}">Contact iParkar Learning</a></div></article>`;
+    return `<article class="company-about"><header class="ip-section-header"><h1 class="ip-section-header__title">${esc(a.title)}</h1><p class="ip-section-header__lead">${esc(a.lead)}</p></header>${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}${a.sections.map(section=>`<section><h2>${esc(section.heading)}</h2>${section.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')}<div class="ip-btn-row"><a class="ip-btn ip-btn--ghost" href="/certification-pathways/">Explore learning pathways</a><a class="ip-btn ip-btn--text" href="/contact/">Contact iParkar Learning</a></div></article>`;
   }
 
   /* ---------- Tab 2: Certifications ---------- */
@@ -123,7 +123,7 @@
               <h3 class="ip-card__title" style="margin:0">${esc(pl.name)}</h3>
               <span class="ip-pill ${pl.color === "white" ? "ip-pill--todo" : "ip-pill--white"}">${esc(pl.status)}</span>
             </div>
-            <div class="plan__price">${esc(pl.price)} ${pl.period ? `<small>/ ${esc(pl.period)}</small>` : ""}</div>
+            <div class="plan__price">${esc(pl.price)} ${pl.period ? `<small>/ ${esc(pl.period)}</small>` : ""}</div>${pl.period ? `<p class="fineprint">One-time payment. No automatic renewal. Applicable taxes are calculated at checkout.</p>` : ""}
             <ul>${pl.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
             ${btn(pl.button, pl.color === "white" ? "ghost" : "dark")}
           </article>`).join("")}

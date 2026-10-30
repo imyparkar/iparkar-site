@@ -22,7 +22,7 @@ window.SITE = {
     wordmark: "Learning",                         // second word in the nav logo
     tagline: "HSE Training & Certification Prep", // shown in the browser tab title
     logo: "assets/iparkar-mark-primary.svg",
-    contactEmail: "imran@iparkar.com",          // <-- change to your real address
+    contactEmail: "support@iparkar.com",          // <-- change to your real address
     linkedin: "https://www.linkedin.com/in/imran-parkar-181745160/",      // <-- your LinkedIn profile URL
   },
 

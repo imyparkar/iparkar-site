@@ -403,8 +403,8 @@ window.SITE = {
      currently behind Cloudflare Access (login wall), so public visitors
      can't open it until that policy is removed or set to "Bypass". */
   quiz: {
-    title: "Live HSE quiz",
-    lead: "Join a live session, answer in real time and see how you compare.",
+    title: "Live Quiz",
+    lead: "Choose our HSE question bank or create a live quiz with your own questions.",
     url: "https://quiz.iparkar.com/",
     embed: false,
     buttonLabel: "Open the live quiz",

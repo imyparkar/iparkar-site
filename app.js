@@ -112,26 +112,50 @@
   /* ---------- Tab 4: Practice exam ---------- */
   function renderPractice() {
     const p = S.practice;
-    const best = store.get("ip-free-best");
+    const exams = p.plans.filter(pl => pl.period);
+    const codes = ["ASP", "CSP", "CIH"];
     return `
-      ${header(p.title, p.lead)}
+      <div class="practice-heading"><p class="eyebrow">ASP / CSP / CIH PRACTICE EXAMS</p>${header(p.title, p.lead)}
+      <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div>
       <div id="exam-area"></div>
-      <section class="grid grid--3" id="plans">
-        ${p.plans.map((pl) => `
-          <article class="${cardClass(pl.color)} plan">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-              <h3 class="ip-card__title" style="margin:0">${esc(pl.name)}</h3>
-              <span class="ip-pill ${pl.color === "white" ? "ip-pill--todo" : "ip-pill--white"}">${esc(pl.status)}</span>
-            </div>
-            <div class="plan__price">${esc(pl.price)} ${pl.period ? `<small>/ ${esc(pl.period)}</small>` : ""}</div>${pl.period ? `<p class="fineprint">One-time payment. No automatic renewal. Applicable taxes are calculated at checkout.</p>` : ""}
-            <ul>${pl.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
-            ${btn(pl.button, pl.color === "white" ? "ghost" : "dark")}
-          </article>`).join("")}
-      </section>
-            ${p.member ? `<p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>` : ""}
-      ${best != null ? `<p class="fineprint">Your best free-sample score on this device: <strong>${best} / ${p.freeCount}</strong></p>` : ""}
+      <div id="plans">
+        <section class="practice-sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions with answer explanations. Free, with no account needed.</p></div><button class="ip-btn ip-btn--ghost" data-action="start-free">Start free sample</button></section>
+        <section class="practice-pricing" aria-labelledby="pricing-heading">
+          <header class="practice-pricing__heading"><p class="eyebrow">CHOOSE YOUR PACKAGE</p><h2 id="pricing-heading">Make room for your preparation.</h2><p>Choose an exam, then the access period that works for you.</p></header>
+          <div class="exam-picker" role="group" aria-label="Choose your certification">${codes.map((code,i)=>`<button type="button" class="exam-picker__button" data-pricing-exam="${code}" aria-pressed="${i===0}">${code}</button>`).join("")}</div>
+          <p class="practice-selection" aria-live="polite" id="pricing-selection">Showing ASP practice exam packages</p>
+          <noscript><p>JavaScript is off. Use the certification-specific links in each plan below.</p></noscript>
+          <div class="pricing-grid">${p.durations.map((plan,i)=>`
+            <article class="pricing-card ${i===2?'pricing-card--annual':''}" aria-labelledby="duration-${plan.days}">
+              <span class="pricing-card__badge ${i===1?'pricing-card__badge--recommended':''}">${esc(plan.badge)}</span>
+              <h3 id="duration-${plan.days}">${esc(plan.name)}</h3><p class="pricing-card__duration">${plan.days} days of access</p>
+              <p class="pricing-card__price"><span class="pricing-card__currency">US$</span>${plan.price}</p><p class="pricing-card__billing">One-time payment</p>
+              <p class="pricing-card__description">${esc(plan.description)}</p>
+              <ul><li>Full bank for your selected exam</li><li>Timed mock exams and practice</li><li>Answer explanations</li><li>Score history and analytics</li></ul>
+              <div class="pricing-card__actions">${codes.map((code,j)=>{
+                const href=plan.available?exams[j].button.href:`mailto:support@iparkar.com?subject=${encodeURIComponent(code+' - '+plan.name+' - '+plan.days+' days')}&body=${encodeURIComponent('Hello iParkar, I would like '+code+' '+plan.name+' access for '+plan.days+' days at US$'+plan.price+'. Please share the purchase details.')}`;
+                return `<a class="ip-btn ${i===2?'ip-btn--primary':'ip-btn--dark'}" data-plan-exam="${code}" href="${esc(href)}">${plan.available?'Get':'Request'} ${code} - ${plan.days} days</a>`;
+              }).join('')}</div><p class="pricing-card__availability">${plan.available?'Continue to your course to get access.':'Request access by email while checkout is being prepared.'}</p>
+            </article>`).join('')}</div>
+          <p class="fineprint pricing-terms">Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
+        </section>
+        <section class="practice-features" aria-labelledby="included-heading"><div><p class="eyebrow">INCLUDED IN YOUR PACKAGE</p><h2 id="included-heading">Practice with purpose.</h2><p>The same practice tools, with the time you need to use them.</p></div>
+        <div class="practice-features__content">${exams.map((pl,i)=>`<article data-feature-exam="${codes[i]}"><h3>${codes[i]} practice features</h3><ul>${pl.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></article>`).join('')}</div></section>
+        <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include all three certifications?</summary><p>Each purchase covers one selected certification: ASP, CSP or CIH. The same three access durations are offered for each exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification and select Request access. Your email app will open a request to support@iparkar.com with the exam, duration and price included. We will help you arrange access; sending a request does not make a payment.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds.html">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
+      </div>
+      <p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>
       <p class="fineprint">${esc(p.note)}</p>`;
   }
+
+  // Enhance the static pricing links without changing checkout or payment state.
+  function selectPricingExam(code) {
+    document.querySelectorAll("[data-pricing-exam]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.pricingExam === code)));
+    document.querySelectorAll("[data-plan-exam]").forEach(link => { link.hidden = link.dataset.planExam !== code; });
+    document.querySelectorAll("[data-feature-exam]").forEach(panel => { panel.hidden = panel.dataset.featureExam !== code; });
+    const selection = $("#pricing-selection");
+    if (selection) selection.textContent = `Showing ${code} practice exam packages`;
+  }
+  if ($("[data-pricing-exam]")) selectPricingExam("ASP");
 
   /* Free sample engine — 10 random questions, instant feedback */
   const exam = { items: [], i: 0, answers: [] };
@@ -201,6 +225,8 @@
 
   /* ---------- clicks ---------- */
   document.addEventListener("click", (e) => {
+    const pricingExam = e.target.closest("[data-pricing-exam]");
+    if (pricingExam) return selectPricingExam(pricingExam.dataset.pricingExam);
     const cert = e.target.closest("[data-cert]");
     if (cert) return renderCert(cert.dataset.cert);
     const opt = e.target.closest("[data-opt]");
@@ -210,6 +236,6 @@
     const a = act.dataset.action;
     if (a === "start-free") startFree();
     if (a === "next") { if (exam.i < exam.items.length - 1) { exam.i++; drawQuestion(); } else finish(); }
-    if (a === "show-plans") { $("#exam-area").innerHTML = ""; $("#plans").hidden = false; $("#plans").scrollIntoView({ behavior: "smooth" }); }
+    if (a === "show-plans") { $("#exam-area").innerHTML = ""; $("#plans").hidden = false; $("#plans").scrollIntoView({ behavior: "smooth" }); $("[data-pricing-exam][aria-pressed='true']")?.focus({ preventScroll: true }); }
   });
 })();

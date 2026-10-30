@@ -422,11 +422,16 @@ window.SITE = {
      Each premium button opens that course in the LMS; the LMS shows the
      checkout or the exams depending on the student's access. */
   practice: {
-    title: "Practice exam",
-    lead: "Start free with 10 random questions. Unlock a full course bank for timed, blueprint-weighted mock exams.",
+    title: "Your exam. Your timeline.",
+    lead: "Choose your certification and the study time that fits. One-time payment. No automatic renewal.",
     freeCount: 10,
     appUrl: "https://app.iparkar.com",
     member: { text: "Already enrolled?", label: "Sign in to your dashboard", href: "https://app.iparkar.com/login" },
+    durations: [
+      { name: "Exam Ready", days: 90, price: 99, description: "For a focused preparation window.", badge: "Focused prep", available: true },
+      { name: "Extended Prep", days: 180, price: 149, description: "More time to balance work and study.", badge: "Recommended", available: false },
+      { name: "Full-Year Prep", days: 365, price: 199, description: "Prepare at your own pace for a full year.", badge: "Best value", available: false },
+    ],
     plans: [
       {
         name: "Free sample",

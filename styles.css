@@ -471,7 +471,7 @@ summary { cursor:pointer; font-weight:600; }
 .quiz-choice > .ip-btn { margin-top:auto; }
 
 /* Practice package pricing - iParkar midnight, marigold and paper tokens. */
-.practice-heading { padding: 24px 0 36px; }
+.practice-heading { padding: 24px 0 28px; }
 .practice-heading .ip-section-header { margin-bottom: 24px; }
 .practice-heading .ip-section-header__title { max-width: 900px; font-size: clamp(40px, 5vw, 64px); line-height: 1.08; letter-spacing: -1.8px; }
 .practice-assurances { display: flex; flex-wrap: wrap; gap: 12px 28px; color: var(--graphite); font-size: 14px; }
@@ -480,36 +480,6 @@ summary { cursor:pointer; font-weight:600; }
 .practice-sample h2 { font-size: 22px; font-weight: 600; margin: 8px 0; }
 .practice-sample p { margin: 0; color: var(--graphite); }
 .practice-sample .ip-btn { flex-shrink: 0; }
-.practice-pricing { margin-top: 64px; }
-.practice-pricing__heading h2, .practice-features h2, .pricing-faq h2 { margin: 8px 0 12px; font-size: clamp(28px, 3vw, 36px); line-height: 1.2; font-weight: 600; letter-spacing: -.8px; }
-.practice-pricing__heading > p:last-child { color: var(--graphite); }
-.exam-picker { display: inline-flex; flex-wrap: wrap; gap: 8px; padding: 6px; border: 1px solid var(--border-hairline); border-radius: 12px; background: var(--white); margin-top: 16px; }
-.exam-picker__button { background: transparent; color: var(--midnight); border: 0; border-radius: 8px; padding: 12px 32px; font: 600 16px var(--font-sans); cursor: pointer; min-height: 44px; }
-.exam-picker__button[aria-pressed="true"] { background: var(--midnight); color: var(--white); }
-.exam-picker__button:focus-visible, .pricing-faq summary:focus-visible { outline: 3px solid var(--action-blue); outline-offset: 3px; }
-.practice-selection { font-size: 14px; color: var(--graphite); margin: 16px 0 24px; }
-.pricing-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
-.pricing-card { background: var(--white); border: 1px solid var(--border-hairline); border-radius: var(--radius-card); padding: 28px; display: flex; flex-direction: column; color: var(--midnight); }
-.pricing-card__badge { align-self: flex-start; background: var(--paper); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; }
-.pricing-card__badge--recommended { background: var(--sky-tint); }
-.pricing-card h3 { margin: 28px 0 8px; font-size: 24px; font-weight: 600; letter-spacing: -.5px; }
-.pricing-card__duration { margin: 0; font-size: 15px; }
-.pricing-card__price { margin: 28px 0 4px; font-size: 58px; font-weight: 600; letter-spacing: -2px; line-height: 1; }
-.pricing-card__currency { font-size: 20px; letter-spacing: -.5px; margin-right: 4px; }
-.pricing-card__billing { font-size: 13px; color: var(--graphite); margin: 8px 0 24px; }
-.pricing-card__description { font-size: 16px; line-height: 1.5; min-height: 48px; margin: 0 0 24px; }
-.pricing-card ul { padding: 0; margin: 0 0 28px; list-style: none; font-size: 14px; line-height: 1.5; }
-.pricing-card li { padding: 10px 0; border-top: 1px solid var(--border-hairline); }
-.pricing-card__actions { margin-top: auto; display: grid; gap: 8px; }
-.pricing-card__actions .ip-btn { width: 100%; padding: 12px 10px; font-size: 14px; text-align: center; }
-.pricing-card__actions [hidden], .practice-features [hidden], #plans[hidden] { display: none !important; }
-.pricing-card__availability { margin: 16px 0 0; font-size: 12px; line-height: 1.5; min-height: 36px; color: var(--graphite); }
-.pricing-card--annual { background: var(--midnight); color: var(--white); }
-.pricing-card--annual .pricing-card__badge { background: var(--marigold); color: var(--midnight); }
-.pricing-card--annual .pricing-card__duration { color: var(--marigold); }
-.pricing-card--annual .pricing-card__billing, .pricing-card--annual .pricing-card__availability { color: #dedfe8; }
-.pricing-card--annual li { border-color: #343960; }
-.pricing-terms { max-width: 100%; }
 .practice-features { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; margin-top: 64px; padding: 36px; background: var(--white); border-radius: var(--radius-card); }
 .practice-features p { color: var(--graphite); line-height: 1.6; }
 .practice-features h3 { margin-top: 0; font-size: 20px; }
@@ -519,5 +489,90 @@ summary { cursor:pointer; font-weight:600; }
 .pricing-faq details { border-bottom: 1px solid #d9d7d5; padding: 20px 0; }
 .pricing-faq summary { font-weight: 600; cursor: pointer; line-height: 1.5; }
 .pricing-faq details p { color: var(--graphite); line-height: 1.7; margin-bottom: 0; }
-@media (max-width: 1000px) { .pricing-card { padding: 22px; } .pricing-grid { gap: 14px; } }
-@media (max-width: 760px) { .pricing-grid, .practice-features { grid-template-columns: 1fr; } .practice-sample { align-items: flex-start; flex-direction: column; padding: 24px; } .practice-pricing { margin-top: 44px; } .pricing-card { padding: 28px; } .pricing-card__description { min-height: 0; } .practice-features { padding: 24px; gap: 24px; } .exam-picker__button { padding: 12px 26px; } }
+
+/* Option C – package configurator (desktop) and Option E – swipe cards + buy bar (mobile). */
+.practice-features [hidden], #plans[hidden], .plan-summary__actions [hidden], .plan-summary__badge[hidden] { display: none !important; }
+.practice-features h2, .pricing-faq h2 { margin: 8px 0 12px; font-size: clamp(28px, 3vw, 36px); line-height: 1.2; font-weight: 600; letter-spacing: -.8px; }
+.pricing-faq summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.plan-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.practice-pricing { margin: 0 0 48px; }
+.practice-pricing .pricing-terms { max-width: 100%; margin-top: 16px; }
+.plan-config { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; padding: 32px; background: var(--midnight); color: var(--white); border-radius: var(--radius-card); }
+.plan-config__steps { min-width: 0; display: flex; flex-direction: column; gap: 36px; justify-content: center; }
+.plan-step__label { margin: 0 0 14px; font-size: 14px; font-weight: 500; color: #dedfe8; }
+.plan-exams { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.plan-exam { display: flex; flex-direction: column; gap: 4px; min-height: 76px; padding: 14px; text-align: left; font-family: var(--font-sans); color: var(--white); background: transparent; border: 1px solid #343960; border-radius: var(--radius-button); cursor: pointer; transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease; }
+.plan-exam:hover { border-color: var(--marigold); }
+.plan-exam[aria-pressed="true"] { background: var(--marigold); border-color: var(--marigold); color: var(--ink); }
+.plan-exam__code { font-size: 20px; font-weight: 700; }
+.plan-exam__name { font-size: 12px; font-weight: 500; line-height: 1.33; opacity: .85; }
+.plan-timeline { position: relative; padding: 0 8px; }
+.plan-timeline__track { position: absolute; left: calc(16.66% + 8px); right: calc(16.66% + 8px); top: 10px; height: 4px; background: #343960; border-radius: var(--radius-pill); }
+.plan-timeline__fill { display: block; height: 100%; width: var(--fill, 50%); background: var(--marigold); border-radius: inherit; transition: width 320ms cubic-bezier(.2,.7,.2,1); }
+.plan-durations { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.plan-duration { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 4px 6px; min-height: 44px; font-family: var(--font-sans); color: var(--white); background: transparent; border: 0; border-radius: var(--radius-button); cursor: pointer; }
+.plan-duration__pip { width: 24px; height: 24px; box-sizing: border-box; border-radius: var(--radius-pill); background: #343960; border: 4px solid var(--midnight); transition: background-color 200ms ease, transform 200ms ease; }
+.plan-duration:hover .plan-duration__pip { transform: scale(1.15); }
+.plan-duration[aria-pressed="true"] .plan-duration__pip { background: var(--marigold); transform: scale(1.25); }
+.plan-duration__label { font-size: 15px; font-weight: 600; }
+.plan-duration__name { font-size: 12px; color: #dedfe8; }
+.plan-duration__badge, .plan-duration__price, .plan-duration__per { display: none; }
+.plan-exam:focus-visible, .plan-duration:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+.plan-summary { display: flex; flex-direction: column; gap: 12px; padding: 24px; background: var(--white); color: var(--midnight); border-radius: var(--radius-card); }
+.plan-summary__top { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 26px; }
+.plan-summary__title { margin: 0; font-size: 14px; font-weight: 600; }
+.plan-summary__badge { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; background: var(--sky-tint); }
+.plan-summary__badge--value { background: var(--marigold); }
+.plan-summary__price { margin: 0; font-size: 64px; font-weight: 600; letter-spacing: -2px; line-height: 1; font-feature-settings: "lnum", "tnum"; }
+.plan-summary__currency { font-size: 20px; letter-spacing: -.5px; margin-right: 4px; }
+.plan-summary__meta { margin: 0; font-size: 14px; color: var(--slate); }
+.plan-summary__list { margin: 4px 0 0; padding: 0; list-style: none; font-size: 14px; line-height: 1.5; }
+.plan-summary__list li { padding: 9px 0; border-top: 1px solid var(--border-hairline); }
+.plan-summary__list li:last-child { border-bottom: 1px solid var(--border-hairline); }
+.plan-summary__actions .ip-btn { display: block; width: 100%; box-sizing: border-box; padding: 14px 16px; font-size: 15px; font-weight: 600; text-align: center; transition: background-color 200ms ease; }
+.plan-summary__note { margin: 0; font-size: 12px; line-height: 1.5; color: var(--slate); text-align: center; }
+.plan-noscript { margin: 8px 0 0; padding-left: 20px; line-height: 1.8; }
+.plan-buybar { display: none; }
+/* Motion: entry stagger (JS adds the class only when motion is allowed), value swap. */
+.plan-config--animate .plan-anim { opacity: 0; transform: translateY(12px); transition: opacity 420ms cubic-bezier(.2,.7,.2,1), transform 420ms cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0ms); }
+.plan-config--animate.is-in .plan-anim { opacity: 1; transform: none; }
+.plan-swap { animation: plan-swap 260ms ease both; }
+@keyframes plan-swap { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 960px) { .plan-config { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .practice-pricing { margin-bottom: 40px; }
+  .plan-config { padding: 20px 0 20px; gap: 20px; }
+  .plan-config__steps { gap: 24px; }
+  .plan-step { padding: 0 20px; }
+  .plan-step:last-child { padding: 0; }
+  .plan-step:last-child .plan-step__label { padding: 0 20px; }
+  .plan-exam { min-height: 48px; padding: 10px; align-items: center; justify-content: center; }
+  .plan-exam__name { display: none; }
+  .plan-timeline { padding: 0; }
+  .plan-timeline__track, .plan-duration__pip { display: none; }
+  .plan-durations { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 20px 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .plan-durations::-webkit-scrollbar { display: none; }
+  .plan-duration { flex: 0 0 78%; scroll-snap-align: center; align-items: flex-start; gap: 4px; padding: 18px; text-align: left; background: rgba(255,255,255,.08); border: 1px solid #343960; border-radius: var(--radius-card); transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease; }
+  .plan-duration[aria-pressed="true"] { background: var(--white); color: var(--midnight); border-color: var(--marigold); box-shadow: inset 0 0 0 2px var(--marigold); }
+  .plan-duration[aria-pressed="true"] .plan-duration__per { color: var(--slate); }
+  .plan-duration__label { order: 2; font-size: 14px; font-weight: 500; }
+  .plan-duration__name { order: 1; font-size: 18px; font-weight: 600; color: inherit; }
+  .plan-duration__badge { display: inline-block; order: 0; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; background: var(--sky-tint); color: var(--midnight); }
+  .plan-duration--annual .plan-duration__badge { background: var(--marigold); }
+  .plan-duration__price { display: block; order: 3; margin-top: 8px; font-size: 40px; font-weight: 600; letter-spacing: -1.4px; line-height: 1; font-feature-settings: "lnum"; }
+  .plan-duration__price small { font-size: 15px; letter-spacing: 0; margin-right: 2px; }
+  .plan-duration__per { display: block; order: 4; font-size: 13px; color: #dedfe8; }
+  .plan-summary { margin: 0 20px; }
+  .plan-summary__top, .plan-summary__price, .plan-summary__meta { display: none; }
+  .plan-buybar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; align-items: center; gap: 12px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--white); border-top: 1px solid var(--border-hairline); transform: translateY(110%); visibility: hidden; transition: transform 320ms cubic-bezier(.2,.7,.2,1), visibility 0s linear 320ms; }
+  .plan-buybar.is-visible { transform: none; visibility: visible; transition: transform 320ms cubic-bezier(.2,.7,.2,1), visibility 0s; }
+  .plan-buybar__text { flex: 1; min-width: 0; margin: 0; display: flex; flex-direction: column; font-size: 13px; color: var(--slate); }
+  .plan-buybar__text strong { font-size: 20px; font-weight: 600; letter-spacing: -.4px; color: var(--ink); font-feature-settings: "lnum"; }
+  .plan-buybar__text strong span:last-child { font-size: 13px; font-weight: 500; letter-spacing: 0; color: var(--slate); }
+  .plan-buybar .ip-btn { flex-shrink: 0; padding: 14px 20px; font-size: 15px; font-weight: 600; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-config--animate .plan-anim { opacity: 1; transform: none; }
+  .plan-exam, .plan-duration, .plan-duration__pip, .plan-timeline__fill, .plan-buybar, .plan-summary__actions .ip-btn { transition: none; }
+  .plan-swap { animation: none; }
+}

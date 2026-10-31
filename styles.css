@@ -785,7 +785,7 @@ summary { cursor:pointer; font-weight:600; }
 .provider-grid--2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .provider-grid--2 .provider-card__band { min-height:190px; }
 @media(max-width:1000px) { .provider-grid--2 { grid-template-columns:1fr; } }
-body:has(#asp:target) .book-tab[href="#asp"], body:has(#csp:target) .book-tab[href="#csp"], body:has(#cih:target) .book-tab[href="#cih"],
-body:has(#qep:target) .book-tab[href="#qep"], body:has(#cfps:target) .book-tab[href="#cfps"] { border-color:var(--ink); box-shadow:0 0 0 2px var(--white) inset; }
+body:has(#books-asp:target) .book-tab[href="#books-asp"], body:has(#books-csp:target) .book-tab[href="#books-csp"], body:has(#books-cih:target) .book-tab[href="#books-cih"],
+body:has(#books-qep:target) .book-tab[href="#books-qep"], body:has(#books-cfps:target) .book-tab[href="#books-cfps"] { border-color:var(--ink); box-shadow:0 0 0 2px var(--white) inset; }
 body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight); color:var(--white); }
 @media(max-width:760px) { .practice-sample { flex-direction:column; align-items:flex-start; padding:24px; } }

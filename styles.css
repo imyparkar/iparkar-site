@@ -789,3 +789,7 @@ body:has(#books-asp:target) .book-tab[href="#books-asp"], body:has(#books-csp:ta
 body:has(#books-qep:target) .book-tab[href="#books-qep"], body:has(#books-cfps:target) .book-tab[href="#books-cfps"] { border-color:var(--ink); box-shadow:0 0 0 2px var(--white) inset; }
 body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight); color:var(--white); }
 @media(max-width:760px) { .practice-sample { flex-direction:column; align-items:flex-start; padding:24px; } }
+/* Subtle header sign-in: a quiet text link that never competes with page CTAs. */
+.nav-signin-link { padding:8px 4px; font-size:14px; font-weight:500; color:var(--ink-54); text-decoration:none; white-space:nowrap; transition:color 200ms ease; }
+.nav-signin-link:hover { color:var(--action-blue); }
+.nav-signin-link:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; border-radius:4px; }

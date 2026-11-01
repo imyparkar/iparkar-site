@@ -126,8 +126,7 @@
     p.durations.forEach((plan, i) => codes.forEach((code, j) => links.push({ code, i, label: `${plan.available ? "Get" : "Request"} ${code} · ${plan.days} days`, href: plan.available ? exams[j].button.href : `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at US$" + plan.price + ". Please share the purchase details.")}` })));
     return `
       <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">ASP / CSP / CIH PRACTICE EXAMS</p>${header(p.title, p.lead)}
-      <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div>
-      <aside class="practice-signin" aria-label="Returning students"><span>${esc(p.member.text)}</span><a class="ip-btn ip-btn--outlined" href="${esc(p.member.href)}">${esc(p.member.label)}</a></aside></div>
+      <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
       <div id="exam-area"></div>
       <div id="plans">
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">
@@ -168,6 +167,7 @@
         <div class="practice-features__content">${exams.map((pl,i)=>`<article data-feature-exam="${codes[i]}"><h3>${codes[i]} practice features</h3><ul>${pl.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></article>`).join('')}</div></section>
         <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include all three certifications?</summary><p>Each purchase covers one selected certification: ASP, CSP or CIH. The same three access durations are offered for each exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification and select Request access. Your email app will open a request to support@iparkar.com with the exam, duration and price included. We will help you arrange access; sending a request does not make a payment.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds.html">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
       </div>
+      <p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>
       <p class="fineprint">${esc(p.note)}</p>`;
   }
 

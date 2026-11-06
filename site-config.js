@@ -445,6 +445,7 @@ window.SITE = {
       {
         name: "ASP premium",
         code: "ASP",
+        tagline: "9 blueprint domains",
         examName: "Associate Safety Professional",
         price: "US$99",
         period: "90 days",
@@ -462,6 +463,7 @@ window.SITE = {
       {
         name: "CSP premium",
         code: "CSP",
+        tagline: "Scenario questions",
         examName: "Certified Safety Professional",
         price: "US$99",
         period: "90 days",
@@ -479,6 +481,7 @@ window.SITE = {
       {
         name: "CIH premium",
         code: "CIH",
+        tagline: "1,000 questions",
         examName: "Certified Industrial Hygienist",
         price: "US$99",
         period: "90 days",
@@ -496,6 +499,7 @@ window.SITE = {
       {
         name: "GES/EPI premium",
         code: "GES/EPI",
+        tagline: "800 questions",
         examName: "General Environmental Science / EPI",
         price: "US$99",
         period: "90 days",
@@ -513,6 +517,7 @@ window.SITE = {
       {
         name: "QEP premium",
         code: "QEP",
+        tagline: "800 questions",
         examName: "Qualified Environmental Professional",
         price: "US$99",
         period: "90 days",

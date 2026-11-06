@@ -138,7 +138,7 @@ const pages = [
  ['resources','HSE resources | Reference books & official study guidance','Find reference books for ASP, CSP, CIH, QEP and CFPS, plus official BCSP, BGC and BOHS study resources.',resources],
  ['books','Reference books for ASP, CSP, CIH, QEP & CFPS','The most-used study references for ASP, CSP, CIH, QEP and CFPS exams, with links to buy from the official publishers.',refBooks],
  ['quiz','Live Quiz','Present a live HSE quiz from our question bank or create and save your own custom quizzes with a free account.',R.quiz()],
- ['practice','HSE practice exams | Free ASP, CSP & CIH questions','Compare ASP, CSP and CIH practice exam packages: US$99 for 90 days, US$149 for 180 days or US$199 for 365 days. Try ten free questions.',R.practice()],
+ ['practice','HSE practice exams | ASP, CSP, CIH, GES/EPI & QEP','Compare ASP, CSP, CIH, GES/EPI and QEP practice exam packages: US$99 for 90 days, US$149 for 180 days or US$199 for 365 days. Try ten free questions.',R.practice()],
 ];
 function normalize(html) {
   for (const [id,url] of Object.entries(routes)) html = html.replaceAll(`href="#${id}"`, `href="${url}"`);

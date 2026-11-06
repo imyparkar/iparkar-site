@@ -116,6 +116,15 @@
   }
 
   /* ---------- Tab 4: Practice exam ---------- */
+  // Shared purchase links: 90-day packages go straight to checkout, longer ones open an email request.
+  function planHref(code, i) {
+    const p = S.practice, plan = p.durations[i], exam = p.plans.find(pl => pl.code === code);
+    if (plan.available) return exam.button.href;
+    return `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at US$" + plan.price + ". Please share the purchase details.")}`;
+  }
+  function planLabel(code, i) { const plan = S.practice.durations[i]; return `${plan.available ? "Get" : "Request"} ${code} · ${durationLabel(plan)}`; }
+  function durationLabel(plan) { return plan.days === 365 ? "1 year" : `${plan.days} days`; }
+
   function renderPractice() {
     const p = S.practice;
     const exams = p.plans.filter(pl => pl.period);
@@ -123,7 +132,7 @@
     const examNames = exams.map(pl => pl.examName);
     const perDay = plan => (plan.price / plan.days).toFixed(2);
     const links = [];
-    p.durations.forEach((plan, i) => codes.forEach((code, j) => links.push({ code, i, label: `${plan.available ? "Get" : "Request"} ${code} · ${plan.days} days`, href: plan.available ? exams[j].button.href : `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at US$" + plan.price + ". Please share the purchase details.")}` })));
+    p.durations.forEach((plan, i) => codes.forEach(code => links.push({ code, i, label: planLabel(code, i), href: planHref(code, i) })));
     return `
       <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">${esc(codes.join(" · "))} PRACTICE EXAMS</p>${header(p.title, p.lead)}
       <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
@@ -131,34 +140,26 @@
       <div id="plans">
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" class="plan-sr">Choose your package</h2>
-          <p class="plan-sr" aria-live="polite" id="pricing-selection">Selected: ASP, Extended Prep, 180 days, US$149</p>
-          <div class="plan-config" data-plan-config style="--fill:50%">
-            <div class="plan-config__steps">
-              <div class="plan-step plan-anim" style="--d:0ms">
-                <p class="plan-step__label" id="plan-step-exam">1 · Choose your certification</p>
-                <div class="plan-exams" role="group" aria-labelledby="plan-step-exam">${codes.map((code,i)=>`<button type="button" class="plan-exam" data-pricing-exam="${code}" aria-pressed="${i===0}"><span class="plan-exam__code">${code}</span><span class="plan-exam__name">${esc(examNames[i])}</span></button>`).join("")}</div>
-              </div>
-              <div class="plan-step plan-anim" style="--d:80ms">
-                <p class="plan-step__label" id="plan-step-time">2 · Choose how long you need</p>
-                <div class="plan-timeline">
-                  <span class="plan-timeline__track" aria-hidden="true"><span class="plan-timeline__fill"></span></span>
-                  <div class="plan-durations" role="group" aria-labelledby="plan-step-time">${p.durations.map((plan,i)=>`<button type="button" class="plan-duration${i===2?' plan-duration--annual':''}" data-pricing-plan="${i}" aria-pressed="${i===1}"><span class="plan-duration__pip" aria-hidden="true"></span><span class="plan-duration__label">${plan.days} days</span><span class="plan-duration__name">${esc(plan.name)}</span>${i?`<span class="plan-duration__badge">${esc(plan.badge)}</span>`:''}<span class="plan-duration__price"><small>US$</small>${plan.price}</span><span class="plan-duration__per">US$${perDay(plan)} a day</span></button>`).join("")}</div>
-                </div>
-              </div>
+          <p class="plan-sr" aria-live="polite" id="pricing-selection">Selected: ASP, ${esc(p.durations[1].name)}, ${p.durations[1].days} days, US$${p.durations[1].price}</p>
+          <div class="plan-courses" data-plan-courses>${exams.map((pl, j) => { const d = p.durations[1]; return `<article class="plan-course plan-anim plan-course--${pl.code === "GES/EPI" ? "epi" : pl.code.toLowerCase()}" data-course="${pl.code}" style="--d:${j * 70}ms">
+            <div class="plan-course__head"><div class="plan-course__top"><h3 class="plan-course__code">${esc(pl.code)}</h3><span class="plan-course__pill">${esc(pl.tagline || "")}</span></div><p class="plan-course__name">${esc(pl.examName)}</p></div>
+            <div class="plan-course__body">
+              <div class="plan-seg" role="group" aria-label="Access period for ${esc(pl.code)}">${p.durations.map((dd, i) => `<button type="button" class="plan-seg__btn" data-course-plan="${i}" aria-pressed="${i === 1}">${durationLabel(dd)}</button>`).join("")}</div>
+              <div class="plan-course__row"><p class="plan-course__price" data-course-swap><small>US$</small><span data-course-price>${d.price}</span></p><p class="plan-course__meta"><span data-course-name>${esc(d.name)}</span><br><span data-course-per>US$${perDay(d)} a day</span></p></div>
+              <p class="plan-course__badges"><span class="plan-course__badge" data-course-badge>${esc(d.badge)}</span></p>
+              <a class="ip-btn plan-course__cta" data-course-cta href="${esc(planHref(pl.code, 1))}">${esc(planLabel(pl.code, 1))}</a>
             </div>
-            <div class="plan-summary plan-anim" style="--d:160ms">
-              <div class="plan-summary__top"><p class="plan-summary__title" data-plan-title>ASP · ${esc(p.durations[1].name)}</p><span class="plan-summary__badge" data-plan-badge>${esc(p.durations[1].badge)}</span></div>
-              <p class="plan-summary__price"><span class="plan-summary__currency">US$</span><span data-plan-price>${p.durations[1].price}</span></p>
-              <p class="plan-summary__meta" data-plan-meta>${p.durations[1].days} days of access · US$${perDay(p.durations[1])} a day · One-time payment</p>
-              <ul class="plan-summary__list"><li>Full <span data-plan-exam-name>ASP</span> question bank</li><li>Timed mock exams and practice</li><li>Answer explanations</li><li>Score history and analytics</li></ul>
-              <div class="plan-summary__actions">${links.map(l=>`<a class="ip-btn ip-btn--primary" data-plan-exam="${l.code}" data-plan-index="${l.i}" href="${esc(l.href)}"${l.code==='ASP'&&l.i===1?'':' hidden'}>${esc(l.label)}</a>`).join("")}</div>
-              <p class="plan-summary__note" data-plan-note>${p.durations[1].available?'Continue to your course to get access.':'Request access by email while checkout is being prepared.'}</p>
-            </div>
+          </article>`; }).join("")}</div>
+          <div class="plan-mobile" data-plan-mobile>
+            <div class="plan-tabs" role="group" aria-label="Certification">${codes.map((code, i) => `<button type="button" class="plan-tab" data-m-exam="${code}" aria-pressed="${i === 0}">${esc(code)}</button>`).join("")}</div>
+            <div class="plan-rail" role="group" aria-label="Access period">${p.durations.map((dd, i) => `<button type="button" class="plan-mcard${i === 2 ? " plan-mcard--annual" : ""}" data-m-plan="${i}" aria-pressed="${i === 1}"><span class="plan-mcard__top"><span class="plan-mcard__name">${esc(dd.name)}</span>${i ? `<span class="plan-mcard__badge">${esc(dd.badge)}</span>` : ""}</span><span class="plan-mcard__days">${dd.days} days of access</span><span class="plan-mcard__price"><small>US$</small>${dd.price}</span><span class="plan-mcard__per">One-time · US$${perDay(dd)} a day</span></button>`).join("")}</div>
+            <div class="plan-dots" aria-hidden="true">${p.durations.map((dd, i) => `<span class="plan-dot${i === 1 ? " is-on" : ""}"></span>`).join("")}</div>
+            <p class="plan-mobile__note"><strong>Every package includes</strong> the full <span data-m-exam-name>ASP</span> bank, timed mocks, answer explanations and score analytics.</p>
           </div>
           <noscript><p class="fineprint">JavaScript is off. Choose a package directly:</p><ul class="plan-noscript">${links.map(l=>`<li><a href="${esc(l.href)}">${esc(l.label)} · US$${p.durations[l.i].price}</a></li>`).join("")}</ul></noscript>
           <div class="plan-buybar" data-plan-buybar role="region" aria-label="Selected package">
             <p class="plan-buybar__text"><span data-plan-bar-title>ASP · ${esc(p.durations[1].name)}</span><strong>US$<span data-plan-bar-price>${p.durations[1].price}</span> <span data-plan-bar-days>· ${p.durations[1].days} days</span></strong></p>
-            <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(links.find(l=>l.code==='ASP'&&l.i===1).href)}">${p.durations[1].available?'Get access':'Request'}</a>
+            <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(planHref("ASP", 1))}">${p.durations[1].available ? "Get access" : "Request"}</a>
           </div>
           <p class="fineprint pricing-terms">Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
         </section>
@@ -171,9 +172,10 @@
       <p class="fineprint">${esc(p.note)}</p>`;
   }
 
-  // Option C configurator (desktop) + swipe cards and buy bar (mobile). Links stay static; JS only switches them.
-  const planState = { exam: "ASP", plan: 1 };
+  // Option B course cards (desktop) + Option E swipe cards and sticky buy bar (mobile).
+  // Every link is rendered statically; JS only switches prices, labels and hrefs.
   const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = () => window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
   function replay(el, cls) { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
   function countPrice(el, to) {
     if (!el) return;
@@ -184,56 +186,96 @@
     const step = (t) => { t0 ??= t; const k = Math.min(1, (t - t0) / 360); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k < 1) el._raf = requestAnimationFrame(step); };
     el._raf = requestAnimationFrame(step);
   }
-  function updatePricing(change = {}) {
-    const config = $("[data-plan-config]");
-    if (!config) return;
-    Object.assign(planState, change);
-    const { exam: code, plan: i } = planState;
-    const plan = S.practice.durations[i];
-    const perDay = (plan.price / plan.days).toFixed(2);
-    document.querySelectorAll("[data-pricing-exam]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pricingExam === code)));
-    document.querySelectorAll("[data-pricing-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.pricingPlan) === i)));
+  const mobileState = { exam: "ASP", plan: 1 };
+  function showFeatures(code) {
     document.querySelectorAll("[data-feature-exam]").forEach(panel => { panel.hidden = panel.dataset.featureExam !== code; });
-    let active;
-    document.querySelectorAll("[data-plan-exam]").forEach(link => { const on = link.dataset.planExam === code && Number(link.dataset.planIndex) === i; link.hidden = !on; if (on) active = link; });
-    config.style.setProperty("--fill", `${i * 50}%`);
+  }
+  function announce(code, i) {
+    const plan = S.practice.durations[i], el = $("#pricing-selection");
+    if (el) el.textContent = `Selected: ${code}, ${plan.name}, ${plan.days} days, US$${plan.price}`;
+  }
+  function updateCourse(card, i, animate) {
+    const code = card.dataset.course, plan = S.practice.durations[i];
+    card.querySelectorAll("[data-course-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.coursePlan) === i)));
+    countPrice(card.querySelector("[data-course-price]"), plan.price);
+    card.querySelector("[data-course-name]").textContent = plan.name;
+    card.querySelector("[data-course-per]").textContent = `US$${(plan.price / plan.days).toFixed(2)} a day`;
+    const badge = card.querySelector("[data-course-badge]");
+    badge.textContent = i ? plan.badge : "";
+    badge.classList.toggle("is-empty", !i);
+    badge.classList.toggle("plan-course__badge--value", i === 2);
+    const cta = card.querySelector("[data-course-cta]");
+    cta.href = planHref(code, i);
+    cta.textContent = planLabel(code, i);
+    if (animate) { replay(card.querySelector("[data-course-swap]"), "plan-swap"); replay(cta, "plan-swap"); }
+    showFeatures(code);
+    announce(code, i);
+  }
+  function updateMobile(change = {}, scroll = true) {
+    const box = $("[data-plan-mobile]");
+    if (!box) return;
+    Object.assign(mobileState, change);
+    const { exam: code, plan: i } = mobileState, plan = S.practice.durations[i];
+    box.querySelectorAll("[data-m-exam]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mExam === code)));
+    box.querySelectorAll("[data-m-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.mPlan) === i)));
+    box.querySelectorAll(".plan-dot").forEach((d, k) => d.classList.toggle("is-on", k === i));
+    const name = box.querySelector("[data-m-exam-name]"); if (name) name.textContent = code;
     const set = (sel, text) => { const el = $(sel); if (el) el.textContent = text; };
-    set("[data-plan-title]", `${code} · ${plan.name}`);
-    set("[data-plan-meta]", `${plan.days} days of access · US$${perDay} a day · One-time payment`);
-    set("[data-plan-exam-name]", code);
-    set("[data-plan-note]", plan.available ? "Continue to your course to get access." : "Request access by email while checkout is being prepared.");
     set("[data-plan-bar-title]", `${code} · ${plan.name}`);
     set("[data-plan-bar-price]", plan.price);
     set("[data-plan-bar-days]", `· ${plan.days} days`);
-    set("#pricing-selection", `Selected: ${code}, ${plan.name}, ${plan.days} days, US$${plan.price}`);
-    const badge = $("[data-plan-badge]");
-    if (badge) { badge.textContent = i ? plan.badge : ""; badge.hidden = !i; badge.classList.toggle("plan-summary__badge--value", i === 2); }
     const barCta = $("[data-plan-bar-cta]");
-    if (barCta && active) { barCta.href = active.href; barCta.textContent = plan.available ? "Get access" : "Request"; }
-    countPrice($("[data-plan-price]"), plan.price);
-    if (change.exam || change.plan !== undefined) { replay(active, "plan-swap"); replay($(".plan-buybar__text"), "plan-swap"); replay($("[data-plan-title]"), "plan-swap"); }
-    if (change.plan !== undefined && window.matchMedia("(max-width: 760px)").matches) {
-      const card = $(`[data-pricing-plan="${i}"]`), rail = $(".plan-durations");
-      if (card && rail) rail.scrollTo({ left: card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2, behavior: reduceMotion() ? "auto" : "smooth" });
-    }
+    if (barCta) { barCta.href = planHref(code, i); barCta.textContent = plan.available ? "Get access" : "Request"; }
+    if (change.exam || change.plan !== undefined) replay($(".plan-buybar__text"), "plan-swap");
+    if (change.exam) showFeatures(code);
+    if (change.exam || change.plan !== undefined) announce(code, i);
+    if (scroll && change.plan !== undefined) centerCard(i, reduceMotion() ? "auto" : "smooth");
+  }
+  function centerCard(i, behavior) {
+    const rail = $(".plan-rail"), card = $(`[data-m-plan="${i}"]`);
+    if (rail && card) rail.scrollTo({ left: card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2, behavior });
   }
   function initPricing() {
-    const config = $("[data-plan-config]");
-    if (!config) return;
-    updatePricing();
-    const rail = $(".plan-durations"), card = $(`[data-pricing-plan="${planState.plan}"]`);
-    if (rail && card && window.matchMedia("(max-width: 760px)").matches) rail.scrollLeft = card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2;
+    const courses = $("[data-plan-courses]");
+    if (!courses) return;
+    showFeatures("ASP");
+    courses.querySelectorAll("[data-course]").forEach(card => updateCourse(card, 1, false));
+    showFeatures("ASP"); announce("ASP", 1);
+    courses.addEventListener("click", e => {
+      const btn = e.target.closest("[data-course-plan]");
+      if (!btn) return;
+      updateCourse(btn.closest("[data-course]"), Number(btn.dataset.coursePlan), true);
+    });
+    courses.addEventListener("focusin", e => { const card = e.target.closest("[data-course]"); if (card) showFeatures(card.dataset.course); });
+    const box = $("[data-plan-mobile]");
+    if (box) {
+      updateMobile();
+      box.addEventListener("click", e => {
+        const tab = e.target.closest("[data-m-exam]"), card = e.target.closest("[data-m-plan]");
+        if (tab) updateMobile({ exam: tab.dataset.mExam });
+        else if (card) updateMobile({ plan: Number(card.dataset.mPlan) });
+      });
+      // Swiping the rail selects the card that snaps to the centre.
+      const rail = $(".plan-rail");
+      let t;
+      rail.addEventListener("scroll", () => {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          const mid = rail.scrollLeft + rail.clientWidth / 2;
+          let best = 0, dist = Infinity;
+          rail.querySelectorAll("[data-m-plan]").forEach((c, k) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = k; } });
+          if (best !== mobileState.plan) updateMobile({ plan: best }, false);
+        }, 120);
+      }, { passive: true });
+      if (isMobile()) requestAnimationFrame(() => centerCard(mobileState.plan, "auto"));
+    }
     if (!("IntersectionObserver" in window)) return;
     if (!reduceMotion()) {
-      config.classList.add("plan-config--animate");
-      new IntersectionObserver((entries, obs) => entries.forEach(e => { if (e.isIntersecting) { config.classList.add("is-in"); obs.disconnect(); } }), { threshold: 0.15 }).observe(config);
+      courses.classList.add("plan-courses--animate");
+      new IntersectionObserver((entries, obs) => entries.forEach(e => { if (e.isIntersecting) { courses.classList.add("is-in"); obs.disconnect(); } }), { threshold: 0.1 }).observe(courses);
     }
-    const bar = $("[data-plan-buybar]"), cta = $(".plan-summary__actions");
-    if (!bar || !cta) return;
-    let inConfig = false, ctaSeen = false;
-    const sync = () => bar.classList.toggle("is-visible", inConfig && !ctaSeen);
-    new IntersectionObserver(([e]) => { inConfig = e.isIntersecting; sync(); }).observe(config);
-    new IntersectionObserver(([e]) => { ctaSeen = e.isIntersecting; sync(); }).observe(cta);
+    const bar = $("[data-plan-buybar]");
+    if (bar && box) new IntersectionObserver(([e]) => bar.classList.toggle("is-visible", e.isIntersecting), { rootMargin: "0px 0px -80px 0px" }).observe(box);
   }
   initPricing();
 
@@ -305,10 +347,6 @@
 
   /* ---------- clicks ---------- */
   document.addEventListener("click", (e) => {
-    const pricingExam = e.target.closest("[data-pricing-exam]");
-    if (pricingExam) return updatePricing({ exam: pricingExam.dataset.pricingExam });
-    const pricingPlan = e.target.closest("[data-pricing-plan]");
-    if (pricingPlan) return updatePricing({ plan: Number(pricingPlan.dataset.pricingPlan) });
     const cert = e.target.closest("[data-cert]");
     if (cert) return renderCert(cert.dataset.cert);
     const opt = e.target.closest("[data-opt]");
@@ -318,6 +356,6 @@
     const a = act.dataset.action;
     if (a === "start-free") startFree();
     if (a === "next") { if (exam.i < exam.items.length - 1) { exam.i++; drawQuestion(); } else finish(); }
-    if (a === "show-plans") { $("#exam-area").innerHTML = ""; $("#plans").hidden = false; $("#plans").scrollIntoView({ behavior: "smooth" }); $("[data-pricing-exam][aria-pressed='true']")?.focus({ preventScroll: true }); }
+    if (a === "show-plans") { $("#exam-area").innerHTML = ""; $("#plans").hidden = false; $("#plans").scrollIntoView({ behavior: "smooth" }); $(isMobile() ? "[data-m-exam][aria-pressed='true']" : "[data-course-plan][aria-pressed='true']")?.focus({ preventScroll: true }); }
   });
 })();

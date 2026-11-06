@@ -16,7 +16,7 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/resources/` — Reference books feature card plus official BCSP, BGC and BOHS resource links
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch
-- `/practice-exams/` — free sample and premium links
+- `/practice-exams/` — free sample and premium packages: one card per course with its own 90 / 180 / 365-day control on desktop; certification tabs, swipeable plan cards and a sticky buy bar on mobile
 - `/about/` — founder and learning approach
 
 Legacy hash bookmarks continue to redirect to the corresponding static pages.

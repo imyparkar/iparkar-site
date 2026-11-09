@@ -10,7 +10,7 @@ for (const path of pages) {
  assert(html.includes('rel="canonical"')); assert(!html.includes('noindex'));
  assert.equal((html.match(/aria-current="page"/g)||[]).length,path==='index.html'||path==='contact/index.html'?1:2);
  for(const match of html.matchAll(/(?:src|href)="(\/(?!\/)[^"?#]*)(?:[?#]([^" ]*))?"/g)) {
-  const target=match[1].slice(1); const file=target.endsWith('/')?target+'index.html':target||'index.html';
+  const target=match[1].slice(1); let file=target.endsWith('/')?target+'index.html':target||'index.html'; if(!fs.existsSync(file)&&fs.existsSync(file+'.html')) file+='.html';
   assert(fs.existsSync(file),`${path}: missing ${file}`);
   if(match[2] && !match[0].includes('?')) assert(fs.readFileSync(file,'utf8').includes(`id="${match[2]}"`),`${path}: missing fragment ${match[2]}`);
  }
@@ -21,6 +21,7 @@ assert(!fs.readFileSync('certification-pathways/index.html','utf8').includes('fi
 assert(!fs.readFileSync('resources/index.html','utf8').includes('Start practising'));
 assert(!fs.readFileSync('certificate-courses/index.html','utf8').includes('M507'));
 assert(fs.readFileSync('certification-pathways/industrial-hygiene/bohs/index.html','utf8').includes('M507'));
+for(const p of ['terms','privacy','refunds']){const h=fs.readFileSync(p+'.html','utf8'); assert(h.includes(`rel="canonical" href="https://iparkar.com/${p}"`),p+': canonical'); assert(!/href="[^"]*\.html"/.test(h),p+': .html link');}
 assert(!fs.readFileSync('live-quiz/index.html','utf8').includes('<iframe')); // click-to-load only
-assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,22);
-console.log('Passed: 22 pages checked for titles, descriptions, H1s, canonical links, structured data and local links.');
+assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,25);
+console.log('Passed: 22 pages checked for titles, descriptions, H1s, canonical links, structured data and local links; legal pages use clean canonical URLs.');

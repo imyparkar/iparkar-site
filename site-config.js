@@ -538,9 +538,9 @@ window.SITE = {
   /* ---------- Footer ---------- */
   footer: {
     links: [
-      { label: "Terms",          href: "terms.html" },
-      { label: "Privacy",        href: "privacy.html" },
-      { label: "Refund policy",  href: "refunds.html" },
+      { label: "Terms",          href: "terms" },
+      { label: "Privacy",        href: "privacy" },
+      { label: "Refund policy",  href: "refunds" },
     ],
     copyright: "© 2026 iParkar Learning",
   },

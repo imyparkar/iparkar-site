@@ -44,7 +44,7 @@ window.SITE = {
   /* ---------- Tab 1: About us ---------- */
   about: {
     company: {
-  "title": "About iParkar Learning",
+  "title": "About us",
   "lead": "Practical learning for safer work and professional growth.",
   "paragraphs": [
     "iParkar Learning is an independent learning platform for health, safety, environmental and occupational hygiene professionals. We help learners understand qualification pathways, strengthen their knowledge and prepare for professional examinations."

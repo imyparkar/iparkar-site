@@ -807,3 +807,46 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
 .nav-signin-link { padding:8px 4px; font-size:14px; font-weight:500; color:var(--ink-54); text-decoration:none; white-space:nowrap; transition:color 200ms ease; }
 .nav-signin-link:hover { color:var(--action-blue); }
 .nav-signin-link:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; border-radius:4px; }
+
+/* iParkar Learning exam study guides (Resources) and home banner */
+.guide-card { padding:32px; background:var(--white); border:1px solid var(--border-hairline); border-top:6px solid var(--midnight); border-radius:var(--radius-card); }
+.guide-card__intro h2 { margin:14px 0 8px; font-size:clamp(28px,3.2vw,40px); line-height:1.1; letter-spacing:-1.1px; }
+.guide-card__intro p { margin:0 0 24px; font-family:var(--font-serif); font-size:18px; color:var(--graphite); max-width:620px; }
+.guide-tabs__input { position:absolute; opacity:0; width:1px; height:1px; pointer-events:none; }
+.guide-tabs__list { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.guide-tab { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; border-radius:var(--radius-pill); border:1px solid var(--border-hairline); background:var(--white); font-size:14px; font-weight:700; letter-spacing:.2px; cursor:pointer; transition:background 150ms ease, color 150ms ease; }
+.guide-tab small { font-size:11px; font-weight:500; color:var(--graphite); }
+.guide-tab:hover { background:var(--sky-tint); }
+.guide-panel { display:none; }
+#guide-csp:checked ~ .guide-tabs__list [for="guide-csp"], #guide-asp:checked ~ .guide-tabs__list [for="guide-asp"], #guide-cih:checked ~ .guide-tabs__list [for="guide-cih"], #guide-cfps:checked ~ .guide-tabs__list [for="guide-cfps"], #guide-qep:checked ~ .guide-tabs__list [for="guide-qep"] { background:var(--midnight); border-color:var(--midnight); color:var(--white); }
+#guide-csp:checked ~ .guide-tabs__list [for="guide-csp"] small, #guide-asp:checked ~ .guide-tabs__list [for="guide-asp"] small, #guide-cih:checked ~ .guide-tabs__list [for="guide-cih"] small, #guide-cfps:checked ~ .guide-tabs__list [for="guide-cfps"] small, #guide-qep:checked ~ .guide-tabs__list [for="guide-qep"] small { color:#dedfe8; }
+#guide-csp:focus-visible ~ .guide-tabs__list [for="guide-csp"], #guide-asp:focus-visible ~ .guide-tabs__list [for="guide-asp"], #guide-cih:focus-visible ~ .guide-tabs__list [for="guide-cih"], #guide-cfps:focus-visible ~ .guide-tabs__list [for="guide-cfps"], #guide-qep:focus-visible ~ .guide-tabs__list [for="guide-qep"] { outline:2px solid var(--focus-ring); outline-offset:2px; }
+#guide-csp:checked ~ .guide-panel--csp, #guide-asp:checked ~ .guide-panel--asp, #guide-cih:checked ~ .guide-panel--cih, #guide-cfps:checked ~ .guide-panel--cfps, #guide-qep:checked ~ .guide-panel--qep { display:grid; }
+.guide-panel { grid-template-columns:1.5fr 1fr; gap:32px; align-items:center; padding:28px; border-radius:var(--radius-card); background:var(--sky-tint); }
+.guide-panel__code { display:inline-block; justify-self:start; width:max-content; padding:3px 12px; border-radius:var(--radius-pill); background:var(--sky-wash); color:var(--white); font-size:13px; font-weight:700; }
+.guide-panel h3 { margin:12px 0 2px; font-size:28px; letter-spacing:-.6px; line-height:1.15; }
+.guide-panel__edition { margin:0 0 14px; font-size:14px; font-weight:600; color:var(--graphite); }
+.guide-panel p { line-height:1.6; }
+.guide-panel__download { margin-top:8px; gap:8px; }
+.guide-panel__file { margin:10px 0 0; font-size:13px; color:var(--graphite); }
+.guide-panel__stats { list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.guide-panel__stats li { display:flex; align-items:baseline; gap:12px; padding:14px 18px; background:var(--white); border-radius:var(--radius-card); }
+.guide-panel__stats strong { font-size:32px; letter-spacing:-1px; line-height:1; font-feature-settings:"lnum","tnum"; min-width:64px; color:var(--midnight); }
+.guide-panel__stats span { font-size:14px; font-weight:500; }
+.guide-panel--soon { display:none; grid-template-columns:1fr; gap:0; background:#f5f4f2; }
+.guide-panel--soon .guide-panel__code { background:var(--midnight); }
+.guide-panel--soon p { margin:4px 0 0; color:var(--graphite); }
+.guide-card__note { margin:16px 0 0; font-size:12px; line-height:1.5; color:var(--graphite); }
+.home-guide { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:28px 32px; border-radius:var(--radius-card); background:var(--sky-tint); border-left:6px solid var(--sky-wash); }
+.home-guide h2 { margin:10px 0 6px; font-size:28px; letter-spacing:-.6px; line-height:1.15; }
+.home-guide p { margin:0; max-width:620px; color:var(--graphite); line-height:1.55; }
+.home-guide .ip-btn-row { flex:none; }
+.home-guide .ip-btn--ghost { background:var(--white); }
+.home-guide .ip-btn--primary, .guide-panel__download, .book-guide .ip-btn--primary { display:inline-flex; align-items:center; }
+.book-guide { display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center; margin:16px 28px 0; padding:16px 20px; border-radius:var(--radius-card); background:var(--sky-tint); }
+@media(max-width:760px) {
+ .guide-card { padding:20px; }
+ .guide-panel { grid-template-columns:1fr; padding:20px; gap:20px; }
+ .home-guide { flex-direction:column; align-items:flex-start; padding:24px; }
+ .book-guide { grid-template-columns:1fr; gap:12px; margin:16px 20px 0; }
+}

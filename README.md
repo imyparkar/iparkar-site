@@ -13,7 +13,7 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/certification-pathways/industrial-hygiene/` — CIH and Occupational hygiene with BOHS cards, each opening a detail page
 - `/certification-pathways/environmental/` — QEP and EPI requirements
 - `/certificate-courses/` — IOSH and NEBOSH courses; BOHS M-series now sits under Industrial Hygiene
-- `/resources/` — iParkar Learning Exam Study Guides card (CSS-only certification tabs; CSP guide downloadable, others marked Soon), Reference books feature card, plus official BCSP, BGC and BOHS resource links
+- `/resources/` — iParkar Learning Exam Study Guides card (CSS-only certification tabs; CSP guide downloadable after sign-in on app.iparkar.com, others marked Soon), Reference books feature card, plus official BCSP, BGC and BOHS resource links
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch
 - `/practice-exams/` — free sample and premium packages: one card per course with its own 90 / 180 / 365-day control on desktop; certification tabs, swipeable plan cards and a sticky buy bar on mobile
@@ -56,6 +56,6 @@ The header no longer carries a site-wide Sign in button. Returning students sign
 
 BCSP ASP/CSP blueprint reference lists, BGC CIH Selected References (2025), the BGC QEP candidate handbook reading list, and the NFPA CFPS programme (Fire Protection Handbook, 21st edition). Purchase links go to the publisher (CRC Press, ASSP, NSC, AIHA, ACGIH, Wiley, Pearson, Elsevier, McGraw Hill, Waveland, NFPA).
 
-## Study guide downloads
+## Study guides (sign-in only)
 
-PDFs live in `/downloads/`. `_headers` sends `Content-Disposition: attachment` so clicking Download PDF saves the file. Cloudflare Workers static assets cap each file at 25 MiB (26,214,400 bytes): compress any new guide below that before committing. The CSP guide (1,338 pages) was reduced from 53.7 MB to 26.0 MB by downscaling its blurred shadow masks and palette-encoding its diagrams, with no visible change. The home page banner, the Resources card and the CSP reference-books section all link to it.
+The Resources "iParkar Learning Exam Study Guides" card, the CSP reference-books section and the home banner (which only points to Resources) send visitors to `https://app.iparkar.com/study-guides?download=csp`. The LMS (repo `iparkar-lms`) requires an iParkar account, serves the newest PDF from the private Supabase Storage bucket `study-guides` (folder `csp/`) via a 60-second signed URL, and logs each download in `study_guide_downloads`. No study-guide PDF is hosted on this site. To publish a revised guide, upload it to that bucket folder in the Supabase dashboard.

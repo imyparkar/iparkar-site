@@ -116,13 +116,15 @@
   }
 
   /* ---------- Tab 4: Practice exam ---------- */
-  // Shared purchase links: 90-day packages go straight to checkout, longer ones open an email request.
+  // Purchase links: available periods open the course in the LMS, the rest open an email request.
+  // A plan may carry its own `durations` (prices per period); otherwise the shared list applies.
+  function durs(code) { const exam = S.practice.plans.find(pl => pl.code === code); return (exam && exam.durations) || S.practice.durations; }
   function planHref(code, i) {
-    const p = S.practice, plan = p.durations[i], exam = p.plans.find(pl => pl.code === code);
-    if (plan.available) return exam.button.href;
+    const p = S.practice, exam = p.plans.find(pl => pl.code === code), plan = durs(code)[i];
+    if (plan.available) return exam.durations ? `${exam.button.href}?plan=${plan.days}` : exam.button.href;
     return `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at US$" + plan.price + ". Please share the purchase details.")}`;
   }
-  function planLabel(code, i) { const plan = S.practice.durations[i]; return `${plan.available ? "Get" : "Request"} ${code} · ${durationLabel(plan)}`; }
+  function planLabel(code, i) { const plan = durs(code)[i]; return `${plan.available ? "Get" : "Request"} ${code} · ${durationLabel(plan)}`; }
   function durationLabel(plan) { return plan.days === 365 ? "1 year" : `${plan.days} days`; }
 
   function renderPractice() {
@@ -131,8 +133,9 @@
     const codes = exams.map(pl => pl.code);
     const examNames = exams.map(pl => pl.examName);
     const perDay = plan => (plan.price / plan.days).toFixed(2);
+    const direct = exams.filter(pl => pl.durations && pl.durations.every(d => d.available)).map(pl => pl.code);
     const links = [];
-    p.durations.forEach((plan, i) => codes.forEach(code => links.push({ code, i, label: planLabel(code, i), href: planHref(code, i) })));
+    codes.forEach(code => durs(code).forEach((plan, i) => links.push({ code, i, label: planLabel(code, i), href: planHref(code, i), price: plan.price })));
     return `
       <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">${esc(codes.join(" · "))} PRACTICE EXAMS</p>${header(p.title, p.lead)}
       <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
@@ -141,10 +144,10 @@
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" class="plan-sr">Choose your package</h2>
           <p class="plan-sr" aria-live="polite" id="pricing-selection">Selected: ASP, ${esc(p.durations[1].name)}, ${p.durations[1].days} days, US$${p.durations[1].price}</p>
-          <div class="plan-courses" data-plan-courses>${exams.map((pl, j) => { const d = p.durations[1]; return `<article class="plan-course plan-anim plan-course--${pl.code === "GES/EPI" ? "epi" : pl.code.toLowerCase()}" data-course="${pl.code}" style="--d:${j * 70}ms">
+          <div class="plan-courses" data-plan-courses>${exams.map((pl, j) => { const d = durs(pl.code)[1]; return `<article class="plan-course plan-anim plan-course--${pl.code === "GES/EPI" ? "epi" : pl.code.toLowerCase()}" data-course="${pl.code}" style="--d:${j * 70}ms">
             <div class="plan-course__head"><div class="plan-course__top"><h3 class="plan-course__code">${esc(pl.code)}</h3><span class="plan-course__pill">${esc(pl.tagline || "")}</span></div><p class="plan-course__name">${esc(pl.examName)}</p></div>
             <div class="plan-course__body">
-              <div class="plan-seg" role="group" aria-label="Access period for ${esc(pl.code)}">${p.durations.map((dd, i) => `<button type="button" class="plan-seg__btn" data-course-plan="${i}" aria-pressed="${i === 1}">${durationLabel(dd)}</button>`).join("")}</div>
+              <div class="plan-seg" role="group" aria-label="Access period for ${esc(pl.code)}">${durs(pl.code).map((dd, i) => `<button type="button" class="plan-seg__btn" data-course-plan="${i}" aria-pressed="${i === 1}">${durationLabel(dd)}</button>`).join("")}</div>
               <div class="plan-course__row"><p class="plan-course__price" data-course-swap><small>US$</small><span data-course-price>${d.price}</span></p><p class="plan-course__meta"><span data-course-name>${esc(d.name)}</span><br><span data-course-per>US$${perDay(d)} a day</span></p></div>
               <p class="plan-course__badges"><span class="plan-course__badge" data-course-badge>${esc(d.badge)}</span></p>
               <a class="ip-btn plan-course__cta" data-course-cta href="${esc(planHref(pl.code, 1))}">${esc(planLabel(pl.code, 1))}</a>
@@ -152,11 +155,11 @@
           </article>`; }).join("")}</div>
           <div class="plan-mobile" data-plan-mobile>
             <div class="plan-tabs" role="group" aria-label="Certification">${codes.map((code, i) => `<button type="button" class="plan-tab" data-m-exam="${code}" aria-pressed="${i === 0}">${esc(code)}</button>`).join("")}</div>
-            <div class="plan-rail" role="group" aria-label="Access period">${p.durations.map((dd, i) => `<button type="button" class="plan-mcard${i === 2 ? " plan-mcard--annual" : ""}" data-m-plan="${i}" aria-pressed="${i === 1}"><span class="plan-mcard__top"><span class="plan-mcard__name">${esc(dd.name)}</span>${i ? `<span class="plan-mcard__badge">${esc(dd.badge)}</span>` : ""}</span><span class="plan-mcard__days">${dd.days} days of access</span><span class="plan-mcard__price"><small>US$</small>${dd.price}</span><span class="plan-mcard__per">One-time · US$${perDay(dd)} a day</span></button>`).join("")}</div>
+            <div class="plan-rail" role="group" aria-label="Access period">${p.durations.map((dd, i) => `<button type="button" class="plan-mcard${i === 2 ? " plan-mcard--annual" : ""}" data-m-plan="${i}" aria-pressed="${i === 1}"><span class="plan-mcard__top"><span class="plan-mcard__name">${esc(dd.name)}</span>${i ? `<span class="plan-mcard__badge">${esc(dd.badge)}</span>` : ""}</span><span class="plan-mcard__days">${dd.days} days of access</span><span class="plan-mcard__price"><small>US$</small><span data-m-price>${dd.price}</span></span><span class="plan-mcard__per">One-time · US$<span data-m-per>${perDay(dd)}</span> a day</span></button>`).join("")}</div>
             <div class="plan-dots" aria-hidden="true">${p.durations.map((dd, i) => `<span class="plan-dot${i === 1 ? " is-on" : ""}"></span>`).join("")}</div>
             <p class="plan-mobile__note"><strong>Every package includes</strong> the full <span data-m-exam-name>ASP</span> bank, timed mocks, answer explanations and score analytics.</p>
           </div>
-          <noscript><p class="fineprint">JavaScript is off. Choose a package directly:</p><ul class="plan-noscript">${links.map(l=>`<li><a href="${esc(l.href)}">${esc(l.label)} · US$${p.durations[l.i].price}</a></li>`).join("")}</ul></noscript>
+          <noscript><p class="fineprint">JavaScript is off. Choose a package directly:</p><ul class="plan-noscript">${links.map(l=>`<li><a href="${esc(l.href)}">${esc(l.label)} · US$${l.price}</a></li>`).join("")}</ul></noscript>
           <div class="plan-buybar" data-plan-buybar role="region" aria-label="Selected package">
             <p class="plan-buybar__text"><span data-plan-bar-title>ASP · ${esc(p.durations[1].name)}</span><strong>US$<span data-plan-bar-price>${p.durations[1].price}</span> <span data-plan-bar-days>· ${p.durations[1].days} days</span></strong></p>
             <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(planHref("ASP", 1))}">${p.durations[1].available ? "Get access" : "Request"}</a>
@@ -166,7 +169,7 @@
         <section class="practice-sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions with answer explanations. Free, with no account needed.</p></div><button class="ip-btn ip-btn--ghost" data-action="start-free">Start free sample</button></section>
         <section class="practice-features" aria-labelledby="included-heading"><div><p class="eyebrow">INCLUDED IN YOUR PACKAGE</p><h2 id="included-heading">Practice with purpose.</h2><p>The same practice tools, with the time you need to use them.</p></div>
         <div class="practice-features__content">${exams.map((pl,i)=>`<article data-feature-exam="${codes[i]}"><h3>${codes[i]} practice features</h3><ul>${pl.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></article>`).join('')}</div></section>
-        <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification and select Request access. Your email app will open a request to support@iparkar.com with the exam, duration and price included. We will help you arrange access; sending a request does not make a payment.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
+        <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>${direct.length ? `${esc(direct.join(", "))} 180-day and 1-year packages open directly, like the 90-day package. For the other exams, choose` : "Choose"} your certification and select Request access. Your email app will open a request to support@iparkar.com with the exam, duration and price included. We will help you arrange access; sending a request does not make a payment.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
       </div>
       <p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>
       <p class="fineprint">${esc(p.note)}</p>`;
@@ -191,11 +194,11 @@
     document.querySelectorAll("[data-feature-exam]").forEach(panel => { panel.hidden = panel.dataset.featureExam !== code; });
   }
   function announce(code, i) {
-    const plan = S.practice.durations[i], el = $("#pricing-selection");
+    const plan = durs(code)[i], el = $("#pricing-selection");
     if (el) el.textContent = `Selected: ${code}, ${plan.name}, ${plan.days} days, US$${plan.price}`;
   }
   function updateCourse(card, i, animate) {
-    const code = card.dataset.course, plan = S.practice.durations[i];
+    const code = card.dataset.course, plan = durs(code)[i];
     card.querySelectorAll("[data-course-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.coursePlan) === i)));
     countPrice(card.querySelector("[data-course-price]"), plan.price);
     card.querySelector("[data-course-name]").textContent = plan.name;
@@ -215,7 +218,14 @@
     const box = $("[data-plan-mobile]");
     if (!box) return;
     Object.assign(mobileState, change);
-    const { exam: code, plan: i } = mobileState, plan = S.practice.durations[i];
+    const { exam: code, plan: i } = mobileState, plan = durs(code)[i];
+    // Prices on the swipe cards follow the selected exam.
+    box.querySelectorAll("[data-m-plan]").forEach((c, k) => {
+      const d = durs(code)[k]; if (!d) return;
+      const pr = c.querySelector("[data-m-price]"), per = c.querySelector("[data-m-per]");
+      if (pr) pr.textContent = d.price;
+      if (per) per.textContent = (d.price / d.days).toFixed(2);
+    });
     box.querySelectorAll("[data-m-exam]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mExam === code)));
     box.querySelectorAll("[data-m-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.mPlan) === i)));
     box.querySelectorAll(".plan-dot").forEach((d, k) => d.classList.toggle("is-on", k === i));

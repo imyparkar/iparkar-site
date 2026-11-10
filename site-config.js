@@ -106,7 +106,7 @@ window.SITE = {
     // Feature cards under the bio: what iParkar Learning offers.
     // color: marigold | coral | sky | dark | white. `href` makes the whole card a link.
     highlights: [
-      { title: "Certification pathways", body: "ASP, CSP, CIH, CFPS, QEP and EPI: what each asks of you, how to apply and how to prepare.", color: "marigold", href: "#certifications", linkLabel: "Explore pathways" },
+      { title: "Certification pathways", body: "ASP, CSP, CIH, CFPS, QEP, EPI and CIT: what each asks of you, how to apply and how to prepare.", color: "marigold", href: "#certifications", linkLabel: "Explore pathways" },
       { title: "Certificate courses",    body: "IOSH and NEBOSH qualifications explained: what they involve and where they lead.", color: "sky", href: "#courses", linkLabel: "View courses" },
       { title: "Practice exams & live quizzes", body: "Start with 10 free questions, then take timed, blueprint-weighted mock exams or join a live quiz.", color: "dark", href: "#practice", linkLabel: "Start practising" },
     ],
@@ -119,7 +119,7 @@ window.SITE = {
   certifications: {
     title: "Certification pathways",
     lead: "What each credential asks of you, how to apply, and how to prepare.",
-    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIT®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
     items: [
       {
         id: "asp",
@@ -316,6 +316,43 @@ window.SITE = {
         links: [
           { label: "EPI Candidate Handbook", href: "https://gobgc.org/updated-practitioners-epi-handbook/" },
           { label: "Official QEP / EPI page", href: "https://gobgc.org/qep/" },
+        ],
+      },
+      {
+        id: "cit",
+        short: "CIT",
+        name: "Certified Instructional Trainer®",
+        body: "BCSP",
+        officialUrl: "https://www.bcsp.org/certified-instructional-trainer-cit",
+        lastChecked: "10 Nov 2026",
+        summary: "BCSP’s credential for safety trainers and others who design, develop and deliver safety, health and environmental training.",
+        note: "You don’t need to be a full-time trainer: CIT holders include managers, directors, technicians and supervisors whose duties include training.",
+        requirements: [
+          "No minimum education requirement is listed.",
+          "At least 135 hours of teaching, training or training development in any safety, health and environmental (SH&E) specialty.",
+          "Pass the CIT examination.",
+          "Keep the credential active: annual renewal fee plus recertification points every five years.",
+          "You must disclose any criminal convictions, and any professional licence or credential that was suspended, revoked or placed on probation.",
+        ],
+        application: [
+          "Create an account in BCSP’s “My Profile” portal and start a new application from the Applications menu.",
+          "Submit the application and pay the application fee; BCSP reviews it once both are complete.",
+          "Once approved, you have one year to take and pass the exam.",
+          "Buy the exam (US$300 for a single attempt at the time of checking — see BCSP’s Credentials At-A-Glance for current fees), either bundled with the application or after approval.",
+          "Schedule with Pearson VUE and sit the computer-based exam at a test centre. Official results are available as soon as you submit.",
+          "If you need a retake, the next attempt must be at least six weeks after the last one.",
+        ],
+        prep: [
+          "Download the CIT exam blueprint and plan your study around its seven domains, from communication and facilitation to course evaluation.",
+          "Work through the CIT reference list — training design, adult motivation and instructional systems design.",
+          "Practise scenario questions on needs assessment, design, delivery, trainee assessment and evaluation decisions.",
+          "Use the premium CIT bank for timed, blueprint-weighted mock exams and domain practice.",
+        ],
+        links: [
+          { label: "CIT blueprint (PDF)",  href: "https://www.bcsp.org/hubfs/Website/Blueprints-References/CIT-Blueprint.pdf" },
+          { label: "CIT references (PDF)", href: "https://www.bcsp.org/hubfs/Website/Blueprints-References/CIT-References.pdf" },
+          { label: "Fees: At-A-Glance (PDF)", href: "https://www.bcsp.org/hubfs/Website/Downloads-PDFs-and-PPTs/BCSP-At-A-Glance.pdf" },
+          { label: "Official CIT page", href: "https://www.bcsp.org/certified-instructional-trainer-cit" },
         ],
       },
     ],
@@ -531,6 +568,30 @@ window.SITE = {
         ],
         button: { label: "Get QEP access", href: "https://app.iparkar.com/courses/QEP", sameTab: true },
         color: "forest",
+      },
+      {
+        name: "CIT premium",
+        code: "CIT",
+        tagline: "1,000 questions",
+        examName: "Certified Instructional Trainer",
+        price: "US$49",
+        period: "90 days",
+        status: "Available",
+        // CIT has its own price list; every period opens the course in the LMS with ?plan=<days>.
+        durations: [
+          { name: "Exam Ready", days: 90, price: 49, description: "For a focused preparation window.", badge: "Focused prep", available: true },
+          { name: "Extended Prep", days: 180, price: 79, description: "More time to balance work and study.", badge: "Recommended", available: true },
+          { name: "Full-Year Prep", days: 365, price: 99, description: "Prepare at your own pace for a full year.", badge: "Best value", available: true },
+        ],
+        features: [
+          "1,000-question CIT bank, weighted to the seven CIT2 blueprint domains",
+          "Every question mapped to one of the 74 blueprint knowledge and skill statements",
+          "100-question / 150-minute mock exams and 20-question domain exams",
+          "Explanations for the correct answer and for each incorrect option, with references",
+          "Score history with domain- and statement-level analytics",
+        ],
+        button: { label: "Get CIT access", href: "https://app.iparkar.com/courses/CIT", sameTab: true },
+        color: "dark",
       },
     ],
     note: "Practice questions are original and written for study only. They are not actual exam questions, and practice scores do not guarantee a pass.",

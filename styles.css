@@ -502,7 +502,8 @@ summary { cursor:pointer; font-weight:600; }
 /* Desktop: one card per course, each with its own access-period control. */
 .plan-courses { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
 .plan-course { grid-column: span 2; display: flex; flex-direction: column; overflow: hidden; background: var(--white); border: 1px solid var(--border-hairline); border-radius: var(--radius-card); transition: border-color 200ms ease, transform 200ms ease; }
-.plan-course:nth-child(4) { grid-column: 2 / span 2; }
+/* Centre the second row only when it holds two cards (five courses). */
+.plan-course:nth-child(4):nth-last-child(2) { grid-column: 2 / span 2; }
 .plan-course:hover { border-color: rgba(0,0,0,.24); transform: translateY(-3px); }
 .plan-course__head { display: flex; flex-direction: column; gap: 4px; padding: 20px 24px; color: var(--ink); }
 .plan-course--asp .plan-course__head { background: var(--marigold); }
@@ -510,6 +511,7 @@ summary { cursor:pointer; font-weight:600; }
 .plan-course--cih .plan-course__head { background: var(--peach); }
 .plan-course--epi .plan-course__head { background: var(--moss-green); }
 .plan-course--qep .plan-course__head { background: var(--forest-green); color: var(--white); }
+.plan-course--cit .plan-course__head { background: var(--midnight); color: var(--white); }
 .plan-course__top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .plan-course__code { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -.6px; line-height: 1.2; color: inherit; }
 .plan-course__pill { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; white-space: nowrap; background: rgba(255,255,255,.7); color: var(--ink); }
@@ -533,7 +535,7 @@ summary { cursor:pointer; font-weight:600; }
 .plan-course__cta:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 1100px) {
   .plan-courses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .plan-course, .plan-course:nth-child(4) { grid-column: auto; }
+  .plan-course, .plan-course:nth-child(4):nth-last-child(2) { grid-column: auto; }
   .plan-course:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 
@@ -551,7 +553,7 @@ summary { cursor:pointer; font-weight:600; }
   .practice-pricing { margin-bottom: 40px; }
   .plan-courses { display: none; }
   .plan-mobile { display: block; margin: 0 -20px; }
-  .plan-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 0 20px; padding: 4px; background: var(--white); border: 1px solid var(--border-hairline); border-radius: 10px; }
+  .plan-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 0 20px; padding: 4px; background: var(--white); border: 1px solid var(--border-hairline); border-radius: 10px; }
   .plan-tab { height: 44px; padding: 0 2px; font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--midnight); background: transparent; border: 0; border-radius: var(--radius-button); cursor: pointer; white-space: nowrap; transition: background-color 200ms ease, color 200ms ease; }
   .plan-tab[aria-pressed="true"] { background: var(--midnight); color: var(--white); }
   .plan-rail { display: flex; gap: 12px; margin-top: 20px; padding: 4px 20px 8px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -628,6 +630,7 @@ summary { cursor:pointer; font-weight:600; }
 .path-row__code--sky { background:var(--sky-wash); }
 .path-row__code--forest { background:#2e6f40; color:var(--white); }
 .path-row__code--coral { background:var(--coral); }
+.path-row__code--white { background:var(--white); color:var(--midnight); }
 .path-row__name { font-size:15px; }
 .path-card__cta { margin-top:auto; align-self:flex-start; }
 .path-card .ip-btn--primary { background:var(--marigold); color:var(--ink); }
@@ -744,7 +747,7 @@ summary { cursor:pointer; font-weight:600; }
 .book-tabs__label { padding:0 8px; font-size:14px; font-weight:500; color:var(--graphite); }
 .book-tab { padding:8px 18px; border-radius:var(--radius-pill); font-weight:700; font-size:15px; text-decoration:none; color:var(--ink); border:2px solid transparent; }
 .book-tab--marigold { background:var(--marigold); } .book-tab--sky { background:var(--sky-wash); } .book-tab--dark { background:var(--midnight); color:var(--white); }
-.book-tab--forest { background:#2e6f40; color:var(--white); } .book-tab--coral { background:var(--coral); } .book-tab--all { background:var(--paper); color:var(--graphite); font-weight:500; }
+.book-tab--forest { background:#2e6f40; color:var(--white); } .book-tab--coral { background:var(--coral); } .book-tab--peach { background:var(--peach); } .book-tab--all { background:var(--paper); color:var(--graphite); font-weight:500; }
 .book-tab:hover { border-color:var(--ink); }
 /* Selecting a certification shows only its list (CSS :target, no script needed). */
 .book-sections:has(.book-section:target) .book-section:not(:target) { display:none; }
@@ -850,3 +853,4 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
  .home-guide { flex-direction:column; align-items:flex-start; padding:24px; }
  .book-guide { grid-template-columns:1fr; gap:12px; margin:16px 20px 0; }
 }
+.ip-card--peach { background:var(--peach); color:var(--ink); border-color:transparent; }

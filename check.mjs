@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-const pages=['contact/index.html','resources/reference-books/index.html','certificate-courses/nebosh/index.html','certificate-courses/iosh/index.html','certification-pathways/environmental/epi/index.html','certification-pathways/environmental/qep/index.html','certification-pathways/safety/asp/index.html','certification-pathways/safety/csp/index.html','certification-pathways/safety/cfps/index.html','certification-pathways/industrial-hygiene/cih/index.html','certification-pathways/industrial-hygiene/bohs/index.html','certification-pathways/select/index.html','certification-pathways/safety/index.html','certification-pathways/industrial-hygiene/index.html','certification-pathways/environmental/index.html','index.html','about/index.html','certification-pathways/index.html','certificate-courses/index.html','resources/index.html','live-quiz/index.html','practice-exams/index.html'];
+const pages=['contact/index.html','resources/reference-books/index.html','certificate-courses/nebosh/index.html','certificate-courses/iosh/index.html','certification-pathways/environmental/epi/index.html','certification-pathways/environmental/qep/index.html','certification-pathways/safety/asp/index.html','certification-pathways/safety/csp/index.html','certification-pathways/safety/cfps/index.html','certification-pathways/industrial-hygiene/cih/index.html','certification-pathways/industrial-hygiene/bohs/index.html','certification-pathways/select/index.html','certification-pathways/safety/index.html','certification-pathways/industrial-hygiene/index.html','certification-pathways/environmental/index.html','certification-pathways/training/index.html','certification-pathways/training/cit/index.html','index.html','about/index.html','certification-pathways/index.html','certificate-courses/index.html','resources/index.html','live-quiz/index.html','practice-exams/index.html'];
 const titles=new Set(), descriptions=new Set();
 for (const path of pages) {
  const html=fs.readFileSync(path,'utf8');
@@ -23,5 +23,5 @@ assert(!fs.readFileSync('certificate-courses/index.html','utf8').includes('M507'
 assert(fs.readFileSync('certification-pathways/industrial-hygiene/bohs/index.html','utf8').includes('M507'));
 for(const p of ['terms','privacy','refunds']){const h=fs.readFileSync(p+'.html','utf8'); assert(h.includes(`rel="canonical" href="https://iparkar.com/${p}"`),p+': canonical'); assert(!/href="[^"]*\.html"/.test(h),p+': .html link');}
 assert(!fs.readFileSync('live-quiz/index.html','utf8').includes('<iframe')); // click-to-load only
-assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,25);
-console.log('Passed: 22 pages checked for titles, descriptions, H1s, canonical links, structured data and local links; legal pages use clean canonical URLs.');
+assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,27);
+console.log('Passed: 24 pages checked for titles, descriptions, H1s, canonical links, structured data and local links; legal pages use clean canonical URLs.');

@@ -508,10 +508,10 @@ summary { cursor:pointer; font-weight:600; }
 .plan-course__head { display: flex; flex-direction: column; gap: 4px; padding: 20px 24px; color: var(--ink); }
 .plan-course--asp .plan-course__head { background: var(--marigold); }
 .plan-course--csp .plan-course__head { background: var(--sky-wash); }
-.plan-course--cih .plan-course__head { background: var(--peach); }
+.plan-course--cih .plan-course__head { background: var(--midnight); color: var(--white); }
 .plan-course--epi .plan-course__head { background: var(--moss-green); }
 .plan-course--qep .plan-course__head { background: var(--forest-green); color: var(--white); }
-.plan-course--cit .plan-course__head { background: var(--midnight); color: var(--white); }
+.plan-course--cit .plan-course__head { background: var(--peach); }
 .plan-course__top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .plan-course__code { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -.6px; line-height: 1.2; color: inherit; }
 .plan-course__pill { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; white-space: nowrap; background: rgba(255,255,255,.7); color: var(--ink); }

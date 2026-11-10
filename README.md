@@ -10,10 +10,10 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/certification-pathways/` — two decision cards (professional certification vs taught course) above the fold, with the detailed comparison table below
 - `/certification-pathways/select/` — Safety, Industrial Hygiene, Environmental and Training cards
 - `/certification-pathways/safety/` — ASP, CSP and CFPS summary cards, each opening a detailed requirements page
-- `/certification-pathways/industrial-hygiene/` — CIH and Occupational hygiene with BOHS cards, each opening a detail page
+- `/certification-pathways/industrial-hygiene/` — CIH and BOHS ICertOH (International Certificate in Occupational Hygiene) cards; ICertOH opens `/certification-pathways/industrial-hygiene/certoh/` (checked 10 Nov 2026)
 - `/certification-pathways/environmental/` — QEP and EPI requirements
-- `/certification-pathways/training/` — CIT summary card, opening `/certification-pathways/training/cit/` (BCSP Certified Instructional Trainer requirements, checked 10 Nov 2026)
-- `/certificate-courses/` — IOSH and NEBOSH courses; BOHS M-series now sits under Industrial Hygiene
+- `/certification-pathways/training/` — CIT summary card (peach; the Training card on Select is peach too), opening `/certification-pathways/training/cit/` (BCSP Certified Instructional Trainer requirements, checked 10 Nov 2026)
+- `/certificate-courses/` — NEBOSH, IOSH and BOHS course cards; BOHS M200/M501–M507 list lives at `/certificate-courses/bohs/` (old Industrial Hygiene URL 301-redirects)
 - `/resources/` — iParkar Learning Exam Study Guides card (CSS-only certification tabs; CSP guide downloadable after sign-in on app.iparkar.com, others marked Soon), Reference books feature card, plus official BCSP, BGC and BOHS resource links
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch

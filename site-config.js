@@ -119,7 +119,7 @@ window.SITE = {
   certifications: {
     title: "Certification pathways",
     lead: "What each credential asks of you, how to apply, and how to prepare.",
-    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC or NFPA. ASP®, CSP®, CIT®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC, BOHS or NFPA. ASP®, CSP®, CIT®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
     items: [
       {
         id: "asp",

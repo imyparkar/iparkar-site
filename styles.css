@@ -727,7 +727,7 @@ summary { cursor:pointer; font-weight:600; }
 .res-chip strong { font-size:24px; letter-spacing:-.5px; }
 .res-chip span { font-size:13px; font-weight:500; }
 .res-chip--marigold { background:var(--marigold); } .res-chip--sky { background:var(--sky-wash); } .res-chip--coral { background:var(--coral); }
-.res-chip--forest { background:#2e6f40; color:var(--white); } .res-chip--dark { background:var(--white); color:var(--midnight); }
+.res-chip--forest { background:#2e6f40; color:var(--white); } .res-chip--dark { background:var(--white); color:var(--midnight); } .res-chip--peach { background:var(--peach); color:var(--ink); }
 .res-official__lead { color:var(--graphite); margin:-12px 0 20px; }
 .res-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
 .res-card { display:flex; flex-direction:column; padding:24px; background:var(--white); border:1px solid var(--border-hairline); border-top:6px solid; border-radius:var(--radius-card); }

@@ -8,15 +8,16 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 
 - `/` — overview
 - `/certification-pathways/` — two decision cards (professional certification vs taught course) above the fold, with the detailed comparison table below
-- `/certification-pathways/select/` — Safety, Industrial Hygiene and Environmental cards
+- `/certification-pathways/select/` — Safety, Industrial Hygiene, Environmental and Training cards
 - `/certification-pathways/safety/` — ASP, CSP and CFPS summary cards, each opening a detailed requirements page
 - `/certification-pathways/industrial-hygiene/` — CIH and Occupational hygiene with BOHS cards, each opening a detail page
 - `/certification-pathways/environmental/` — QEP and EPI requirements
+- `/certification-pathways/training/` — CIT summary card, opening `/certification-pathways/training/cit/` (BCSP Certified Instructional Trainer requirements, checked 10 Nov 2026)
 - `/certificate-courses/` — IOSH and NEBOSH courses; BOHS M-series now sits under Industrial Hygiene
 - `/resources/` — iParkar Learning Exam Study Guides card (CSS-only certification tabs; CSP guide downloadable after sign-in on app.iparkar.com, others marked Soon), Reference books feature card, plus official BCSP, BGC and BOHS resource links
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch
-- `/practice-exams/` — free sample and premium packages: one card per course with its own 90 / 180 / 365-day control on desktop; certification tabs, swipeable plan cards and a sticky buy bar on mobile
+- `/practice-exams/` — free sample and premium packages: one card per course with its own 90 / 180 / 365-day control on desktop; certification tabs, swipeable plan cards and a sticky buy bar on mobile. A plan may carry its own `durations` list in `site-config.js` (CIT: US$49 / 79 / 99, all available); its buttons open `app.iparkar.com/courses/<CODE>?plan=<days>`, and plans without one use the shared `practice.durations`
 - `/about/` — founder and learning approach
 
 Legacy hash bookmarks continue to redirect to the corresponding static pages.

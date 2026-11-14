@@ -13,7 +13,11 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/certification-pathways/industrial-hygiene/` — CIH and BOHS ICertOH (International Certificate in Occupational Hygiene) cards; ICertOH opens `/certification-pathways/industrial-hygiene/certoh/` (checked 10 Nov 2026)
 - `/certification-pathways/environmental/` — QEP and EPI requirements
 - `/certification-pathways/training/` — CIT summary card (peach; the Training card on Select is peach too), opening `/certification-pathways/training/cit/` (BCSP Certified Instructional Trainer requirements, checked 10 Nov 2026)
-- `/certificate-courses/` — NEBOSH, IOSH and BOHS course cards; BOHS M200/M501–M507 list lives at `/certificate-courses/bohs/` (old Industrial Hygiene URL 301-redirects)
+- `/certificate-courses/` — NEBOSH, IOSH and BOHS course cards, under a "Where are you now?" strip whose three stages open the pages below; BOHS M200/M501–M507 list lives at `/certificate-courses/bohs/` (old Industrial Hygiene URL 301-redirects)
+- `/certificate-courses/level-3/` — NEBOSH IGC and IOSH Level 3 Certificate side by side (stage 1)
+- `/certificate-courses/level-6/` — NEBOSH Level 6 OHS Diploma, IOSH Level 6 Diploma and NEBOSH International Diploma in Environmental Management (stage 2)
+- `/certificate-courses/membership-pathways/` — CertIOSH, CMIOSH, CFIOSH (IOSH membership pages) and BOHS ICertOH: requirements, how to apply, fees and next step, with a route strip (stage 3; data in `memberships` in `build.mjs`, checked 14 Nov 2026)
+- `/certificate-courses/iosh/` — IOSH Level 3 Certificate on the left, Level 6 Diploma on the right (order of `courses.items` in `site-config.js`)
 - `/resources/` — Self Paced Study Courses card (ASP: 7 Days Free Trial → `app.iparkar.com/learn/asp-sps`, Buy · US$120 / 365 days → `app.iparkar.com/learn/asp-sps/buy`; CSP: same pricing, marked Coming soon), Reference books feature card, plus official BCSP, BGC and BOHS resource links
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch

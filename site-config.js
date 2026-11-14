@@ -368,6 +368,22 @@ window.SITE = {
     disclaimer: "iParkar Learning is independent and is not affiliated with IOSH, NEBOSH or BOHS. Course details summarised from the official pages on the date shown — always confirm with the awarding body or your Learning Partner.",
     items: [
       {
+        id: "iosh-certificate",
+        provider: "IOSH",
+        name: "IOSH Level 3 Certificate",
+        level: "Level 3",
+        color: "sky",
+        officialUrl: "https://iosh.com/qualifications-and-courses/qualifications/iosh-certificate",
+        lastChecked: "24 Oct 2026",
+        summary: "For new and aspiring OSH professionals, and supervisors and managers with safety responsibilities.",
+        facts: [
+          { label: "Entry", value: "No formal entry requirements stated." },
+          { label: "Units", value: "1. OSH principles and management systems · 2. Risk management · 3. Incident management · 4. Improving OSH performance and culture." },
+          { label: "Assessment", value: "An 80-question multiple-choice exam (2 hours, 70% pass mark) and a scenario-based assessment (2 hours, 50% pass mark) covering an inspection, a risk assessment, an incident investigation and a toolbox talk. Both online with remote invigilation." },
+          { label: "Leads to", value: "Technical membership of IOSH (TechIOSH), and a strong base for the IOSH Diploma." },
+        ],
+      },
+      {
         id: "iosh-diploma",
         provider: "IOSH",
         name: "IOSH Level 6 Diploma",
@@ -382,22 +398,6 @@ window.SITE = {
           { label: "Assessment", value: "No written exams. One workplace-based assignment per unit — a management-system self-critique, a strategic proposal with presentation and assessor questioning, and a reflective statement." },
           { label: "Duration", value: "Typically 18–24 months." },
           { label: "Leads to", value: "Certified membership (CertIOSH) — one step from Chartered membership (CMIOSH)." },
-        ],
-      },
-      {
-        id: "iosh-certificate",
-        provider: "IOSH",
-        name: "IOSH Level 3 Certificate",
-        level: "Level 3",
-        color: "sky",
-        officialUrl: "https://iosh.com/qualifications-and-courses/qualifications/iosh-certificate",
-        lastChecked: "24 Oct 2026",
-        summary: "For new and aspiring OSH professionals, and supervisors and managers with safety responsibilities.",
-        facts: [
-          { label: "Entry", value: "No formal entry requirements stated." },
-          { label: "Units", value: "1. OSH principles and management systems · 2. Risk management · 3. Incident management · 4. Improving OSH performance and culture." },
-          { label: "Assessment", value: "An 80-question multiple-choice exam (2 hours, 70% pass mark) and a scenario-based assessment (2 hours, 50% pass mark) covering an inspection, a risk assessment, an incident investigation and a toolbox talk. Both online with remote invigilation." },
-          { label: "Leads to", value: "Technical membership of IOSH (TechIOSH), and a strong base for the IOSH Diploma." },
         ],
       },
       {

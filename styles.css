@@ -854,3 +854,24 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
  .book-guide { grid-template-columns:1fr; gap:12px; margin:16px 20px 0; }
 }
 .ip-card--peach { background:var(--peach); color:var(--ink); border-color:transparent; }
+
+/* Self Paced Study Courses (Resources) */
+.sps-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.sps-course { display:flex; flex-direction:column; border:1px solid var(--border-hairline); border-radius:var(--radius-card); overflow:hidden; background:var(--white); }
+.sps-course__head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 24px; }
+.sps-course--marigold .sps-course__head { background:var(--marigold); }
+.sps-course--sky .sps-course__head { background:var(--sky-tint); }
+.sps-course__code { display:inline-block; padding:3px 12px; border-radius:var(--radius-pill); background:var(--midnight); color:var(--white); font-size:13px; font-weight:700; }
+.sps-course__body { display:flex; flex-direction:column; flex:1; padding:24px; }
+.sps-course h3 { margin:0; font-size:26px; letter-spacing:-.6px; line-height:1.15; }
+.sps-course__meta { margin:6px 0 0; font-size:14px; font-weight:600; color:var(--graphite); }
+.sps-course__price { margin:16px 0 0; }
+.sps-course__price strong { font-size:32px; letter-spacing:-1px; line-height:1; font-feature-settings:"lnum","tnum"; color:var(--midnight); }
+.sps-course__price span { font-size:15px; color:var(--graphite); }
+.sps-course__list { margin:16px 0 0; padding-left:20px; line-height:1.6; }
+.sps-course__list li + li { margin-top:4px; }
+.sps-course__actions { margin-top:auto; padding-top:22px; }
+.sps-course__actions .ip-btn { display:inline-flex; align-items:center; }
+.sps-course__fine { margin:12px 0 0; font-size:13px; line-height:1.5; color:var(--graphite); }
+.sps-course--soon .sps-course__price strong, .sps-course--soon h3 { color:var(--graphite); }
+@media (max-width: 760px) { .sps-grid { grid-template-columns:1fr; } .sps-course__body { padding:20px; } }

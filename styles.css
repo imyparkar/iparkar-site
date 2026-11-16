@@ -901,3 +901,23 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
 .member-card .facts { margin-top:16px; }
 .member-card .course__foot { padding:16px 24px 20px; }
 @media (max-width: 900px) { .member-path__list { grid-template-columns:1fr; } .member-path__list li:not(:last-child)::after { content:"↓"; right:50%; top:auto; bottom:-10px; transform:translate(50%,50%); } }
+
+/* Free course (Resources) */
+.free-course { display:grid; grid-template-columns:1.15fr 1fr; gap:32px; align-items:center; margin-top:32px; padding:32px; background:var(--white); border:1px solid var(--border-hairline); border-top:6px solid var(--forest-green, #2e6f40); border-radius:var(--radius-card); }
+.free-course h2 { margin:14px 0 8px; font-size:clamp(28px,3.2vw,40px); line-height:1.1; letter-spacing:-1.1px; }
+.free-course__text > p:not(.free-course__fine) { margin:0; font-family:var(--font-serif); font-size:18px; line-height:1.55; color:var(--graphite); max-width:560px; }
+.free-course__facts { margin:16px 0 22px; padding-left:20px; line-height:1.6; }
+.free-course__fine { margin:12px 0 0; font-family:var(--font-sans); font-size:13px; line-height:1.5; color:var(--graphite); }
+.free-course__mods { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.free-course__mod { display:flex; flex-direction:column; gap:2px; padding:14px 16px; border-radius:var(--radius-button); color:var(--ink); }
+.free-course__mod span { font-size:12px; font-weight:600; letter-spacing:.2px; opacity:.85; }
+.free-course__mod strong { font-size:18px; letter-spacing:-.3px; }
+.free-course__mod em { font-style:normal; font-size:13px; opacity:.85; }
+.free-course__mod--0 { background:var(--sky-tint); }
+.free-course__mod--1 { background:var(--midnight); color:var(--white); }
+.free-course__mod--2 { background:var(--marigold); }
+.free-course__mod--3 { background:var(--forest-green, #2e6f40); color:var(--white); }
+.free-course__mod--4 { background:var(--action-blue); color:var(--white); }
+.free-course__mod--5 { background:var(--coral); }
+.ip-pill--mint { background:var(--mint, #0acf83); color:var(--ink); }
+@media (max-width: 860px) { .free-course { grid-template-columns:1fr; padding:20px; } }

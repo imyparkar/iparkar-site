@@ -122,7 +122,7 @@
   // Country-specific prices come from regional-prices.js (window.IP_PRICES); without it, US$ prices apply.
   function local(code, i) { const plan = durs(code)[i], P = window.IP_PRICES; return P ? P.price(code, i, plan.price) : { amount: plan.price, currency: "USD" }; }
   function money(p, dec) { const P = window.IP_PRICES; if (P) return P.parts(p.amount, p.currency, dec); const num = dec ? p.amount.toFixed(dec) : String(p.amount); return { sym: "US$", num, text: "US$" + num }; }
-  function perDayText(code, i) { const p = local(code, i); return money({ amount: p.amount / durs(code)[i].days, currency: p.currency }, 2).text; }
+  function perDayText(code, i) { const p = local(code, i), a = p.amount / durs(code)[i].days; return money({ amount: a, currency: p.currency }, a >= 10 ? 0 : 2).text; }
   function planHref(code, i) {
     const p = S.practice, exam = p.plans.find(pl => pl.code === code), plan = durs(code)[i];
     if (plan.available) return exam.durations ? `${exam.button.href}?plan=${plan.days}` : exam.button.href;

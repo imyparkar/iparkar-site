@@ -119,10 +119,14 @@
   // Purchase links: available periods open the course in the LMS, the rest open an email request.
   // A plan may carry its own `durations` (prices per period); otherwise the shared list applies.
   function durs(code) { const exam = S.practice.plans.find(pl => pl.code === code); return (exam && exam.durations) || S.practice.durations; }
+  // Country-specific prices come from regional-prices.js (window.IP_PRICES); without it, US$ prices apply.
+  function local(code, i) { const plan = durs(code)[i], P = window.IP_PRICES; return P ? P.price(code, i, plan.price) : { amount: plan.price, currency: "USD" }; }
+  function money(p, dec) { const P = window.IP_PRICES; if (P) return P.parts(p.amount, p.currency, dec); const num = dec ? p.amount.toFixed(dec) : String(p.amount); return { sym: "US$", num, text: "US$" + num }; }
+  function perDayText(code, i) { const p = local(code, i); return money({ amount: p.amount / durs(code)[i].days, currency: p.currency }, 2).text; }
   function planHref(code, i) {
     const p = S.practice, exam = p.plans.find(pl => pl.code === code), plan = durs(code)[i];
     if (plan.available) return exam.durations ? `${exam.button.href}?plan=${plan.days}` : exam.button.href;
-    return `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at US$" + plan.price + ". Please share the purchase details.")}`;
+    return `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at " + money(local(code, i)).text + ". Please share the purchase details.")}`;
   }
   function planLabel(code, i) { const plan = durs(code)[i]; return `${plan.available ? "Get" : "Request"} ${code} · ${durationLabel(plan)}`; }
   function durationLabel(plan) { return plan.days === 365 ? "1 year" : `${plan.days} days`; }
@@ -148,23 +152,23 @@
             <div class="plan-course__head"><div class="plan-course__top"><h3 class="plan-course__code">${esc(pl.code)}</h3><span class="plan-course__pill">${esc(pl.tagline || "")}</span></div><p class="plan-course__name">${esc(pl.examName)}</p></div>
             <div class="plan-course__body">
               <div class="plan-seg" role="group" aria-label="Access period for ${esc(pl.code)}">${durs(pl.code).map((dd, i) => `<button type="button" class="plan-seg__btn" data-course-plan="${i}" aria-pressed="${i === 1}">${durationLabel(dd)}</button>`).join("")}</div>
-              <div class="plan-course__row"><p class="plan-course__price" data-course-swap><small>US$</small><span data-course-price>${d.price}</span></p><p class="plan-course__meta"><span data-course-name>${esc(d.name)}</span><br><span data-course-per>US$${perDay(d)} a day</span></p></div>
+              <div class="plan-course__row"><p class="plan-course__price" data-course-swap><small data-course-sym>US$</small><span data-course-price>${d.price}</span></p><p class="plan-course__meta"><span data-course-name>${esc(d.name)}</span><br><span data-course-per>US$${perDay(d)} a day</span></p></div>
               <p class="plan-course__badges"><span class="plan-course__badge" data-course-badge>${esc(d.badge)}</span></p>
               <a class="ip-btn plan-course__cta" data-course-cta href="${esc(planHref(pl.code, 1))}">${esc(planLabel(pl.code, 1))}</a>
             </div>
           </article>`; }).join("")}</div>
           <div class="plan-mobile" data-plan-mobile>
             <div class="plan-tabs" role="group" aria-label="Certification">${codes.map((code, i) => `<button type="button" class="plan-tab" data-m-exam="${code}" aria-pressed="${i === 0}">${esc(code)}</button>`).join("")}</div>
-            <div class="plan-rail" role="group" aria-label="Access period">${p.durations.map((dd, i) => `<button type="button" class="plan-mcard${i === 2 ? " plan-mcard--annual" : ""}" data-m-plan="${i}" aria-pressed="${i === 1}"><span class="plan-mcard__top"><span class="plan-mcard__name">${esc(dd.name)}</span>${i ? `<span class="plan-mcard__badge">${esc(dd.badge)}</span>` : ""}</span><span class="plan-mcard__days">${dd.days} days of access</span><span class="plan-mcard__price"><small>US$</small><span data-m-price>${dd.price}</span></span><span class="plan-mcard__per">One-time · US$<span data-m-per>${perDay(dd)}</span> a day</span></button>`).join("")}</div>
+            <div class="plan-rail" role="group" aria-label="Access period">${p.durations.map((dd, i) => `<button type="button" class="plan-mcard${i === 2 ? " plan-mcard--annual" : ""}" data-m-plan="${i}" aria-pressed="${i === 1}"><span class="plan-mcard__top"><span class="plan-mcard__name">${esc(dd.name)}</span>${i ? `<span class="plan-mcard__badge">${esc(dd.badge)}</span>` : ""}</span><span class="plan-mcard__days">${dd.days} days of access</span><span class="plan-mcard__price"><small data-m-sym>US$</small><span data-m-price>${dd.price}</span></span><span class="plan-mcard__per">One-time · <span data-m-per>US$${perDay(dd)}</span> a day</span></button>`).join("")}</div>
             <div class="plan-dots" aria-hidden="true">${p.durations.map((dd, i) => `<span class="plan-dot${i === 1 ? " is-on" : ""}"></span>`).join("")}</div>
             <p class="plan-mobile__note"><strong>Every package includes</strong> the full <span data-m-exam-name>ASP</span> bank, timed mocks, answer explanations and score analytics.</p>
           </div>
           <noscript><p class="fineprint">JavaScript is off. Choose a package directly:</p><ul class="plan-noscript">${links.map(l=>`<li><a href="${esc(l.href)}">${esc(l.label)} · US$${l.price}</a></li>`).join("")}</ul></noscript>
           <div class="plan-buybar" data-plan-buybar role="region" aria-label="Selected package">
-            <p class="plan-buybar__text"><span data-plan-bar-title>ASP · ${esc(p.durations[1].name)}</span><strong>US$<span data-plan-bar-price>${p.durations[1].price}</span> <span data-plan-bar-days>· ${p.durations[1].days} days</span></strong></p>
+            <p class="plan-buybar__text"><span data-plan-bar-title>ASP · ${esc(p.durations[1].name)}</span><strong><span data-plan-bar-price>US$${p.durations[1].price}</span> <span data-plan-bar-days>· ${p.durations[1].days} days</span></strong></p>
             <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(planHref("ASP", 1))}">${p.durations[1].available ? "Get access" : "Request"}</a>
           </div>
-          <p class="fineprint pricing-terms">Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
+          <p class="fineprint pricing-terms" data-price-terms>Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
         </section>
         <section class="practice-sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions with answer explanations. Free, with no account needed.</p></div><button class="ip-btn ip-btn--ghost" data-action="start-free">Start free sample</button></section>
         <section class="practice-features" aria-labelledby="included-heading"><div><p class="eyebrow">INCLUDED IN YOUR PACKAGE</p><h2 id="included-heading">Practice with purpose.</h2><p>The same practice tools, with the time you need to use them.</p></div>
@@ -180,13 +184,14 @@
   const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const isMobile = () => window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
   function replay(el, cls) { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
-  function countPrice(el, to) {
+  function countPrice(el, to, fmt = String, animate = true) {
     if (!el) return;
-    const from = Number(el.textContent) || to;
+    const from = el._val ?? to;
+    el._val = to;
     if (el._raf) cancelAnimationFrame(el._raf);
-    if (reduceMotion() || from === to) { el.textContent = to; return; }
+    if (!animate || reduceMotion() || from === to) { el.textContent = fmt(to); return; }
     let t0 = null;
-    const step = (t) => { t0 ??= t; const k = Math.min(1, (t - t0) / 360); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k < 1) el._raf = requestAnimationFrame(step); };
+    const step = (t) => { t0 ??= t; const k = Math.min(1, (t - t0) / 360); el.textContent = fmt(k < 1 ? Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))) : to); if (k < 1) el._raf = requestAnimationFrame(step); };
     el._raf = requestAnimationFrame(step);
   }
   const mobileState = { exam: "ASP", plan: 1 };
@@ -195,14 +200,16 @@
   }
   function announce(code, i) {
     const plan = durs(code)[i], el = $("#pricing-selection");
-    if (el) el.textContent = `Selected: ${code}, ${plan.name}, ${plan.days} days, US$${plan.price}`;
+    if (el) el.textContent = `Selected: ${code}, ${plan.name}, ${plan.days} days, ${money(local(code, i)).text}`;
   }
   function updateCourse(card, i, animate) {
     const code = card.dataset.course, plan = durs(code)[i];
     card.querySelectorAll("[data-course-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.coursePlan) === i)));
-    countPrice(card.querySelector("[data-course-price]"), plan.price);
+    const lp = local(code, i);
+    card.querySelector("[data-course-sym]").textContent = money(lp).sym;
+    countPrice(card.querySelector("[data-course-price]"), lp.amount, n => money({ amount: n, currency: lp.currency }).num, animate);
     card.querySelector("[data-course-name]").textContent = plan.name;
-    card.querySelector("[data-course-per]").textContent = `US$${(plan.price / plan.days).toFixed(2)} a day`;
+    card.querySelector("[data-course-per]").textContent = `${perDayText(code, i)} a day`;
     const badge = card.querySelector("[data-course-badge]");
     badge.textContent = i ? plan.badge : "";
     badge.classList.toggle("is-empty", !i);
@@ -222,9 +229,10 @@
     // Prices on the swipe cards follow the selected exam.
     box.querySelectorAll("[data-m-plan]").forEach((c, k) => {
       const d = durs(code)[k]; if (!d) return;
-      const pr = c.querySelector("[data-m-price]"), per = c.querySelector("[data-m-per]");
-      if (pr) pr.textContent = d.price;
-      if (per) per.textContent = (d.price / d.days).toFixed(2);
+      const pr = c.querySelector("[data-m-price]"), per = c.querySelector("[data-m-per]"), sym = c.querySelector("[data-m-sym]"), m = money(local(code, k));
+      if (pr) pr.textContent = m.num;
+      if (sym) sym.textContent = m.sym;
+      if (per) per.textContent = perDayText(code, k);
     });
     box.querySelectorAll("[data-m-exam]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mExam === code)));
     box.querySelectorAll("[data-m-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.mPlan) === i)));
@@ -232,7 +240,7 @@
     const name = box.querySelector("[data-m-exam-name]"); if (name) name.textContent = code;
     const set = (sel, text) => { const el = $(sel); if (el) el.textContent = text; };
     set("[data-plan-bar-title]", `${code} · ${plan.name}`);
-    set("[data-plan-bar-price]", plan.price);
+    set("[data-plan-bar-price]", money(local(code, i)).text);
     set("[data-plan-bar-days]", `· ${plan.days} days`);
     const barCta = $("[data-plan-bar-cta]");
     if (barCta) { barCta.href = planHref(code, i); barCta.textContent = plan.available ? "Get access" : "Request"; }
@@ -288,6 +296,18 @@
     if (bar && box) new IntersectionObserver(([e]) => bar.classList.toggle("is-visible", e.isIntersecting), { rootMargin: "0px 0px -80px 0px" }).observe(box);
   }
   initPricing();
+  // Re-draw every price once the visitor's country is known.
+  function refreshPrices(P) {
+    document.querySelectorAll("[data-plan-courses] [data-course]").forEach(card => {
+      const on = card.querySelector('[data-course-plan][aria-pressed="true"]');
+      updateCourse(card, on ? Number(on.dataset.coursePlan) : 1, false);
+    });
+    updateMobile({}, false);
+    showFeatures(mobileState.exam); announce(mobileState.exam, mobileState.plan);
+    const terms = $("[data-price-terms]");
+    if (terms && P.region) terms.textContent = `Prices are shown in ${P.currencyName(P.region.currency)} for ${P.region.name} and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.`;
+  }
+  if (window.IP_PRICES && $("[data-plan-courses]")) window.IP_PRICES.onReady(refreshPrices);
 
   /* Free sample engine — 10 random questions, instant feedback */
   const exam = { items: [], i: 0, answers: [] };

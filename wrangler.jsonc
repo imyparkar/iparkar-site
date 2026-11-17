@@ -1,9 +1,12 @@
 {
   "name": "iparkar-site",
   "compatibility_date": "2026-10-28",
+  "main": "worker.js",
   "assets": {
     "directory": ".",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
   },
   "previews": {}
 }

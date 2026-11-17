@@ -64,3 +64,7 @@ BCSP ASP/CSP blueprint reference lists, BGC CIH Selected References (2025), the 
 ## Self Paced Study Courses and study guides
 
 The Resources "Self Paced Study Courses" card (anchor `#study-courses`; the old `#study-guides` anchor still lands on it), the ASP and CSP reference-books sections and the home banner point to the study courses on app.iparkar.com. Each course includes its exam study guide PDF: the LMS (repo `iparkar-lms`) serves the ASP guide only to learners with trial or paid access to ASP-SPS, and the CSP guide only with CSP-SPS (both open since 16 Nov 2026). PDFs stream from the private R2 bucket `iparkar-study-guides` (binding `STUDY_GUIDES`) and downloads are logged in `study_guide_downloads`. No PDF is hosted on this site. Course copy and prices live in `studyCourses` in `build.mjs`; both courses have `open:true`; the Buy button leads to the LMS Request for Access page until Paddle checkout is set up.
+
+## Country-specific prices (branch `regional-pricing`, pending review)
+
+`regional-prices.js` holds fixed prices per country (India, Kuwait, UAE, Saudi Arabia, Qatar, Bahrain, Oman, UK, euro area); every other country sees the US$ prices. `worker.js` answers `/api/geo` with the visitor's country from Cloudflare (`request.cf.country`); all other requests are static assets. The practice-exam cards and the Self Paced Study Course prices switch to the visitor's currency. Add `?country=IN` (any two-letter code) to a page URL to preview another country's prices. Keep the Paddle catalogue's per-country price overrides identical to this table.

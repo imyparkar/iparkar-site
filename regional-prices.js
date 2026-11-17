@@ -9,25 +9,27 @@
      exam : [90-day, 180-day, 365-day] for ASP, CSP, CIH, GES/EPI and QEP
      cit  : [90-day, 180-day, 365-day] for CIT
      sps  : Self Paced Study Course (ASP / CSP), 365 days
-   Prices are set close to the US$ prices at Nov 2026 exchange rates
-   (US$1 ≈ ₹94, KWD 0.307, AED 3.67, SAR 3.75, QAR 3.64, BHD 0.376, OMR 0.385, £0.75, €0.86).
+   Prices follow the US$ prices at Nov 2026 exchange rates (US$1 ≈ ₹94,
+   KWD 0.307, AED 3.67, SAR 3.75, QAR 3.64, BHD 0.376, OMR 0.385, £0.75, €0.86).
+   Gulf prices are rounded to the nearest 5 or 10; India is set about 10% lower
+   and rounded to the nearest …,999.
    Keep the same prices in the Paddle catalogue (price overrides per country)
    so the checkout charges what the website shows.
    --------------------------------------------------------------------------- */
 (function () {
   const REGIONS = [
-    { name: "India",                currency: "INR", countries: ["IN"], exam: [9299, 13999, 18699], cit: [4599, 7399, 9299], sps: 11299 },
-    { name: "Kuwait",               currency: "KWD", countries: ["KW"], exam: [30, 46, 61],          cit: [15, 24, 30],        sps: 37 },
-    { name: "United Arab Emirates", currency: "AED", countries: ["AE"], exam: [365, 549, 729],       cit: [179, 289, 365],     sps: 439 },
-    { name: "Saudi Arabia",         currency: "SAR", countries: ["SA"], exam: [375, 559, 749],       cit: [185, 299, 375],     sps: 449 },
-    { name: "Qatar",                currency: "QAR", countries: ["QA"], exam: [360, 545, 725],       cit: [179, 289, 360],     sps: 439 },
-    { name: "Bahrain",              currency: "BHD", countries: ["BH"], exam: [37, 56, 75],          cit: [19, 30, 37],        sps: 45 },
-    { name: "Oman",                 currency: "OMR", countries: ["OM"], exam: [38, 57, 77],          cit: [19, 30, 38],        sps: 46 },
+    { name: "India",                currency: "INR", countries: ["IN"], exam: [7999, 12999, 16999], cit: [3999, 6999, 7999], sps: 9999 },
+    { name: "Kuwait",               currency: "KWD", countries: ["KW"], exam: [30, 45, 60],          cit: [15, 25, 30],        sps: 35 },
+    { name: "United Arab Emirates", currency: "AED", countries: ["AE"], exam: [365, 550, 730],       cit: [180, 290, 365],     sps: 440 },
+    { name: "Saudi Arabia",         currency: "SAR", countries: ["SA"], exam: [375, 560, 750],       cit: [185, 300, 375],     sps: 450 },
+    { name: "Qatar",                currency: "QAR", countries: ["QA"], exam: [360, 545, 725],       cit: [180, 290, 360],     sps: 440 },
+    { name: "Bahrain",              currency: "BHD", countries: ["BH"], exam: [35, 55, 75],          cit: [20, 30, 35],        sps: 45 },
+    { name: "Oman",                 currency: "OMR", countries: ["OM"], exam: [40, 55, 75],          cit: [20, 30, 40],        sps: 45 },
     { name: "United Kingdom",       currency: "GBP", countries: ["GB"], exam: [75, 112, 149],        cit: [37, 59, 75],        sps: 90 },
     { name: "Euro area",            currency: "EUR", countries: ["AT","BE","HR","CY","EE","FI","FR","DE","GR","IE","IT","LV","LT","LU","MT","NL","PT","SK","SI","ES"], exam: [85, 129, 169], cit: [42, 68, 85], sps: 105 },
   ];
-  // Currency symbols. Gulf currencies use their Arabic abbreviations, isolated so they read correctly beside Latin digits.
-  const SYMBOLS = { USD: "US$", INR: "₹", GBP: "£", EUR: "€", KWD: "د.ك", AED: "د.إ", SAR: "ر.س", QAR: "ر.ق", BHD: "د.ب", OMR: "ر.ع" };
+  // Currency symbols where a common one exists; Gulf currencies show their codes (KWD, AED, SAR, QAR, BHD, OMR).
+  const SYMBOLS = { USD: "US$", INR: "₹", GBP: "£", EUR: "€" };
 
   const NAMES = { USD: "US dollars", INR: "Indian rupees", KWD: "Kuwaiti dinars", AED: "UAE dirhams", SAR: "Saudi riyals", QAR: "Qatari riyals", BHD: "Bahraini dinars", OMR: "Omani rials", GBP: "pounds sterling", EUR: "euros" };
   const listeners = [];

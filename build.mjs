@@ -30,7 +30,7 @@ const cards = `<div class="grid grid--3">${S.about.highlights.map(c => `<a class
 // Study guides are free but sign-in only: the LMS checks the session and serves the PDF from private storage.
 // Reference-book sections that have a published iParkar study guide show it above the book list.
 const bookGuides = {
- asp: ['iParkar Learning ASP® Exam Study Guide', 'Edition 1.0 · 99 chapters · PDF · included with the ASP Self Paced Study Course (7-day free trial)', '/resources/#study-courses', 'View study course'],
+ asp: ['iParkar Learning ASP® Exam Study Guide', 'Edition 1 · 99 chapters · PDF · included with the ASP Self Paced Study Course (7-day free trial)', '/resources/#study-courses', 'View study course'],
  csp: ['iParkar Learning CSP® Exam Study Guide', 'Edition 1 · 60 chapters · PDF · included with the CSP Self Paced Study Course (7-day free trial)', '/resources/#study-courses', 'View study course'],
 };
 const home = `<section class="hero home-hero"><div><p class="eyebrow">iParkar Learning</p><h1 class="hero__title">Build your next<br><span class="ip-highlight ip-highlight--marigold">safety</span> milestone.</h1><p class="hero__lead">Find your HSE pathway, understand your next qualification, and practise with purpose.</p><div class="ip-btn-row">${link('certifications','Explore pathways')}${link('practice','Try free questions','text')}</div></div><aside class="ip-card ip-card--dark pathway-preview"><p class="ip-pill ip-pill--progress">Your next step</p><h2>Where do you want<br>to go?</h2><p>Compare the requirements and plan your next qualification.</p><ol><li><span>01</span> Choose your area of interest</li><li><span>02</span> Review the requirements</li><li><span>03</span> Explore your learning pathway</li></ol><a href="/certification-pathways/">Explore certification pathways →</a></aside></section>
@@ -124,7 +124,7 @@ const refBooks = `<header class="ip-section-header books-heading"><h1 class="ip-
 // Self Paced Study Courses (app.iparkar.com/learn). Each course includes its exam study guide PDF;
 // the PDF downloads only while the learner has trial or paid access to that course.
 const studyCourses = [
- {id:'asp',code:'ASP',tone:'marigold',title:'ASP Self Paced Study Course',blueprint:'BCSP ASP11 blueprint · 9 domains · 99 chapters',guide:'ASP® Exam Study Guide PDF (1,301 pages)',open:true},
+ {id:'asp',code:'ASP',tone:'marigold',title:'ASP Self Paced Study Course',blueprint:'BCSP ASP11 blueprint · 9 domains · 99 chapters',guide:'ASP® Exam Study Guide PDF (Edition 1, 1,382 pages)',open:true},
  {id:'csp',code:'CSP',tone:'sky',title:'CSP Self Paced Study Course',blueprint:'BCSP CSP11 blueprint · 7 domains · 60 chapters',guide:'CSP® Exam Study Guide PDF (Edition 1, 1,173 pages)',open:true},
 ];
 const spsPrice = 'US$120', spsTrial = 7, spsDays = 365;

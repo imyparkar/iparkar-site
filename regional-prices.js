@@ -13,8 +13,8 @@
    KWD 0.307, AED 3.67, SAR 3.75, QAR 3.64, BHD 0.376, OMR 0.385, £0.75, €0.86).
    Gulf prices are rounded to the nearest 5 or 10; India is set about 10% lower
    and rounded to the nearest …,999.
-   Keep the same prices in the Paddle catalogue (price overrides per country)
-   so the checkout charges what the website shows.
+   Keep the same prices in the LMS checkout catalogue (iparkar-lms repo,
+   src/lib/payments/catalogue.ts) so Razorpay charges what the website shows.
    --------------------------------------------------------------------------- */
 (function () {
   const REGIONS = [

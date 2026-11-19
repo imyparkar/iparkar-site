@@ -466,8 +466,8 @@ window.SITE = {
     member: { text: "Already enrolled?", label: "Sign in to your dashboard", href: "https://app.iparkar.com/login" },
     durations: [
       { name: "Exam Ready", days: 90, price: 99, description: "For a focused preparation window.", badge: "Focused prep", available: true },
-      { name: "Extended Prep", days: 180, price: 149, description: "More time to balance work and study.", badge: "Recommended", available: false },
-      { name: "Full-Year Prep", days: 365, price: 199, description: "Prepare at your own pace for a full year.", badge: "Best value", available: false },
+      { name: "Extended Prep", days: 180, price: 149, description: "More time to balance work and study.", badge: "Recommended", available: true },
+      { name: "Full-Year Prep", days: 365, price: 199, description: "Prepare at your own pace for a full year.", badge: "Best value", available: true },
     ],
     plans: [
       {
@@ -494,7 +494,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Score history and domain-by-domain analytics",
         ],
-        button: { label: "Get ASP access", href: "https://app.iparkar.com/courses/ASP", sameTab: true },
+        button: { label: "Buy ASP access", href: "https://app.iparkar.com/courses/ASP", sameTab: true },
         color: "marigold",
       },
       {
@@ -512,7 +512,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Score history and domain-by-domain analytics",
         ],
-        button: { label: "Get CSP access", href: "https://app.iparkar.com/courses/CSP", sameTab: true },
+        button: { label: "Buy CSP access", href: "https://app.iparkar.com/courses/CSP", sameTab: true },
         color: "sky",
       },
       {
@@ -530,7 +530,7 @@ window.SITE = {
           "On-screen scientific calculator, flagging and review",
           "Timed mock exams plus topic-by-topic practice",
         ],
-        button: { label: "Get CIH access", href: "https://app.iparkar.com/courses/CIH" },
+        button: { label: "Buy CIH access", href: "https://app.iparkar.com/courses/CIH" },
         color: "coral",
       },
       {
@@ -548,7 +548,7 @@ window.SITE = {
           "On-screen TI-30XS calculator, flagging and review",
           "Worked solutions for calculations, plus topic-by-topic analytics",
         ],
-        button: { label: "Get GES/EPI access", href: "https://app.iparkar.com/courses/EPI", sameTab: true },
+        button: { label: "Buy GES/EPI access", href: "https://app.iparkar.com/courses/EPI", sameTab: true },
         color: "moss",
       },
       {
@@ -566,7 +566,7 @@ window.SITE = {
           "On-screen TI-30XS calculator, flagging and review",
           "Scenario-led questions on oversight, compliance and remedy selection",
         ],
-        button: { label: "Get QEP access", href: "https://app.iparkar.com/courses/QEP", sameTab: true },
+        button: { label: "Buy QEP access", href: "https://app.iparkar.com/courses/QEP", sameTab: true },
         color: "forest",
       },
       {
@@ -590,7 +590,7 @@ window.SITE = {
           "Explanations for the correct answer and for each incorrect option, with references",
           "Score history with domain- and statement-level analytics",
         ],
-        button: { label: "Get CIT access", href: "https://app.iparkar.com/courses/CIT", sameTab: true },
+        button: { label: "Buy CIT access", href: "https://app.iparkar.com/courses/CIT", sameTab: true },
         color: "dark",
       },
     ],

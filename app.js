@@ -116,7 +116,7 @@
   }
 
   /* ---------- Tab 4: Practice exam ---------- */
-  // Purchase links: available periods open the course in the LMS, the rest open an email request.
+  // Purchase links: available periods open the course in the LMS (?plan=<days>) for Razorpay checkout; the rest open an email request.
   // A plan may carry its own `durations` (prices per period); otherwise the shared list applies.
   function durs(code) { const exam = S.practice.plans.find(pl => pl.code === code); return (exam && exam.durations) || S.practice.durations; }
   // Country-specific prices come from regional-prices.js (window.IP_PRICES); without it, US$ prices apply.
@@ -125,10 +125,10 @@
   function perDayText(code, i) { const p = local(code, i), a = p.amount / durs(code)[i].days; return money({ amount: a, currency: p.currency }, a >= 10 ? 0 : 2).text; }
   function planHref(code, i) {
     const p = S.practice, exam = p.plans.find(pl => pl.code === code), plan = durs(code)[i];
-    if (plan.available) return exam.durations ? `${exam.button.href}?plan=${plan.days}` : exam.button.href;
+    if (plan.available) return `${exam.button.href}?plan=${plan.days}`;
     return `mailto:support@iparkar.com?subject=${encodeURIComponent(code + " - " + plan.name + " - " + plan.days + " days")}&body=${encodeURIComponent("Hello iParkar, I would like " + code + " " + plan.name + " access for " + plan.days + " days at " + money(local(code, i)).text + ". Please share the purchase details.")}`;
   }
-  function planLabel(code, i) { const plan = durs(code)[i]; return `${plan.available ? "Get" : "Request"} ${code} · ${durationLabel(plan)}`; }
+  function planLabel(code, i) { const plan = durs(code)[i]; return `${plan.available ? "Buy" : "Request"} ${code} · ${durationLabel(plan)}`; }
   function durationLabel(plan) { return plan.days === 365 ? "1 year" : `${plan.days} days`; }
 
   function renderPractice() {
@@ -137,7 +137,6 @@
     const codes = exams.map(pl => pl.code);
     const examNames = exams.map(pl => pl.examName);
     const perDay = plan => (plan.price / plan.days).toFixed(2);
-    const direct = exams.filter(pl => pl.durations && pl.durations.every(d => d.available)).map(pl => pl.code);
     const links = [];
     codes.forEach(code => durs(code).forEach((plan, i) => links.push({ code, i, label: planLabel(code, i), href: planHref(code, i), price: plan.price })));
     return `
@@ -166,14 +165,14 @@
           <noscript><p class="fineprint">JavaScript is off. Choose a package directly:</p><ul class="plan-noscript">${links.map(l=>`<li><a href="${esc(l.href)}">${esc(l.label)} · US$${l.price}</a></li>`).join("")}</ul></noscript>
           <div class="plan-buybar" data-plan-buybar role="region" aria-label="Selected package">
             <p class="plan-buybar__text"><span data-plan-bar-title>ASP · ${esc(p.durations[1].name)}</span><strong><span data-plan-bar-price>US$${p.durations[1].price}</span> <span data-plan-bar-days>· ${p.durations[1].days} days</span></strong></p>
-            <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(planHref("ASP", 1))}">${p.durations[1].available ? "Get access" : "Request"}</a>
+            <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(planHref("ASP", 1))}">${p.durations[1].available ? "Buy" : "Request"}</a>
           </div>
           <p class="fineprint pricing-terms" data-price-terms>Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
         </section>
         <section class="practice-sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions with answer explanations. Free, with no account needed.</p></div><button class="ip-btn ip-btn--ghost" data-action="start-free">Start free sample</button></section>
         <section class="practice-features" aria-labelledby="included-heading"><div><p class="eyebrow">INCLUDED IN YOUR PACKAGE</p><h2 id="included-heading">Practice with purpose.</h2><p>The same practice tools, with the time you need to use them.</p></div>
         <div class="practice-features__content">${exams.map((pl,i)=>`<article data-feature-exam="${codes[i]}"><h3>${codes[i]} practice features</h3><ul>${pl.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></article>`).join('')}</div></section>
-        <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>${direct.length ? `${esc(direct.join(", "))} 180-day and 1-year packages open directly, like the 90-day package. For the other exams, choose` : "Choose"} your certification and select Request access. Your email app will open a request to support@iparkar.com with the exam, duration and price included. We will help you arrange access; sending a request does not make a payment.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
+        <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification, select the access period and click Buy. You pay securely online with Razorpay and your access opens as soon as the payment is confirmed.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
       </div>
       <p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>
       <p class="fineprint">${esc(p.note)}</p>`;
@@ -243,7 +242,7 @@
     set("[data-plan-bar-price]", money(local(code, i)).text);
     set("[data-plan-bar-days]", `· ${plan.days} days`);
     const barCta = $("[data-plan-bar-cta]");
-    if (barCta) { barCta.href = planHref(code, i); barCta.textContent = plan.available ? "Get access" : "Request"; }
+    if (barCta) { barCta.href = planHref(code, i); barCta.textContent = plan.available ? "Buy" : "Request"; }
     if (change.exam || change.plan !== undefined) replay($(".plan-buybar__text"), "plan-swap");
     if (change.exam) showFeatures(code);
     if (change.exam || change.plan !== undefined) announce(code, i);

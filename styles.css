@@ -921,3 +921,8 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
 .free-course__mod--5 { background:var(--coral); }
 .ip-pill--mint { background:var(--mint, #0acf83); color:var(--ink); }
 @media (max-width: 860px) { .free-course { grid-template-columns:1fr; padding:20px; } }
+
+/* Payment methods line with the Apple Pay mark (official artwork, unaltered; clear space = 1/10 of its height) */
+.pay-methods { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 24px 0 0; font-size: 14px; color: var(--graphite); }
+.pay-methods img { height: 29px; width: auto; margin: 3px; flex: none; }
+.pay-methods--card { margin-top: 16px; font-size: 13px; }

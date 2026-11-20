@@ -452,7 +452,7 @@ summary { cursor:pointer; font-weight:600; }
 .company-about { max-width:960px; margin-inline:auto; }
 .company-about .ip-section-header { max-width:none; }
 .company-about .ip-section-header__title { font-size:clamp(32px,4vw,48px); letter-spacing:-1.4px; }
-.company-about p { text-align:justify; text-justify:inter-word; hyphens:auto; line-height:1.75; color:var(--graphite); }
+.company-about p { text-align:left; hyphens:manual; line-height:1.75; color:var(--graphite); }
 .company-about section { margin-top:32px; }
 .company-about h2 { font-size:24px; font-weight:600; margin:0 0 12px; letter-spacing:-.24px; }
 .company-about .ip-btn-row { margin-top:32px; }
@@ -461,10 +461,8 @@ summary { cursor:pointer; font-weight:600; }
 .company-about > .ip-section-header { padding:32px; background:var(--marigold); border-radius:var(--radius-card); margin-bottom:24px; }
 .company-about > .ip-section-header p { color:var(--midnight); margin-bottom:0; }
 .company-about > section { padding:24px; border:1px solid var(--border-hairline); border-radius:var(--radius-card); }
-.company-about > section:nth-of-type(1) { background:var(--white); border-left:4px solid var(--coral); }
-.company-about > section:nth-of-type(2) { background:var(--sky-tint); border-color:transparent; }
-.company-about > section:nth-of-type(3) { background:#edf1e5; border-color:transparent; }
-.company-about > section:nth-of-type(3) h2 { color:var(--forest-green); }
+.company-about > section { background:var(--white); }
+.company-about > section h2 { color:var(--midnight); }
 .company-about > section p:last-child { margin-bottom:0; }
 @media(max-width:640px) { .company-about > .ip-section-header { padding:24px; } }
 
@@ -953,5 +951,9 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
   .founder__intro { grid-template-columns:1fr; gap:20px; }
   .founder__photo { max-width:200px; margin-inline:auto; }
   .founder__story { padding:20px; }
-  .company-about .founder p { text-align:left; hyphens:manual; }
 }
+
+.founder__linkedin { display:inline-flex; align-items:center; gap:8px; margin-top:16px; padding:8px 14px; border:1px solid var(--border-hairline); border-radius:var(--radius-button); color:#0a66c2; font-size:14px; font-weight:600; text-decoration:none; background:var(--white); }
+.founder__linkedin svg { width:16px; height:16px; fill:currentColor; }
+.founder__linkedin:hover { background:#eef5fc; }
+.founder__linkedin:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }

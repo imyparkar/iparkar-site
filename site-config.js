@@ -56,6 +56,7 @@ window.SITE = {
     "photo": "/assets/founder/imran-parkar-circle",
     "photoAlt": "Portrait of Imran Parkar, founder of iParkar Learning",
     "credentials": ["CSP", "CIH", "CIT", "CFPS", "PMP", "CMIOSH"],
+    "linkedin": "https://www.linkedin.com/in/imran-parkar-181745160/",
     "experienceHeading": "Professional background",
     "experience": [
       "Imran is an HSE professional with a Mechanical Engineering degree from the University of Mumbai and 16 years of experience in the oil and gas industry in Kuwait. His work covers:"

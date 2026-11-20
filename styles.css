@@ -278,6 +278,11 @@ main { padding: var(--spacing-64) 0 var(--section-gap); min-height: 70vh; }
 .site-footer a { color: var(--slate); text-decoration: none; margin-left: var(--spacing-16); }
 .site-footer a:hover { color: var(--ink); }
 .site-footer a:first-child { margin-left: 0; }
+.site-footer .footer-social { display: flex; align-items: center; gap: var(--spacing-4); margin: -10px -12px; }
+.site-footer .footer-social a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin: 0; border-radius: var(--radius-button); color: var(--slate); transition: color 200ms ease, background 200ms ease; }
+.site-footer .footer-social a:hover { color: var(--midnight); background: var(--sky-tint); }
+.site-footer .footer-social a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.site-footer .footer-social svg { width: 20px; height: 20px; display: block; fill: currentColor; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 .quiz-hero + section { margin-top: var(--spacing-16) !important; }

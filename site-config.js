@@ -604,5 +604,9 @@ window.SITE = {
       { label: "Refund policy",  href: "refunds" },
     ],
     copyright: "© 2026 iParkar Learning",
+    social: [
+      { label: "LinkedIn",  icon: "linkedin",  href: "https://www.linkedin.com/company/iparkar-learning/" },
+      { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/iparkarlearning/" },
+    ],
   },
 };

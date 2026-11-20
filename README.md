@@ -22,6 +22,7 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch
 - `/practice-exams/` — free sample and premium packages: one card per course with its own 90 / 180 / 365-day control on desktop; certification tabs, swipeable plan cards and a sticky buy bar on mobile. A plan may carry its own `durations` list in `site-config.js` (CIT: US$49 / 79 / 99, all available); its buttons open `app.iparkar.com/courses/<CODE>?plan=<days>`, and plans without one use the shared `practice.durations`
+- `/practice-exams/#sample` — the free sample card; every "Try free questions" link lands here and the card is scrolled into view. **Start free sample** opens `free-exam.js`: a full-screen workspace mirroring the app.iparkar.com practice exams — 15-minute countdown (`practice.freeMinutes`), question navigator with flags and filters, the TI-30XS MultiView calculator (engine ported from `iparkar-lms/src/lib/calculator/engine.ts`), Check answer with explanations, Previous · Cancel · Next / Submit, and a scored review at the end
 - `/about/` — founder and learning approach
 
 Legacy hash bookmarks continue to redirect to the corresponding static pages.

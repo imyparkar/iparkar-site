@@ -146,7 +146,6 @@
     return `
       <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">${esc(codes.join(" · "))} PRACTICE EXAMS</p>${header(p.title, p.lead)}
       <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
-      <div id="exam-area"></div>
       <div id="plans">
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" class="plan-sr">Choose your package</h2>
@@ -173,7 +172,7 @@
           </div>
           <p class="fineprint pricing-terms" data-price-terms>Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
         </section>
-        <section class="practice-sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions with answer explanations. Free, with no account needed.</p></div><button class="ip-btn ip-btn--ghost" data-action="start-free">Start free sample</button></section>
+        <section class="practice-sample" id="sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions in a 15-minute timed sample, with the same calculator, question navigator and answer explanations as the full practice exams. Free, with no account needed.</p></div><button class="ip-btn ip-btn--primary" data-action="start-free">Start free sample</button></section>
         <section class="practice-features" aria-labelledby="included-heading"><div><p class="eyebrow">INCLUDED IN YOUR PACKAGE</p><h2 id="included-heading">Practice with purpose.</h2><p>The same practice tools, with the time you need to use them.</p></div>
         <div class="practice-features__content">${exams.map((pl,i)=>`<article data-feature-exam="${codes[i]}"><h3>${codes[i]} practice features</h3><ul>${pl.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></article>`).join('')}</div></section>
         <p class="pay-methods"><span>Secure payment by Razorpay: cards, UPI, net banking, wallets and</span> <img src="/assets/apple-pay-mark.svg" alt="Apple Pay" width="45" height="29"></p><section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification, select the access period and click Buy. You pay securely online with Razorpay and your access opens as soon as the payment is confirmed.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
@@ -312,83 +311,40 @@
   }
   if (window.IP_PRICES && $("[data-plan-courses]")) window.IP_PRICES.onReady(refreshPrices);
 
-  /* Free sample engine — 10 random questions, instant feedback */
-  const exam = { items: [], i: 0, answers: [] };
+  /* Free sample — 10 random questions in the timed exam workspace (free-exam.js) */
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function showPlans() {
+    const target = $("#pricing") || $("#plans");
+    if (target) target.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
+    $(isMobile() ? "[data-m-exam][aria-pressed='true']" : "[data-course-plan][aria-pressed='true']")?.focus({ preventScroll: true });
+  }
   function startFree() {
-    exam.items = shuffle(Q).slice(0, Math.min(S.practice.freeCount, Q.length));
-    exam.i = 0; exam.answers = [];
-    $("#plans").hidden = true;
-    drawQuestion();
-    $("#exam-area").scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-  function drawQuestion() {
-    const n = exam.items.length, it = exam.items[exam.i];
-    $("#exam-area").innerHTML = `
-      <section class="ip-card exam" aria-live="polite">
-        <div class="exam__top">
-          <span class="ip-pill ip-pill--todo">${esc(it.topic)}</span>
-          <span style="font-size:14px;color:var(--slate)">Question ${exam.i + 1} of ${n}</span>
-        </div>
-        <div class="progress"><div class="progress__bar" style="width:${(exam.i / n) * 100}%"></div></div>
-        <h3 class="exam__q">${esc(it.q)}</h3>
-        <div class="options">${it.options.map((o, k) => `<button class="option" data-opt="${k}"><span class="option__key">${"ABCDEFG"[k]}</span><span>${esc(o)}</span></button>`).join("")}</div>
-        <div id="fb"></div>
-      </section>`;
-  }
-  function choose(k) {
-    const it = exam.items[exam.i], ok = k === it.answer;
-    exam.answers[exam.i] = k;
-    document.querySelectorAll(".option").forEach((b) => {
-      const idx = Number(b.dataset.opt);
-      b.disabled = true;
-      if (idx === it.answer) b.classList.add("is-correct");
-      else if (idx === k) b.classList.add("is-wrong");
+    if (!window.IP_FREE_EXAM || !Q.length) return;
+    window.IP_FREE_EXAM.start(shuffle(Q).slice(0, Math.min(S.practice.freeCount, Q.length)), {
+      minutes: S.practice.freeMinutes || 15,
+      onPlans: showPlans,
+      onAgain: startFree,
+      onScore(score) { const best = store.get("ip-free-best"); if (best == null || score > best) store.set("ip-free-best", score); },
     });
-    const last = exam.i === exam.items.length - 1;
-    $("#fb").innerHTML = `
-      <div class="feedback">
-        <span class="ip-pill ${ok ? "ip-pill--done" : "ip-pill--alert"}">${ok ? "Correct" : "Not quite"}</span>
-        <p>${esc(it.explain)}</p>
-      </div>
-      <div class="exam__nav"><button class="ip-btn ip-btn--primary" data-action="next">${last ? "See my score" : "Next question"}</button></div>`;
-    $("[data-action='next']").focus();
   }
-  function finish() {
-    const n = exam.items.length;
-    const score = exam.items.reduce((s, it, i) => s + (exam.answers[i] === it.answer ? 1 : 0), 0);
-    const best = store.get("ip-free-best");
-    if (best == null || score > best) store.set("ip-free-best", score);
-    $("#exam-area").innerHTML = `
-      <section class="ip-card exam">
-        <div class="score">
-          <p class="eyebrow">Your score</p>
-          <div class="score__num">${score}/${n}</div>
-          <p>${score / n >= 0.7 ? "Strong result — keep the momentum with full timed mocks." : "Good start. Review the explanations and try another set."}</p>
-          <div class="ip-btn-row" style="justify-content:center;margin-top:16px">
-            <button class="ip-btn ip-btn--primary" data-action="start-free">Try another 10</button>
-            <button class="ip-btn ip-btn--ghost" data-action="show-plans">See premium plans</button>
-          </div>
-        </div>
-        <div class="review">${exam.items.map((it, i) => `
-          <div class="review__item">
-            <span class="ip-pill ip-pill--sm ${exam.answers[i] === it.answer ? "ip-pill--done" : "ip-pill--alert"}">${exam.answers[i] === it.answer ? "Correct" : "Missed"}</span>
-            <span>${esc(it.q)}</span>
-          </div>`).join("")}</div>
-      </section>`;
+  // "Try free questions" links land on /practice-exams/#sample: bring the sample card into view once layout settles.
+  function focusSample() {
+    const card = $("#sample");
+    if (!card || location.hash !== "#sample") return;
+    card.scrollIntoView({ behavior: "auto", block: "center" });
+    if (!reduceMotion()) replay(card, "practice-sample--flash");
+  }
+  if ($("#sample")) {
+    if (document.readyState === "complete") focusSample(); else window.addEventListener("load", focusSample, { once: true });
+    window.addEventListener("hashchange", focusSample);
   }
 
   /* ---------- clicks ---------- */
   document.addEventListener("click", (e) => {
     const cert = e.target.closest("[data-cert]");
     if (cert) return renderCert(cert.dataset.cert);
-    const opt = e.target.closest("[data-opt]");
-    if (opt && !opt.disabled) return choose(Number(opt.dataset.opt));
     const act = e.target.closest("[data-action]");
     if (!act) return;
-    const a = act.dataset.action;
-    if (a === "start-free") startFree();
-    if (a === "next") { if (exam.i < exam.items.length - 1) { exam.i++; drawQuestion(); } else finish(); }
-    if (a === "show-plans") { $("#exam-area").innerHTML = ""; $("#plans").hidden = false; $("#plans").scrollIntoView({ behavior: "smooth" }); $(isMobile() ? "[data-m-exam][aria-pressed='true']" : "[data-course-plan][aria-pressed='true']")?.focus({ preventScroll: true }); }
+    if (act.dataset.action === "start-free") startFree();
   });
 })();

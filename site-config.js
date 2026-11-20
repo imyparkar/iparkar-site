@@ -493,6 +493,7 @@ window.SITE = {
     title: "Your exam. Your timeline.",
     lead: "Choose your certification and the study time that fits. One-time payment. No automatic renewal.",
     freeCount: 10,
+    freeMinutes: 15,
     appUrl: "https://app.iparkar.com",
     member: { text: "Already enrolled?", label: "Sign in to your dashboard", href: "https://app.iparkar.com/login" },
     durations: [

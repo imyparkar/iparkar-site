@@ -61,11 +61,11 @@ window.SITE = {
       "Imran is an HSE professional with a Mechanical Engineering degree from the University of Mumbai and 16 years of experience in the oil and gas industry in Kuwait. His work covers:"
     ],
     "duties": [
-      ["Contract HSE compliance", "implementing the project HSE plan so maintenance activities meet client, contractual and regulatory requirements."],
-      ["High-risk work controls", "verifying risk assessments, job safety analyses, permits to work and isolations for activities such as hot work and confined space entry."],
-      ["Inspections and audits", "directing the HSE team to identify unsafe conditions and close corrective actions across all work locations."],
-      ["Incidents and emergency preparedness", "leading investigations, tracking preventive actions and coordinating drills for gas releases and fires."],
-      ["HSE performance reporting", "reviewing KPIs and trends, submitting monthly reports to the client and using the findings to prioritise training and site interventions."]
+      "Managing contract HSE compliance",
+      "Overseeing controls for high-risk activities",
+      "Leading site inspections and audits",
+      "Managing incident investigations and emergency preparedness",
+      "Monitoring and reporting HSE performance with continual improvement"
     ],
     "qualificationsHeading": "Professional qualifications",
     "qualifications": [

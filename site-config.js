@@ -53,7 +53,7 @@ window.SITE = {
     "eyebrow": "Meet our founder",
     "name": "Imran Parkar",
     "role": "Founder, iParkar Learning · HSE Manager",
-    "photo": "/assets/founder/imran-parkar",
+    "photo": "/assets/founder/imran-parkar-circle",
     "photoAlt": "Portrait of Imran Parkar, founder of iParkar Learning",
     "credentials": ["CSP", "CIH", "CIT", "CFPS", "PMP", "CMIOSH"],
     "experienceHeading": "Professional background",
@@ -67,14 +67,8 @@ window.SITE = {
       "Managing incident investigations and emergency preparedness",
       "Monitoring and reporting HSE performance with continual improvement"
     ],
-    "qualificationsHeading": "Professional qualifications",
-    "qualifications": [
-      ["CSP", "Certified Safety Professional", "BCSP"],
-      ["CIH", "Certified Industrial Hygienist", "BGC"],
-      ["CIT", "Certified Instructional Trainer", "BCSP"],
-      ["CFPS", "Certified Fire Protection Specialist", "NFPA"],
-      ["PMP", "Project Management Professional", "PMI"],
-      ["CMIOSH", "Chartered Member", "IOSH"]
+    "experienceAfter": [
+      "He was also part of the item-writing team for the 2026 CIH examination."
     ],
     "storyHeading": "Why I started iParkar Learning",
     "story": [

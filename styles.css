@@ -936,7 +936,7 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
 .company-about .founder { margin-top:32px; padding:32px; background:var(--white); border:1px solid var(--border-hairline); border-radius:var(--radius-card); }
 .founder__intro { display:grid; grid-template-columns:minmax(180px,240px) 1fr; gap:32px; align-items:start; }
 .founder__photo img { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:50%; background:var(--marigold); box-shadow:0 0 0 6px var(--white),0 0 0 7px var(--border-hairline); }
-.founder__duties { margin:0; padding-left:20px; color:var(--graphite); line-height:1.65; }
+.founder__duties { margin:0 0 16px; padding-left:20px; color:var(--graphite); line-height:1.65; }
 .founder__duties li { margin-bottom:4px; }
 .founder__duties strong { color:var(--midnight); font-weight:600; }
 .founder__eyebrow { background:var(--marigold); color:var(--midnight); }
@@ -945,11 +945,6 @@ body:not(:has(.book-section:target)) .book-tab--all { background:var(--midnight)
 .company-about .founder__role { color:var(--slate); margin:0 0 16px; text-align:left; }
 .founder__creds { display:flex; flex-wrap:wrap; gap:8px; list-style:none; margin:0; padding:0; }
 .founder__creds li { padding:4px 12px; border-radius:var(--radius-pill); background:var(--midnight); color:var(--white); font-size:13px; font-weight:600; letter-spacing:.4px; }
-.founder__quals ul { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; list-style:none; margin:0; padding:0; }
-.founder__quals li { display:grid; grid-template-columns:auto 1fr; column-gap:12px; align-items:baseline; padding:14px 16px; background:var(--sky-tint); border-radius:var(--radius-button); }
-.founder__quals strong { grid-row:span 2; color:var(--action-blue); font-size:15px; min-width:64px; }
-.founder__quals span { color:var(--midnight); font-weight:500; }
-.founder__quals em { font-style:normal; color:var(--stone); font-size:13px; }
 .founder__story { margin:24px 0 0; padding:24px 28px; background:var(--paper); border-left:4px solid var(--marigold); border-radius:0 var(--radius-card) var(--radius-card) 0; }
 .company-about .founder__story h3 { margin-top:0; }
 .founder__story footer { margin-top:12px; font-weight:600; color:var(--midnight); }

@@ -73,6 +73,7 @@ window.SITE = {
     "storyHeading": "Why I started iParkar Learning",
     "story": [
       "Over the years, I have met many emerging safety professionals who wanted to earn a professional credential but had no clear picture of how to get there: which certification suited their career, what prerequisites they needed and where to apply. Too often, they ended up enrolling with a local training provider that recommended whichever course it happened to sell, rather than the one that fitted their goals.",
+      "Preparing for certifications such as the ASP, CSP and CIH also demands an enormous amount of study and reading, and gathering the right information from many different references is a challenge in itself. Our self-paced study courses, aligned with BCSP’s exam blueprints, and our practice exam packages, which simulate the actual exam screen, are designed to ease that burden.",
       "I started iParkar Learning to change that. Our aim is to educate aspiring professionals with clear information on certification pathways, eligibility requirements and official awarding bodies, so they can make their own decision about the credential they actually want.",
       "I believe that when you do the research yourself, rather than relying on someone else’s advice, you are more empowered. You know the correct way to apply, study and earn your credential, and you spend less money getting there."
     ],

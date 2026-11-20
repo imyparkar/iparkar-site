@@ -49,6 +49,34 @@ window.SITE = {
   "paragraphs": [
     "iParkar Learning is an independent learning platform for health, safety, environmental and occupational hygiene professionals. We help learners understand qualification pathways, strengthen their knowledge and prepare for professional examinations."
   ],
+  "founder": {
+    "eyebrow": "Meet our founder",
+    "name": "Imran Parkar",
+    "role": "Founder, iParkar Learning · HSE Manager",
+    "photo": "/assets/founder/imran-parkar",
+    "photoAlt": "Portrait of Imran Parkar, founder of iParkar Learning",
+    "credentials": ["CSP", "CIH", "CIT", "CFPS", "PMP", "CMIOSH"],
+    "experienceHeading": "Professional background",
+    "experience": [
+      "Imran is an HSE professional with 16 years of experience in the oil and gas industry in Kuwait. As HSE Manager at NBTC, he leads health, safety and environment on Kuwait Oil Company’s contract for the maintenance and operational support of gas facilities across North Kuwait, West Kuwait and CNT Subiya. His work covers HSE compliance, Permit to Work, fleet safety, heat stress management and HSE documentation."
+    ],
+    "qualificationsHeading": "Professional qualifications",
+    "qualifications": [
+      ["CSP", "Certified Safety Professional", "BCSP"],
+      ["CIH", "Certified Industrial Hygienist", "BGC"],
+      ["CIT", "Certified Instructional Trainer", "BCSP"],
+      ["CFPS", "Certified Fire Protection Specialist", "NFPA"],
+      ["PMP", "Project Management Professional", "PMI"],
+      ["CMIOSH", "Chartered Member", "IOSH"]
+    ],
+    "storyHeading": "Why I started iParkar Learning",
+    "story": [
+      "Over the years, I have met many emerging safety professionals who wanted to earn a professional credential but had no clear picture of how to get there: which certification suited their career, what prerequisites they needed and where to apply. Too often, they ended up enrolling with a local training provider that recommended whichever course it happened to sell, rather than the one that fitted their goals.",
+      "I started iParkar Learning to change that. Our aim is to educate aspiring professionals with clear information on certification pathways, eligibility requirements and official awarding bodies, so they can make their own decision about the credential they actually want.",
+      "I believe that when you do the research yourself, rather than relying on someone else’s advice, you are more empowered. You know the correct way to apply, study and earn your credential, and you spend less money getting there."
+    ],
+    "signoff": "Imran Parkar, Founder"
+  },
   "sections": [
     {
       "heading": "Our purpose",

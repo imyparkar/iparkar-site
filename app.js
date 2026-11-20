@@ -40,7 +40,11 @@
   /* ---------- Tab 1: About ---------- */
   function renderAbout() {
     const a = S.about.company;
-    return `<article class="company-about"><header class="ip-section-header"><h1 class="ip-section-header__title">${esc(a.title)}</h1><p class="ip-section-header__lead">${esc(a.lead)}</p></header>${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}${a.sections.map(section=>`<section><h2>${esc(section.heading)}</h2>${section.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')}<div class="ip-btn-row"><a class="ip-btn ip-btn--ghost" href="/certification-pathways/">Explore learning pathways</a><a class="ip-btn ip-btn--text" href="/contact/">Contact iParkar Learning</a></div></article>`;
+    return `<article class="company-about"><header class="ip-section-header"><h1 class="ip-section-header__title">${esc(a.title)}</h1><p class="ip-section-header__lead">${esc(a.lead)}</p></header>${a.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}${a.founder ? renderFounder(a.founder) : ''}${a.sections.map(section=>`<section><h2>${esc(section.heading)}</h2>${section.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')}<div class="ip-btn-row"><a class="ip-btn ip-btn--ghost" href="/certification-pathways/">Explore learning pathways</a><a class="ip-btn ip-btn--text" href="/contact/">Contact iParkar Learning</a></div></article>`;
+  }
+
+  function renderFounder(f) {
+    return `<div class="founder" id="founder"><div class="founder__intro"><picture class="founder__photo"><source srcset="${f.photo}.webp" type="image/webp"><img src="${f.photo}.jpg" alt="${esc(f.photoAlt)}" width="640" height="800" loading="lazy" decoding="async"></picture><div class="founder__id"><span class="ip-pill founder__eyebrow">${esc(f.eyebrow)}</span><h2 id="founder-name">${esc(f.name)}</h2><p class="founder__role">${esc(f.role)}</p><ul class="founder__creds" aria-label="Credentials">${f.credentials.map(c=>`<li>${esc(c)}</li>`).join('')}</ul><h3>${esc(f.experienceHeading)}</h3>${f.experience.map(p=>`<p>${esc(p)}</p>`).join('')}</div></div><div class="founder__quals"><h3>${esc(f.qualificationsHeading)}</h3><ul>${f.qualifications.map(([abbr,name,body])=>`<li><strong>${esc(abbr)}</strong><span>${esc(name)}</span><em>${esc(body)}</em></li>`).join('')}</ul></div><blockquote class="founder__story"><h3>${esc(f.storyHeading)}</h3>${f.story.map(p=>`<p>${esc(p)}</p>`).join('')}<footer>— ${esc(f.signoff)}</footer></blockquote></div>`;
   }
 
   /* ---------- Tab 2: Certifications ---------- */

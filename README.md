@@ -33,6 +33,23 @@ Edit copy in `site-config.js`, page structure and curated BOHS/resources data in
 
 `wrangler.jsonc` declares static assets at the repository root, proper 404 responses and an empty previews block. `.assetsignore` excludes development files from public assets. Production uses `main`; review the `redesign/home-pathways-seo` preview before merging.
 
+## Navigation and product pages (Nov 2026 redesign)
+
+The header is generated from `nav` in `site-config.js` (one list for desktop and mobile) by `navHtml()` in `build.mjs`, and `nav.js` adds the behaviour. Only **Resources** and **Practice Exam** have menus: the label links to the overview page and a separate chevron button (`aria-expanded`) opens the menu. Escape closes it and returns focus to the button; at 1150px and below a Menu button opens the same list with expandable groups. The legal pages and `404.html` get the same header on every build.
+
+New pages (existing URLs are unchanged, so no redirects were needed):
+
+- `/resources/study-courses/` — ASP, CSP and PMP® study courses with trial and buy actions
+- `/resources/study-courses/asp/`, `/csp/`, `/pmp/` — one page per course; PMP® Exam Prep Course (LMS `PMP-SPS`) buys at `app.iparkar.com/learn/pmp-sps/buy`
+- `/resources/sat/` — free SAT course; `/resources/learning-resources/` — official BCSP, BGC and BOHS links (moved from `/resources/`)
+- `/practice-exams/asp/`, `/csp/`, `/cih/`, `/ges-epi/`, `/qep/`, `/cit/`, `/pmp/` — one page per package; PMP is **Coming soon** with no purchase action (`comingSoon: true` in `site-config.js`)
+
+`/resources/` keeps the `#study-courses`, `#study-guides` and `#free-courses` anchors. `/practice-exams/` keeps the pricing cards and `#sample`, and adds a directory of all seven packages.
+
+PMP® course prices are in `COURSE_PRICES` in `regional-prices.js` and must equal `COURSE_PRICES` in `iparkar-lms/src/lib/payments/catalogue.ts` (Bahrain pays US$, as at checkout).
+
+**Sign in / Dashboard:** `nav.js` calls `https://app.iparkar.com/api/session` with credentials. It answers `{ "signedIn": true|false }` only for the iparkar.com origins; the header then shows Dashboard or Sign in.
+
 ## Quiz behaviour and performance
 
 The quiz is linked in the same tab from its page under Resources. An on-demand embedded player was tested and failed to load with the existing Cloudflare Access setup, so the broken player was removed. No quiz-service request is made until the visitor chooses to continue. Access policies, quiz infrastructure and authentication are unchanged. Keeping the full quiz in the site shell requires a compatible sign-in or hosting setup. ASP access also navigates in the same tab.
@@ -56,7 +73,7 @@ A fresh unauthenticated request to https://quiz.iparkar.com/ was verified to ret
 
 ## Sign-in placement
 
-The header no longer carries a site-wide Sign in button. Returning students sign in from the "Already enrolled?" panel beside the practice exam heading, or from the "Student sign in" link in every page footer.
+The header shows a quiet Sign in link (Dashboard when signed in), see above. Returning students sign in from the "Already enrolled?" panel beside the practice exam heading, or from the "Student sign in" link in every page footer.
 
 ## Reference book sources reviewed 31 October 2026
 

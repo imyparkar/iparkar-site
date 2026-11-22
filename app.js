@@ -33,7 +33,7 @@
   // Build the public HTML ahead of time; the browser enhances only interactive tools.
   if (window.IPARKAR_BUILD) {
     window.IPARKAR_RENDER = { about: renderAbout, courses: renderCourses,
-      quiz: renderQuiz, practice: renderPractice, cert: renderCert };
+      quiz: renderQuiz, practice: renderPractice, practiceExam: renderPracticeExam, cert: renderCert };
     return;
   }
 
@@ -135,6 +135,30 @@
   function planLabel(code, i) { const plan = durs(code)[i]; return `${plan.available ? "Buy" : "Request"} ${code} · ${durationLabel(plan)}`; }
   function durationLabel(plan) { return plan.days === 365 ? "1 year" : `${plan.days} days`; }
 
+
+  /* ---------- Practice exam: one page per package (/practice-exams/<code>/) ---------- */
+  // Function declarations (not const): build.mjs calls these before the rest of this file runs.
+  function examSlug(code) { return code === "GES/EPI" ? "ges-epi" : code.toLowerCase(); }
+  function examPage(code) { return `/practice-exams/${examSlug(code)}/`; }
+  function examPlans() { return S.practice.plans.filter((pl) => pl.code); }
+  function fromPrice(pl) { const d = durs(pl.code)[0]; return `<span data-local-price="${esc(pl.code)}" data-i="0" data-usd="${d.price}">US$${d.price}</span>`; }
+  // Directory of every package, including the PMP practice exam (Coming soon, no purchase).
+  function renderPackages() {
+    return `<section class="px-directory" id="packages" aria-labelledby="packages-heading"><div class="px-directory__head"><h2 id="packages-heading">All practice exam packages</h2><p>Open a package to see its features and access periods.</p></div><div class="px-grid">${examPlans().map((pl) => `<a class="px-card px-card--${examSlug(pl.code)}${pl.comingSoon ? " px-card--soon" : ""}" href="${examPage(pl.code)}"><span class="px-card__top"><strong class="px-card__code">${esc(pl.code)}</strong><span class="px-card__status${pl.comingSoon ? " px-card__status--soon" : ""}">${esc(pl.comingSoon ? "Coming soon" : pl.status)}</span></span><span class="px-card__name">${esc(pl.examName)}</span><span class="px-card__price">${pl.comingSoon ? "In preparation · not yet on sale" : `From ${fromPrice(pl)} · ${durationLabel(durs(pl.code)[0])}`}</span><span class="card-link__cta">${pl.comingSoon ? "View details" : `View ${esc(pl.code)} practice exam`} →</span></a>`).join("")}</div></section>`;
+  }
+  function renderPracticeExam(code, extra = {}) {
+    const p = S.practice, pl = p.plans.find((x) => x.code === code);
+    const head = `<section class="px-hero px-hero--${examSlug(code)}" aria-labelledby="px-title"><div><p class="px-hero__eyebrow"><span class="px-hero__code">${esc(code)}</span> Practice exam${pl.comingSoon ? ' <span class="px-card__status px-card__status--soon">Coming soon</span>' : ""}</p><h1 id="px-title" class="px-hero__title">${esc(pl.examName)} practice exam</h1><p class="px-hero__lead">${pl.comingSoon ? `Timed ${esc(code)} practice exams are in preparation. This package is not on sale yet.` : esc(p.lead)}</p></div></section>`;
+    const features = `<section class="course-section" aria-labelledby="px-feat"><h2 id="px-feat">${pl.comingSoon ? "What the package will include" : "Included in every period"}</h2><ul class="tick-list">${pl.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul></section>`;
+    const study = extra.course ? `<section class="course-cross" aria-labelledby="px-study"><div><p class="eyebrow">Separate product</p><h2 id="px-study">${esc(extra.course.title)}</h2><p>${pl.comingSoon ? "Study for the exam now with the self-paced course, sold separately." : "Learn the material chapter by chapter with the self-paced study course, sold separately from this practice exam."}</p></div><a class="ip-btn ip-btn--outlined" href="${extra.course.href}">View the study course</a></section>` : "";
+    if (pl.comingSoon) {
+      return `${head}<div class="course-cols">${features}<section class="course-section px-soon" aria-labelledby="px-soon"><h2 id="px-soon">Coming soon</h2><p>There is nothing to buy yet. When the ${esc(code)} practice exam opens, it will be listed here with its access periods and prices.</p><div class="ip-btn-row"><a class="ip-btn ip-btn--outlined" href="/practice-exams/">See available practice exams</a><a class="ip-btn ip-btn--text" href="/practice-exams/#sample">Try free questions</a></div></section></div>${study}<p class="fineprint page-note">${esc(extra.mark || p.note)}</p>`;
+    }
+    const cards = durs(code).map((d, i) => `<article class="px-plan${i === 1 ? " px-plan--featured" : ""}" aria-labelledby="px-plan-${d.days}"><p class="px-plan__badge">${esc(d.badge)}</p><h3 id="px-plan-${d.days}" class="px-plan__name">${esc(d.name)}</h3><p class="px-plan__days">${d.days} days of access</p><p class="px-plan__price"><strong data-local-price="${esc(code)}" data-i="${i}" data-usd="${d.price}">US$${d.price}</strong></p><p class="px-plan__desc">${esc(d.description)}</p><a class="ip-btn ${i === 1 ? "ip-btn--primary" : "ip-btn--dark"} ip-btn--lg px-plan__cta" href="${esc(planHref(code, i))}">${esc(planLabel(code, i))}</a></article>`).join("");
+    return `${head}<section class="px-plans" aria-labelledby="px-plans-h"><h2 id="px-plans-h" class="plan-sr">Choose an access period</h2><div class="px-plans__grid">${cards}</div><p class="pay-methods"><span>Secure payment by Razorpay: cards, UPI, net banking, wallets and</span> <img src="/assets/apple-pay-mark.svg" alt="Apple Pay" width="45" height="29"></p><p class="fineprint pricing-terms"><span data-local-currency-note data-for="${esc(code)}"></span>One-time payment, no automatic renewal. Each package covers one certification. Applicable taxes are calculated at checkout. Access begins when payment is confirmed. <a href="/refunds">Refund policy</a>.</p></section>
+      <div class="course-cols">${features}<section class="course-section" aria-labelledby="px-try"><h2 id="px-try">Try before you buy</h2><p>Take ten free questions in a 15-minute timed sample with the same calculator, navigator and explanations. No account needed.</p><div class="ip-btn-row"><a class="ip-btn ip-btn--outlined" href="/practice-exams/#sample">Try free questions</a><a class="ip-btn ip-btn--text" href="${esc(p.member.href)}">${esc(p.member.label)}</a></div></section></div>${study}<p class="fineprint page-note">${esc(p.note)}</p>`;
+  }
+
   function renderPractice() {
     const p = S.practice;
     const exams = p.plans.filter(pl => pl.period);
@@ -146,6 +170,7 @@
     return `
       <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">${esc(codes.join(" · "))} PRACTICE EXAMS</p>${header(p.title, p.lead)}
       <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
+      ${renderPackages()}
       <div id="plans">
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" class="plan-sr">Choose your package</h2>

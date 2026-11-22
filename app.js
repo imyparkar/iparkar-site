@@ -6,7 +6,6 @@
 (function () {
   "use strict";
   const S = window.SITE;
-  const Q = window.FREE_QUESTIONS || [];
 
   /* ---------- tiny helpers ---------- */
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -138,6 +137,12 @@
 
   /* ---------- Practice exam: one page per package (/practice-exams/<code>/) ---------- */
   // Function declarations (not const): build.mjs calls these before the rest of this file runs.
+  // Free sample card: what the selected exam's 10 questions cover.
+  function sampleNote(code) {
+    const pl = S.practice.plans.find((x) => x.code === code) || {};
+    if (code === "PMP") return "PMP® · 10 questions in six exam question styles: single answer, multiple response, drop-down, matching, drag-and-drop and hotspot. No calculator.";
+    return `${code} · 10 questions from the ${pl.examName || code} bank, spread across its blueprint domains. On-screen calculator included.`;
+  }
   function examSlug(code) { return code === "GES/EPI" ? "ges-epi" : code.toLowerCase(); }
   function examPage(code) { return `/practice-exams/${examSlug(code)}/`; }
   function examPlans() { return S.practice.plans.filter((pl) => pl.code); }
@@ -157,7 +162,7 @@
     // Plan cards match the /practice-exams/ overview: rose bands, small currency symbol, one solid Buy button.
     const cards = durs(code).map((d, i) => `<article class="px-plan plan-mcard plan-mcard--t${i}${i === 1 ? " plan-mcard--featured" : ""}" aria-labelledby="px-plan-${d.days}"><div class="plan-mcard__band"><span class="plan-mcard__head"><h3 id="px-plan-${d.days}" class="plan-mcard__name">${esc(d.name)}</h3><span class="plan-mcard__days">${durationLabel(d)} of access</span></span>${i ? `<span class="plan-mcard__badge">${esc(d.badge)}</span>` : ""}</div><div class="plan-mcard__body"><p class="plan-mcard__price"><span data-local-price="${esc(code)}" data-i="${i}" data-usd="${d.price}" data-split><small>US$</small>${d.price}</span><span class="plan-mcard__once">one-time</span></p><p class="plan-mcard__per"><span data-local-perday="${esc(code)}" data-i="${i}" data-usd="${d.price}" data-days="${d.days}">US$${(d.price / d.days).toFixed(2)}</span> a day · ${esc(d.description)}</p><a class="ip-btn plan-mcard__cta${i === 1 ? " ip-btn--primary" : ""}" href="${esc(planHref(code, i))}">${esc(planLabel(code, i))}</a></div></article>`).join("");
     return `${head}<section class="px-plans pxc" aria-labelledby="px-plans-h"><h2 id="px-plans-h" class="pxc-plans-title">How long do you want to study?</h2><div class="px-plans__grid">${cards}</div><p class="pay-methods"><span>Secure payment by Razorpay: cards, UPI, net banking, wallets and</span> <img src="/assets/apple-pay-mark.svg" alt="Apple Pay" width="45" height="29"></p><p class="fineprint pricing-terms"><span data-local-currency-note data-for="${esc(code)}"></span>One-time payment, no automatic renewal. Each package covers one certification. Applicable taxes are calculated at checkout. Access begins when payment is confirmed. <a href="/refunds">Refund policy</a>.</p></section>
-      <div class="course-cols">${features}<section class="course-section" aria-labelledby="px-try"><h2 id="px-try">Try before you buy</h2><p>Take ten free questions in a 15-minute timed sample with the same calculator, navigator and explanations. No account needed.</p><div class="ip-btn-row"><a class="ip-btn ip-btn--outlined" href="/practice-exams/#sample">Try free questions</a><a class="ip-btn ip-btn--text" href="${esc(p.member.href)}">${esc(p.member.label)}</a></div></section></div>${study}<p class="fineprint page-note">${esc(p.note)}</p>`;
+      <div class="course-cols">${features}<section class="course-section" aria-labelledby="px-try"><h2 id="px-try">Try before you buy</h2><p>Take ten free questions in a 15-minute timed sample with the same calculator, navigator and explanations. No account needed.</p><div class="ip-btn-row"><a class="ip-btn ip-btn--outlined" href="/practice-exams/?exam=${encodeURIComponent(code)}#sample">Try free ${esc(code)} questions</a><a class="ip-btn ip-btn--text" href="${esc(p.member.href)}">${esc(p.member.label)}</a></div></section></div>${study}<p class="fineprint page-note">${esc(p.note)}</p>`;
   }
 
   function renderPractice() {
@@ -171,7 +176,7 @@
     const d0 = durs("ASP");
     // Option C (Nov 2026): certification tabs → selected exam block → three plan cards. One layout for every screen size.
     const examBlocks = exams.map((pl, i) => `<article class="pxc-exam pxc-exam--${examSlug(pl.code)}" data-feature-exam="${pl.code}" aria-label="${esc(pl.code)} practice exam"${i ? " hidden" : ""}>
-              <div class="pxc-exam__info"><p class="pxc-exam__stat">${esc(pl.code)} · ${esc(pl.tagline || "")}</p><h3 class="pxc-exam__name">${esc(pl.examName)}</h3><p class="pxc-exam__lead">Original questions written to the current blueprint, with the tools you will see on exam day.</p><p class="pxc-exam__links"><a href="${examPage(pl.code)}">Full ${esc(pl.code)} details →</a><a href="#sample">Try 10 free questions →</a></p></div>
+              <div class="pxc-exam__info"><p class="pxc-exam__stat">${esc(pl.code)} · ${esc(pl.tagline || "")}</p><h3 class="pxc-exam__name">${esc(pl.examName)}</h3><p class="pxc-exam__lead">Original questions written to the current blueprint, with the tools you will see on exam day.</p><p class="pxc-exam__links"><a href="${examPage(pl.code)}">Full ${esc(pl.code)} details →</a><a href="#sample" data-sample-for="${esc(pl.code)}">Try 10 free ${esc(pl.code)} questions →</a></p></div>
               <div class="pxc-exam__panel"><p class="pxc-exam__panel-title">Included with every ${esc(pl.code)} package</p><ul class="pxc-ticks">${pl.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>
             </article>`).join("");
     const planCards = p.durations.map((dd, i) => { const d = d0[i] || dd; return `<div class="plan-mcard plan-mcard--t${i}${i === 1 ? " is-selected plan-mcard--featured" : ""}" data-m-plan="${i}">
@@ -200,7 +205,8 @@
           <p class="pay-methods"><span>Secure payment by Razorpay: cards, UPI, net banking, wallets and</span> <img src="/assets/apple-pay-mark.svg" alt="Apple Pay" width="45" height="29"></p>
           <p class="fineprint pricing-terms" data-price-terms>Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
         </section>
-        <section class="practice-sample" id="sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions in a 15-minute timed sample, with the same calculator, question navigator and answer explanations as the full practice exams. Free, with no account needed.</p></div><button class="ip-btn ip-btn--primary" data-action="start-free">Start free sample</button></section>
+        <section class="practice-sample" id="sample" aria-labelledby="sample-heading"><div class="practice-sample__text"><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Choose your exam, then try 10 questions from that exam’s own question bank in a 15-minute timed sample, with the same question navigator and answer explanations as the full practice exams. Free, with no account needed.</p></div>
+          <div class="practice-sample__pick"><p class="practice-sample__label" id="sample-exam-label">Choose your exam</p><div class="sample-exams" role="group" aria-labelledby="sample-exam-label">${codes.map((code, i) => `<button type="button" class="sample-exam" data-sample-exam="${esc(code)}" aria-pressed="${i === 0}">${esc(code)}</button>`).join("")}</div><p class="sample-note" data-sample-note aria-live="polite">${esc(sampleNote(codes[0]))}</p><button class="ip-btn ip-btn--primary" data-action="start-free" data-sample-start>Start free ${esc(codes[0])} sample</button></div></section>
         <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification, pick the access period and click Buy. You pay securely online with Razorpay and your access opens as soon as the payment is confirmed.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
       </div>
       <p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>
@@ -295,22 +301,44 @@
   }
   if (window.IP_PRICES && $("[data-plan-mobile]")) window.IP_PRICES.onReady(refreshPrices);
 
-  /* Free sample — 10 random questions in the timed exam workspace (free-exam.js) */
+  /* Free sample — 10 fixed questions for the chosen exam, shuffled, in the timed exam workspace (free-exam.js) */
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function showPlans() {
     const target = $("#pricing") || $("#plans");
     if (target) target.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
     $("[data-m-exam][aria-pressed='true']")?.focus({ preventScroll: true });
   }
+  // The sample exam follows the card's exam picker; the 10 questions are fixed per exam, only their order changes.
+  const SAMPLES = window.FREE_SAMPLES || {};
+  let sampleExam = null, samplePicked = false;
+  function setSampleExam(code, byUser) {
+    if (!SAMPLES[code] || !$("[data-sample-start]")) return;
+    sampleExam = code;
+    if (byUser) samplePicked = true;
+    document.querySelectorAll("[data-sample-exam]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.sampleExam === code)));
+    const note = $("[data-sample-note]"), btn = $("[data-sample-start]");
+    if (note) note.textContent = sampleNote(code);
+    if (btn) btn.textContent = `Start free ${code} sample`;
+  }
   function startFree() {
-    if (!window.IP_FREE_EXAM || !Q.length) return;
-    window.IP_FREE_EXAM.start(shuffle(Q).slice(0, Math.min(S.practice.freeCount, Q.length)), {
+    const code = sampleExam || Object.keys(SAMPLES)[0], set = SAMPLES[code];
+    if (!window.IP_FREE_EXAM || !set) return;
+    window.IP_FREE_EXAM.start(shuffle(set.questions), {
+      code,
+      calculator: set.calculator,
       minutes: S.practice.freeMinutes || 15,
       onPlans: showPlans,
       onAgain: startFree,
-      onScore(score) { const best = store.get("ip-free-best"); if (best == null || score > best) store.set("ip-free-best", score); },
+      onScore(score) { const k = `ip-free-best-${code}`, best = store.get(k); if (best == null || score > best) store.set(k, score); },
     });
   }
+  if ($("[data-sample-start]")) {
+    let first = null;
+    try { first = new URLSearchParams(location.search).get("exam"); } catch (e) { /* ignore */ }
+    if (first && SAMPLES[first]) setSampleExam(first, true);
+    else setSampleExam($("[data-m-exam][aria-pressed='true']")?.dataset.mExam || Object.keys(SAMPLES)[0], false);
+  }
+
   // "Try free questions" links land on /practice-exams/#sample: bring the sample card into view once layout settles.
   function focusSample() {
     const card = $("#sample");
@@ -327,6 +355,13 @@
   document.addEventListener("click", (e) => {
     const cert = e.target.closest("[data-cert]");
     if (cert) return renderCert(cert.dataset.cert);
+    const sx = e.target.closest("[data-sample-exam]");
+    if (sx) return setSampleExam(sx.dataset.sampleExam, true);
+    const sf = e.target.closest("[data-sample-for]");
+    if (sf) setSampleExam(sf.dataset.sampleFor, true);
+    // Until the visitor picks a sample exam themselves, it follows the certification tab above.
+    const tab = e.target.closest("[data-m-exam]");
+    if (tab && !samplePicked) setSampleExam(tab.dataset.mExam, false);
     const act = e.target.closest("[data-action]");
     if (!act) return;
     if (act.dataset.action === "start-free") startFree();

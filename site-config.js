@@ -572,7 +572,7 @@ window.SITE = {
         price: "Free",
         period: "",
         status: "Open now",
-        features: ["10 random questions each attempt", "Answer explanations", "No account needed"],
+        features: ["10 fixed questions from your chosen exam’s bank, in a new order each attempt", "Answer explanations", "No account needed"],
         button: { label: "Start free sample", action: "start-free" },
         color: "white",
       },

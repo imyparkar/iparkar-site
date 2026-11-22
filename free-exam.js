@@ -740,7 +740,7 @@
     if (x) close(true);
     const minutes = opts.minutes || 15;
     x = {
-      items, opts, i: 0, filter: "all", navOpen: false, finished: false, dialog: null,
+      items, opts, i: 0, pick: null, filter: "all", navOpen: false, finished: false, dialog: null,
       sel: items.map(() => null), flag: items.map(() => false), checked: items.map(() => false),
       duration: minutes * 60 * 1000, t0: performance.now(), left: minutes * 60 * 1000, timer: 0, lastFocus: document.activeElement,
     };
@@ -753,9 +753,9 @@
     root.innerHTML = `
       <header class="fx-top">
         <img src="/assets/iparkar-mark-primary.svg" alt="iParkar" width="30" height="30">
-        <div class="fx-top__title"><p class="fx-top__name">Free sample · ${items.length} random questions</p><p class="fx-top__sub">Timed sample exam<span class="fx-wide"> · <span data-fx-count></span></span></p></div>
+        <div class="fx-top__title"><p class="fx-top__name">${opts.code ? `${esc(opts.code)} free sample` : "Free sample"} · ${items.length} questions</p><p class="fx-top__sub">Timed sample exam<span class="fx-wide"> · <span data-fx-count></span></span></p></div>
         <button type="button" class="fx-tool" data-fx="nav" aria-controls="fx-nav" aria-pressed="false">${icon("grid")}<span class="fx-md" data-fx-navlabel>Questions</span><span class="fx-sm fx-num" data-fx-navcount></span></button>
-        <button type="button" class="fx-tool" data-fx="calc" aria-pressed="false">${icon("calc")}<span class="fx-md" data-fx-calclabel>Show calculator</span></button>
+        ${opts.calculator === false ? "" : `<button type="button" class="fx-tool" data-fx="calc" aria-pressed="false">${icon("calc")}<span class="fx-md" data-fx-calclabel>Show calculator</span></button>`}
         ${canFs ? `<button type="button" class="fx-tool fx-tool--text fx-wide-btn" data-fx="fs" aria-label="Enter full screen">${icon("max", 18)}</button>` : ""}
         <div class="fx-timer" role="timer" aria-live="off" data-fx-timer></div>
       </header>
@@ -774,6 +774,9 @@
     root.appendChild(x.calc.el);
     root.addEventListener("click", onClick);
     root.addEventListener("change", onChange);
+    root.addEventListener("dragstart", onDragStart);
+    root.addEventListener("dragover", onDragOver);
+    root.addEventListener("drop", onDrop);
     document.addEventListener("keydown", onKey);
     document.addEventListener("fullscreenchange", onFs);
     window.addEventListener("popstate", onPop);
@@ -804,23 +807,139 @@
     $x("[data-fx-navcount]").textContent = `${x.i + 1}/${x.items.length}`;
   }
 
+  /* ---------- question types ----------
+     Mirrors app.iparkar.com: single best answer, multiple response, pull-down,
+     matching, drag-and-drop onto an exhibit and hotspot. Scoring is all-or-nothing,
+     as in the LMS. Responses: index (single / pull-down), index[] (multiple response),
+     region id[] (hotspot), { left: right } (matching), { item: target } (drag-and-drop). */
+  const kind = (it) => it.type || "single_best_answer";
+  const sameSet = (a, b) => a.length === b.length && a.every((v) => b.includes(v));
+  function isCorrect(it, r) {
+    if (r === null || r === undefined) return false;
+    const ix = it.interaction || {};
+    switch (kind(it)) {
+      case "multiple_response": return sameSet(r.map((k) => LETTERS[k]), it.key);
+      case "hotspot": return sameSet(r, it.key);
+      case "matching": return ix.left.every((l) => r[l.id] === it.key[l.id]);
+      case "enhanced_matching": return Object.keys(it.key).every((d) => it.key[d].includes(r[d]));
+      default: return r === it.answer;
+    }
+  }
+  const optText = (it, k) => `${LETTERS[k]}. ${it.options[k]}`;
+  const nameOf = (list, id) => (list.find((e) => e.id === id) || {}).text || (list.find((e) => e.id === id) || {}).label || id;
+  function correctText(it) {
+    const ix = it.interaction || {};
+    switch (kind(it)) {
+      case "multiple_response": return it.key.map((l) => optText(it, LETTERS.indexOf(l))).join("; ");
+      case "hotspot": return it.key.map((id) => nameOf(ix.regions, id)).join("; ");
+      case "matching": return ix.left.map((l) => `${l.text} → ${nameOf(ix.right, it.key[l.id])}`).join("; ");
+      case "enhanced_matching": return ix.draggables.map((d) => `${d.label} → ${nameOf(ix.targets, it.key[d.id][0])}`).join("; ");
+      default: return optText(it, it.answer);
+    }
+  }
+  function answerText(it, r) {
+    if (r === null) return "No answer";
+    const ix = it.interaction || {};
+    switch (kind(it)) {
+      case "multiple_response": return r.map((k) => optText(it, k)).join("; ");
+      case "hotspot": return r.map((id) => nameOf(ix.regions, id)).join("; ");
+      case "matching": return ix.left.map((l) => `${l.text} → ${r[l.id] ? nameOf(ix.right, r[l.id]) : "not matched"}`).join("; ");
+      case "enhanced_matching": return ix.draggables.map((d) => `${d.label} → ${r[d.id] ? nameOf(ix.targets, r[d.id]) : "not placed"}`).join("; ");
+      default: return optText(it, r);
+    }
+  }
+  // Keep "no answer" as null so the navigator, progress and submit dialog count it correctly.
+  function setResponse(r) {
+    if (x.checked[x.i] || x.finished) return;
+    const empty = r === null || (Array.isArray(r) ? !r.length : typeof r === "object" && !Object.values(r).some(Boolean));
+    x.sel[x.i] = empty ? null : r;
+    drawQuestion(); drawNav();
+  }
+  const pill = (ok) => ok ? '<span class="fx-pill fx-pill--ok">Correct</span>' : '<span class="fx-pill fx-pill--bad">Incorrect</span>';
+  const svgSrc = (svg) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  function exhibitHtml(ex, overlay) {
+    const table = ex.table ? `<details class="fx-ex__text"><summary>Text version of the exhibit</summary><div class="fx-ex__scroll"><table><thead><tr>${ex.table.headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${ex.table.rows.map((row) => `<tr>${row.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></details>` : "";
+    return `<figure class="fx-ex">${ex.title ? `<figcaption>${esc(ex.title)}</figcaption>` : ""}<div class="fx-ex__frame" style="aspect-ratio:${ex.width} / ${ex.height}"><img src="${svgSrc(ex.svg)}" alt="${esc(ex.alt || ex.title || "Exhibit")}" draggable="false">${overlay || ""}</div>${table}</figure>`;
+  }
+  const box = (c) => `left:${c[0] * 100}%;top:${c[1] * 100}%;width:${c[2] * 100}%;height:${c[3] * 100}%`;
+
+  function bodyHtml(it, i, r, checked) {
+    const ix = it.interaction || {}, t = kind(it), dis = checked ? " disabled" : "";
+    if (t === "single_best_answer" || t === "multiple_response") {
+      const multi = t === "multiple_response", chosen = multi ? (r || []) : [r];
+      const right = (k) => multi ? it.key.includes(LETTERS[k]) : k === it.answer;
+      const opts = it.options.map((o, k) => {
+        const on = chosen.includes(k), ok = checked && right(k), bad = checked && on && !right(k);
+        const cls = ok ? " is-correct" : bad ? " is-wrong" : on ? " is-chosen" : "";
+        const input = multi ? `<input type="checkbox" class="fx-sr" data-fx-mr value="${k}"${on ? " checked" : ""}${dis}>` : `<input type="radio" class="fx-sr" name="fx-q${i}" value="${k}"${on ? " checked" : ""}${dis}>`;
+        return `<li><label class="fx-opt${multi ? " fx-opt--multi" : ""}${cls}">${input}<span class="fx-opt__key" aria-hidden="true">${LETTERS[k]}</span><span class="fx-opt__text">${esc(o)}</span>${ok ? `<span class="fx-pill fx-pill--ok">${multi ? "Correct" : "Correct answer"}</span>` : bad ? '<span class="fx-pill fx-pill--bad">Your answer</span>' : ""}</label></li>`;
+      }).join("");
+      const need = multi && ix.select_count;
+      return `<fieldset class="fx-opts"><legend class="fx-sr">Answer options${need ? `, select ${need}` : ""}</legend><ul>${opts}</ul></fieldset>${need && !checked ? `<p class="fx-count" aria-live="polite">${chosen.length} of ${need} selected${chosen.length > need ? " — that is more than the question asks for" : ""}</p>` : ""}`;
+    }
+    if (t === "pulldown") {
+      const cls = checked ? (r === it.answer ? " is-correct" : " is-wrong") : "";
+      return `<div class="fx-field"><label for="fx-pd" class="fx-field__label">Your answer for the blank</label><select id="fx-pd" class="fx-select${cls}" data-fx-pd${dis}><option value="">Select an option…</option>${it.options.map((o, k) => `<option value="${k}"${r === k ? " selected" : ""}>${esc(o)}</option>`).join("")}</select>${checked && r !== it.answer ? `<p class="fx-field__note">Correct answer: ${esc(it.options[it.answer])}</p>` : ""}</div>`;
+    }
+    if (t === "matching") {
+      const pairs = r || {}, used = new Set(Object.values(pairs));
+      const rows = ix.left.map((l, n) => {
+        const ok = checked && pairs[l.id] === it.key[l.id];
+        return `<li class="fx-match${checked ? (ok ? " is-correct" : " is-wrong") : ""}"><label for="fx-m-${l.id}"><b>${n + 1}.</b> ${esc(l.text)}</label><div class="fx-match__pick"><select id="fx-m-${l.id}" class="fx-select" data-fx-match="${l.id}"${dis}><option value="">${ix.right_title ? `Choose ${esc(ix.right_title.toLowerCase())}…` : "Choose…"}</option>${ix.right.map((o) => `<option value="${o.id}"${pairs[l.id] === o.id ? " selected" : ""}${!ix.options_reusable && used.has(o.id) && pairs[l.id] !== o.id ? " disabled" : ""}>${esc(o.text)}</option>`).join("")}</select>${checked ? pill(ok) : ""}</div>${checked && !ok ? `<p class="fx-field__note">Correct: ${esc(nameOf(ix.right, it.key[l.id]))}</p>` : ""}</li>`;
+      }).join("");
+      return `${it.instructions ? "" : `<p class="fx-count">${ix.options_reusable ? "Options can be used more than once." : "Each option can be used once."}${ix.right.length > ix.left.length ? " Some options are not used." : ""}</p>`}<ul class="fx-matches">${rows}</ul>`;
+    }
+    if (t === "enhanced_matching") {
+      const pl = r || {}, here = (tid) => ix.draggables.filter((d) => pl[d.id] === tid);
+      const unplaced = ix.draggables.filter((d) => !pl[d.id]);
+      const tray = checked ? "" : `<div class="fx-tray" aria-label="Items to place">${unplaced.map((d) => `<button type="button" class="fx-drag${x.pick === d.id ? " is-picked" : ""}" draggable="true" data-fx-pick="${d.id}" aria-pressed="${x.pick === d.id}">${esc(d.label)}</button>`).join("") || '<p class="fx-count">All items placed. Use the lists below to move one.</p>'}</div>${x.pick ? `<p class="fx-count" aria-live="polite">Now click where “${esc(nameOf(ix.draggables, x.pick))}” belongs.</p>` : ""}`;
+      const overlay = ix.targets.map((tg) => `<button type="button" class="fx-drop${x.pick && !checked ? " is-armed" : ""}" style="${box(tg.coords)}" data-fx-drop="${tg.id}" tabindex="-1" aria-hidden="true"${checked || !x.pick ? " disabled" : ""}>${here(tg.id).map((d) => `<span class="fx-placed${checked ? (it.key[d.id].includes(tg.id) ? " is-correct" : " is-wrong") : ""}">${esc(d.label)}</span>`).join("")}</button>`).join("");
+      const lists = ix.draggables.map((d) => {
+        const ok = checked && it.key[d.id].includes(pl[d.id]);
+        return `<li><label for="fx-em-${d.id}">${esc(d.label)}</label><select id="fx-em-${d.id}" class="fx-select" data-fx-em="${d.id}"${dis}><option value="">Choose a place…</option>${ix.targets.map((tg) => `<option value="${tg.id}"${pl[d.id] === tg.id ? " selected" : ""}>${esc(tg.label)}</option>`).join("")}</select>${checked ? pill(ok) : ""}</li>`;
+      }).join("");
+      return `${tray}${exhibitHtml(it.exhibit, overlay)}<fieldset class="fx-place"><legend>Placements</legend><ul>${lists}</ul></fieldset>`;
+    }
+    if (t === "hotspot") {
+      const on = r || [], need = ix.select_count || 1;
+      const overlay = ix.regions.map((g) => {
+        const sel = on.includes(g.id), ok = checked && it.key.includes(g.id);
+        const cls = checked ? (ok ? " is-correct" : sel ? " is-wrong" : "") : sel ? " is-on" : "";
+        return `<button type="button" class="fx-hs${cls}" style="${box(g.coords)}" data-fx-hs="${g.id}" aria-pressed="${sel}" aria-label="Select area: ${esc(g.label)}"${dis}></button>`;
+      }).join("");
+      return `${exhibitHtml(it.exhibit, overlay)}<p class="fx-count" aria-live="polite">${need === 1 ? "Select one area." : `Select ${need} areas (${on.length} selected).`} Tab moves between areas; Space or Enter selects.</p>`;
+    }
+    return "";
+  }
+  // Per-option or per-part feedback from the bank, shown after Check answer.
+  function feedbackHtml(it, r) {
+    const fb = it.feedback, ix = it.interaction || {}, t = kind(it);
+    if (!fb) return "";
+    let rows = [];
+    if (t === "single_best_answer" || t === "pulldown") rows = r === null ? [] : [[LETTERS[r], fb[LETTERS[r]]]];
+    else if (t === "multiple_response") rows = (r || []).map((k) => [LETTERS[k], fb[LETTERS[k]]]);
+    else if (t === "hotspot") rows = (r || []).map((id) => [nameOf(ix.regions, id), fb[id]]);
+    else if (t === "matching") rows = ix.left.map((l) => [l.text, fb[l.id]]);
+    else if (t === "enhanced_matching") rows = ix.draggables.map((d) => [d.label, fb[d.id]]);
+    rows = rows.filter((x2) => x2[1]);
+    return rows.length ? `<ul class="fx-fb">${rows.map(([k, v]) => `<li><b>${esc(k)}</b> ${esc(v)}</li>`).join("")}</ul>` : "";
+  }
+
   function drawQuestion() {
-    const it = x.items[x.i], i = x.i, chosen = x.sel[i], checked = x.checked[i];
-    const opts = it.options.map((o, k) => {
-      const on = chosen === k, right = checked && k === it.answer, wrong = checked && on && k !== it.answer;
-      const cls = right ? " is-correct" : wrong ? " is-wrong" : on ? " is-chosen" : "";
-      return `<li><label class="fx-opt${cls}"><input type="radio" class="fx-sr" name="fx-q${i}" value="${k}"${on ? " checked" : ""}${checked ? " disabled" : ""}><span class="fx-opt__key" aria-hidden="true">${LETTERS[k]}</span><span class="fx-opt__text">${esc(o)}</span>${right ? '<span class="fx-pill fx-pill--ok">Correct answer</span>' : wrong ? '<span class="fx-pill fx-pill--bad">Your answer</span>' : ""}</label></li>`;
-    }).join("");
+    const it = x.items[x.i], i = x.i, r = x.sel[i], checked = x.checked[i], t = kind(it);
+    const stem = t === "pulldown" ? esc(it.q).replace(/\[\[F1\]\]/g, `<span class="fx-blank">${r !== null ? esc(it.options[r]) : "______"}</span>` ) : esc(it.q);
+    const ok = checked && isCorrect(it, r);
     $x("[data-fx-main]").innerHTML = `
       <article class="fx-card" aria-labelledby="fx-stem">
-        <div class="fx-card__head"><p class="fx-card__meta">Question ${i + 1} of ${x.items.length} <span class="fx-topic">${esc(it.topic)}</span></p>
+        <div class="fx-card__head"><p class="fx-card__meta">Question ${i + 1} of ${x.items.length} <span class="fx-topic">${esc(it.domain || it.topic || "")}</span></p>
           <button type="button" class="fx-flag${x.flag[i] ? " is-on" : ""}" data-fx="flag" aria-pressed="${x.flag[i]}">${icon("flag", 15, x.flag[i])}${x.flag[i] ? "Flagged for review" : "Flag for review"}</button></div>
         <div class="fx-progress" aria-hidden="true"><span style="width:${(x.sel.filter((s) => s !== null).length / x.items.length) * 100}%"></span></div>
-        <h2 id="fx-stem" class="fx-stem" tabindex="-1">${esc(it.q)}</h2>
-        <fieldset class="fx-opts"><legend class="fx-sr">Answer options</legend><ul>${opts}</ul></fieldset>
-        ${!checked ? `<button type="button" class="ip-btn ip-btn--primary fx-check" data-fx="check"${chosen === null ? " disabled" : ""}>Check answer</button>` : ""}
-        ${checked ? `<div class="fx-feedback"><p class="fx-feedback__head">${chosen === it.answer ? "Correct." : "Not quite."}</p><p>${esc(it.explain)}</p></div>` : ""}
-        ${!checked && chosen !== null ? '<p class="fx-tip">Check your answer to see the explanation, or move on and come back to it.</p>' : ""}
+        <h2 id="fx-stem" class="fx-stem" tabindex="-1">${stem}</h2>
+        ${it.instructions ? `<p class="fx-instr">${esc(it.instructions)}</p>` : ""}
+        ${bodyHtml(it, i, r, checked)}
+        ${!checked ? `<button type="button" class="ip-btn ip-btn--primary fx-check" data-fx="check"${r === null ? " disabled" : ""}>Check answer</button>` : ""}
+        ${checked ? `<div class="fx-feedback"><p class="fx-feedback__head">${ok ? "Correct." : "Not quite."}</p>${ok ? "" : `<p class="fx-feedback__key">Correct answer: ${esc(correctText(it))}</p>`}<p>${esc(it.explain)}</p>${feedbackHtml(it, r)}</div>` : ""}
+        ${!checked && r !== null ? '<p class="fx-tip">Check your answer to see the explanation, or move on and come back to it.</p>' : ""}
       </article>`;
   }
 
@@ -865,16 +984,17 @@
   function go(i) {
     const n = Math.max(0, Math.min(x.items.length - 1, i));
     if (n === x.i) return;
-    x.i = n; draw();
+    x.i = n; x.pick = null; draw();
     $x("#fx-stem")?.focus({ preventScroll: true });
     $x("[data-fx-main]").scrollTop = 0;
   }
   function choose(k) {
-    if (x.checked[x.i] || x.finished) return;
+    if (x.checked[x.i] || x.finished || kind(x.items[x.i]) !== "single_best_answer") return;
     x.sel[x.i] = k; drawQuestion(); drawNav();
     $x(`input[name="fx-q${x.i}"][value="${k}"]`)?.focus({ preventScroll: true });
   }
   function toggleCalc(on) {
+    if (!$x('[data-fx="calc"]')) return;
     const open = on ?? !x.calc.open;
     open ? x.calc.show() : x.calc.hide();
     const b = $x('[data-fx="calc"]');
@@ -903,7 +1023,7 @@
   function askCancel() {
     const a = x.sel.filter((s) => s !== null).length;
     modal(`<h2 id="fx-modal-title">Cancel this sample?</h2>
-      <p>${a ? `Your ${a} answer${a === 1 ? "" : "s"} will be discarded and not scored.` : "Nothing has been answered yet."} You can start a fresh set of 10 any time.</p>
+      <p>${a ? `Your ${a} answer${a === 1 ? "" : "s"} will be discarded and not scored.` : "Nothing has been answered yet."} You can start the sample again any time.</p>
       <div class="fx-modal__actions"><button type="button" class="fx-tool fx-tool--text" data-fx="modal-close" data-fx-default>Keep going</button><button type="button" class="ip-btn fx-danger" data-fx="cancel">Cancel sample</button></div>`);
   }
 
@@ -915,7 +1035,7 @@
     x.navOpen = false; drawNav();
     toggleCalc(false);
     const n = x.items.length, used = Math.min(x.duration, performance.now() - x.t0);
-    const score = x.items.reduce((s, it, i) => s + (x.sel[i] === it.answer ? 1 : 0), 0);
+    const score = x.items.reduce((s, it, i) => s + (isCorrect(it, x.sel[i]) ? 1 : 0), 0);
     if (x.opts.onScore) x.opts.onScore(score);
     const t = $x("[data-fx-timer]"); t.textContent = "Finished"; t.className = "fx-timer fx-timer--done"; t.removeAttribute("aria-label");
     $x("[data-fx-count]").textContent = "Results";
@@ -924,19 +1044,19 @@
       <article class="fx-card fx-result" aria-labelledby="fx-result-title">
         <p class="eyebrow">Your score</p>
         <h2 id="fx-result-title" class="fx-result__num" tabindex="-1">${score}/${n}</h2>
-        <p class="fx-result__msg">${score / n >= 0.7 ? "Strong result — keep the momentum with full timed mocks." : "Good start. Review the explanations and try another set."}</p>
+        <p class="fx-result__msg">${score / n >= 0.7 ? "Strong result — keep the momentum with full timed mocks." : "Good start. Review the explanations, then try the sample again or move on to full practice exams."}</p>
         <p class="fx-result__time">Time used ${formatClock(used)} of ${formatClock(x.duration)}</p>
         <ol class="fx-review">${x.items.map((it, i) => {
-          const s = x.sel[i], ok = s === it.answer;
-          return `<li class="fx-review__item"><details${ok ? "" : " open"}><summary><span class="fx-pill ${ok ? "fx-pill--ok" : "fx-pill--bad"}">${ok ? "Correct" : s === null ? "Unanswered" : "Missed"}</span><span class="fx-review__q"><b>${i + 1}.</b> ${esc(it.q)}</span></summary>
-            <p class="fx-review__ans">${s === null ? "No answer" : `Your answer: ${LETTERS[s]}. ${esc(it.options[s])}`}${ok ? "" : `<br>Correct answer: ${LETTERS[it.answer]}. ${esc(it.options[it.answer])}`}</p>
+          const s = x.sel[i], ok = isCorrect(it, s);
+          return `<li class="fx-review__item"><details${ok ? "" : " open"}><summary><span class="fx-pill ${ok ? "fx-pill--ok" : "fx-pill--bad"}">${ok ? "Correct" : s === null ? "Unanswered" : "Missed"}</span><span class="fx-review__q"><b>${i + 1}.</b> ${esc(it.q.replace(/\[\[F1\]\]/g, "______"))}</span></summary>
+            <p class="fx-review__ans">${s === null ? "No answer" : `Your answer: ${esc(answerText(it, s))}`}${ok ? "" : `<br>Correct answer: ${esc(correctText(it))}`}</p>
             <p class="fx-review__exp">${esc(it.explain)}</p></details></li>`;
         }).join("")}</ol>
       </article>`;
     $x("[data-fx-foot]").innerHTML = `<div class="fx-foot__row">
       <button type="button" class="fx-tool fx-tool--text" data-fx="close">${icon("x", 16)}Close</button>
       <button type="button" class="ip-btn ip-btn--ghost" data-fx="plans">See premium plans</button>
-      <button type="button" class="ip-btn ip-btn--primary" data-fx="again">Try another 10</button></div>`;
+      <button type="button" class="ip-btn ip-btn--primary" data-fx="again">Try again</button></div>`;
     $x("[data-fx-main]").scrollTop = 0;
     $x("#fx-result-title").focus({ preventScroll: true });
   }
@@ -965,6 +1085,12 @@
     if (f) { x.filter = f.dataset.fxFilter; drawNav(); return; }
     if (e.target.matches("[data-fx-drawer]")) { x.navOpen = false; drawNav(); return; }
     if (e.target.matches("[data-fx-modal]") && !x.finished) { closeModal(); return; }
+    const hs = e.target.closest("[data-fx-hs]");
+    if (hs) { toggleRegion(hs.dataset.fxHs); return; }
+    const pk = e.target.closest("[data-fx-pick]");
+    if (pk) { x.pick = x.pick === pk.dataset.fxPick ? null : pk.dataset.fxPick; drawQuestion(); return; }
+    const dp = e.target.closest("[data-fx-drop]");
+    if (dp) { if (x.pick) place(x.pick, dp.dataset.fxDrop); return; }
     const b = e.target.closest("[data-fx]");
     if (!b) return;
     const a = b.dataset.fx, opts = x.opts;
@@ -984,9 +1110,41 @@
     else if (a === "plans") { close(); if (opts.onPlans) opts.onPlans(); }
     else if (a === "again") { close(true); if (opts.onAgain) opts.onAgain(); }
   }
+  function toggleRegion(id) {
+    const it = x.items[x.i], need = (it.interaction && it.interaction.select_count) || 1, cur = x.sel[x.i] || [];
+    const next = need === 1 ? (cur.includes(id) ? [] : [id]) : cur.includes(id) ? cur.filter((v) => v !== id) : it.interaction.regions.map((g) => g.id).filter((g) => g === id || cur.includes(g));
+    setResponse(next);
+    x.root.querySelector(`[data-fx-hs="${id}"]`)?.focus({ preventScroll: true });
+  }
+  function place(d, t) {
+    const it = x.items[x.i], ix = it.interaction, next = { ...(x.sel[x.i] || {}) };
+    if (!t) delete next[d];
+    else { if (!ix.targets_reusable) for (const k of Object.keys(next)) if (next[k] === t && k !== d) delete next[k]; next[d] = t; }
+    x.pick = null;
+    setResponse(next);
+  }
+  function onDragStart(e) {
+    const pk = e.target.closest && e.target.closest("[data-fx-pick]");
+    if (!pk) return;
+    e.dataTransfer.setData("text/plain", pk.dataset.fxPick);
+    x.pick = pk.dataset.fxPick;
+    x.root.querySelectorAll("[data-fx-drop]").forEach((el) => { el.disabled = false; el.classList.add("is-armed"); });
+  }
+  function onDragOver(e) { if (e.target.closest && e.target.closest("[data-fx-drop]")) e.preventDefault(); }
+  function onDrop(e) {
+    const dp = e.target.closest && e.target.closest("[data-fx-drop]");
+    if (!dp) return;
+    e.preventDefault();
+    const d = e.dataTransfer.getData("text/plain") || x.pick;
+    if (d) place(d, dp.dataset.fxDrop);
+  }
   function onChange(e) {
-    const r = e.target.closest('input[type="radio"][name^="fx-q"]');
-    if (r) choose(Number(r.value));
+    const el = e.target;
+    if (el.matches('input[type="radio"][name^="fx-q"]')) { choose(Number(el.value)); return; }
+    if (el.matches("[data-fx-mr]")) { setResponse([...x.root.querySelectorAll("[data-fx-mr]:checked")].map((c) => Number(c.value))); x.root.querySelector(`[data-fx-mr][value="${el.value}"]`)?.focus({ preventScroll: true }); return; }
+    if (el.matches("[data-fx-pd]")) { setResponse(el.value === "" ? null : Number(el.value)); $x("[data-fx-pd]")?.focus({ preventScroll: true }); return; }
+    if (el.matches("[data-fx-match]")) { const id = el.dataset.fxMatch; setResponse({ ...(x.sel[x.i] || {}), [id]: el.value }); $x(`[data-fx-match="${id}"]`)?.focus({ preventScroll: true }); return; }
+    if (el.matches("[data-fx-em]")) { const id = el.dataset.fxEm; place(id, el.value || null); $x(`[data-fx-em="${id}"]`)?.focus({ preventScroll: true }); return; }
   }
   function onKey(e) {
     if (!x) return;
@@ -1001,14 +1159,14 @@
     if (t.closest(".ti") || ["INPUT", "SELECT", "TEXTAREA"].includes(t.tagName) && t.type !== "radio" || e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key.toLowerCase(), it = x.items[x.i];
     const idx = "abcdefgh".indexOf(k) >= 0 ? "abcdefgh".indexOf(k) : "12345678".indexOf(k);
-    if (idx >= 0 && idx < it.options.length) { e.preventDefault(); choose(idx); }
+    if (idx >= 0 && kind(it) === "single_best_answer" && idx < it.options.length) { e.preventDefault(); choose(idx); }
     else if (k === "arrowright" || k === "n") { e.preventDefault(); go(x.i + 1); }
     else if (k === "arrowleft" || k === "p") { e.preventDefault(); go(x.i - 1); }
     else if (k === "f") { e.preventDefault(); x.flag[x.i] = !x.flag[x.i]; drawQuestion(); drawNav(); }
   }
   function trapFocus(e) {
     const scope = !$x("[data-fx-modal]").hidden ? $x("[data-fx-modal-box]") : x.root;
-    const f = [...scope.querySelectorAll('button:not([disabled]), input:not([disabled]), summary, [tabindex="-1"]#fx-stem')].filter((el) => el.offsetParent !== null || el === document.activeElement);
+    const f = [...scope.querySelectorAll('button:not([disabled]):not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), summary, [tabindex="-1"]#fx-stem')].filter((el) => el.offsetParent !== null || el === document.activeElement);
     if (!f.length) return;
     const first = f[0], last = f[f.length - 1];
     if (!scope.contains(document.activeElement)) { e.preventDefault(); first.focus(); }

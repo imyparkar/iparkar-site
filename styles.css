@@ -1428,7 +1428,7 @@ html:not(.js) .nav-group:hover > .nav-menu, html:not(.js) .nav-group:focus-withi
 @media (prefers-reduced-motion: reduce) { .pxc .plan-tab, .pxc .plan-mcard { transition:none; } }
 
 /* Practice exam pages (/practice-exams/<code>/): exam colour on the hero and features, rose plan cards. */
-.px-theme--pmp { --panel:var(--peach); --tint:#fbeee2; }
+.pxc-exam--pmp, .px-theme--pmp { --panel:var(--peach); --tint:#fbeee2; }
 .px-hero[class*="px-theme--"] { background:var(--tint, var(--white)); border:0; }
 .px-hero[class*="px-theme--"] .px-hero__code { background:var(--panel); color:var(--panel-ink, var(--ink)); }
 .px-features { background:var(--panel); color:var(--panel-ink, var(--ink)); border:0; }

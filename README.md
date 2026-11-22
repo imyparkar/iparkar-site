@@ -8,11 +8,12 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 
 - `/` — overview
 - `/certification-pathways/` — two decision cards (professional certification vs taught course) above the fold, with the detailed comparison table below
-- `/certification-pathways/select/` — Safety, Industrial Hygiene, Environmental and Training cards
+- `/certification-pathways/select/` — Safety, Industrial Hygiene, Environmental, Training and Project Management cards (3-column grid)
 - `/certification-pathways/safety/` — ASP, CSP and CFPS summary cards, each opening a detailed requirements page
 - `/certification-pathways/industrial-hygiene/` — CIH and BOHS ICertOH (International Certificate in Occupational Hygiene) cards; ICertOH opens `/certification-pathways/industrial-hygiene/certoh/` (checked 10 Nov 2026)
 - `/certification-pathways/environmental/` — QEP and EPI requirements
 - `/certification-pathways/training/` — CIT summary card (peach; the Training card on Select is peach too), opening `/certification-pathways/training/cit/` (BCSP Certified Instructional Trainer requirements, checked 10 Nov 2026)
+- `/certification-pathways/project-management/` — PMP® summary card (marigold), opening `/certification-pathways/project-management/pmp/` (PMI Project Management Professional requirements, application, fees and prep, checked 22 Nov 2026 against pmi.org/certifications/project-management-pmp). The PMP entry in `certifications.items` uses `prepCta` to point its prep button at the PMP® Exam Prep Course instead of the free HSE sample; Route A on `/certification-pathways/` has a PMP row
 - `/certificate-courses/` — NEBOSH, IOSH and BOHS course cards, under a "Where are you now?" strip whose three stages open the pages below; BOHS M200/M501–M507 list lives at `/certificate-courses/bohs/` (old Industrial Hygiene URL 301-redirects)
 - `/certificate-courses/level-3/` — NEBOSH IGC and IOSH Level 3 Certificate side by side (stage 1)
 - `/certificate-courses/level-6/` — NEBOSH Level 6 OHS Diploma, IOSH Level 6 Diploma and NEBOSH International Diploma in Environmental Management (stage 2)

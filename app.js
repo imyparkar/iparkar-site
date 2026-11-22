@@ -74,7 +74,7 @@
         <article class="ip-card"><h4 class="ip-card__title">Requirements</h4>${list(it.requirements)}</article>
         <article class="ip-card"><h4 class="ip-card__title">Application process</h4>${list(it.application)}</article>
         <article class="ip-card ip-card--tint"><h4 class="ip-card__title">Exam preparation</h4>${list(it.prep)}
-          <a class="ip-btn ip-btn--dark" href="#practice">Try free practice questions</a></article>
+          ${it.prepCta ? `<a class="ip-btn ip-btn--dark" href="${esc(it.prepCta.href)}">${esc(it.prepCta.label)}</a>` : `<a class="ip-btn ip-btn--dark" href="#practice">Try free practice questions</a>`}</article>
       </div>
       <div class="link-list">${it.links.map((l) => `<a class="ip-btn ip-btn--ghost" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div>`;
     document.querySelectorAll("[data-cert]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.cert === it.id)));

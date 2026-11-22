@@ -182,7 +182,7 @@ window.SITE = {
   certifications: {
     title: "Certification pathways",
     lead: "What each credential asks of you, how to apply, and how to prepare.",
-    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC, BOHS or NFPA. ASP®, CSP®, CIT®, CIH®, QEP, CFPS® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
+    disclaimer: "iParkar Learning is independent and is not affiliated with, endorsed by or sponsored by BCSP, BGC, BOHS, NFPA or PMI. ASP®, CSP®, CIT®, CIH®, QEP, CFPS®, PMP®, CAPM® and related marks belong to their owners. Requirements and fees change — always confirm on the official site before you apply.",
     items: [
       {
         id: "asp",
@@ -416,6 +416,39 @@ window.SITE = {
           { label: "CIT references (PDF)", href: "https://www.bcsp.org/hubfs/Website/Blueprints-References/CIT-References.pdf" },
           { label: "Fees: At-A-Glance (PDF)", href: "https://www.bcsp.org/hubfs/Website/Downloads-PDFs-and-PPTs/BCSP-At-A-Glance.pdf" },
           { label: "Official CIT page", href: "https://www.bcsp.org/certified-instructional-trainer-cit" },
+        ],
+      },
+      {
+        id: "pmp",
+        short: "PMP",
+        name: "Project Management Professional®",
+        body: "PMI",
+        officialUrl: "https://www.pmi.org/certifications/project-management-pmp",
+        lastChecked: "22 Nov 2026",
+        summary: "PMI’s globally recognised credential for professionals who lead and direct projects, using predictive, agile and hybrid approaches.",
+        note: "PMP is not limited to one industry: HSE, engineering, construction and oil and gas professionals who lead projects can qualify. If you don’t yet meet the experience requirement, PMI points you to the CAPM® certification instead.",
+        prepCta: { label: "View the PMP® Exam Prep Course", href: "/resources/study-courses/pmp/" },
+        requirements: [
+          "Four-year degree: 36 months of experience leading projects within the past eight years, plus 35 hours of project management education/training or an active CAPM® certification.",
+          "High school diploma or associate degree: 60 months of experience leading projects within the past eight years, plus 35 hours of project management education/training or an active CAPM® certification.",
+          "Pass the 180-question PMP examination, covering three domains: People, Process (predictive, agile and hybrid approaches) and Business Environment.",
+          "Keep the credential active: earn 60 professional development units (PDUs) in each three-year certification cycle and renew with PMI.",
+        ],
+        application: [
+          "Confirm you meet one of the eligibility sets, using the PMP Certification Handbook for the detailed rules and timeline.",
+          "Create a PMI.org account and submit the online application, listing each project you led and your 35 hours of training.",
+          "If your application is approved, pay the exam fee: US$405 for PMI members or US$555 for non-members at the time of checking. Bundling PMI membership can reduce the fee.",
+          "Schedule and take the exam through myPMI.",
+          "If you don’t pass, you may attempt the exam up to three times within your one-year eligibility period.",
+        ],
+        prep: [
+          "Download the PMP Exam Content Outline from PMI and plan your study around the People, Process and Business Environment domains.",
+          "Complete your 35 contact hours — the iParkar PMP® Exam Prep Course is a 35-hour self-paced online course with a completion certificate.",
+          "Practise situational questions that ask what a project manager should do first, across predictive, agile and hybrid projects.",
+          "The iParkar PMP® practice exam package is coming soon for timed, full-length mock exams.",
+        ],
+        links: [
+          { label: "Official PMP page", href: "https://www.pmi.org/certifications/project-management-pmp" },
         ],
       },
     ],

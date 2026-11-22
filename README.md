@@ -21,7 +21,7 @@ Home, Certification pathways, Certificate courses, Live Quiz, Resources, Practic
 - `/resources/` — Self Paced Study Courses card (ASP: 7 Days Free Trial → `app.iparkar.com/learn/asp-sps`, Buy · US$120 / 365 days → `app.iparkar.com/learn/asp-sps/buy`; CSP: same pricing, marked Coming soon), free **Systematic Approach to Training (SAT)** course card (→ `app.iparkar.com/free/sat`, sign-in required; "Create a free account" → `app.iparkar.com/signup?next=%2Ffree%2Fsat`), Reference books feature card, plus official BCSP, BGC and BOHS resource links
 - `/resources/reference-books/` — most-used references for ASP, CSP, CIH, QEP and CFPS with publisher purchase links; the certification chips filter the list with CSS `:target`
 - `/live-quiz/` — quiz information within the website shell and same-tab launch
-- `/practice-exams/` — free sample and premium packages: one card per course with its own 90 / 180 / 365-day control on desktop; certification tabs, swipeable plan cards and a sticky buy bar on mobile. A plan may carry its own `durations` list in `site-config.js` (CIT: US$49 / 79 / 99, all available); its buttons open `app.iparkar.com/courses/<CODE>?plan=<days>`, and plans without one use the shared `practice.durations`
+- `/practice-exams/` — free sample and premium packages in one layout for every screen size (Option C, Nov 2026): certification tabs (PMP links to its Coming soon page), the selected exam's block (tinted info card + coloured features panel, exam colours in `.pxc-exam--<slug>`), then three plan cards with rose bands (`--rose-tint`, `--rose`, `--berry`) and their own Buy links. On phones the plan cards swipe and a sticky buy bar follows the selected card. A plan may carry its own `durations` list in `site-config.js` (CIT: US$49 / 79 / 99, all available); its buttons open `app.iparkar.com/courses/<CODE>?plan=<days>`, and plans without one use the shared `practice.durations`
 - `/practice-exams/#sample` — the free sample card; every "Try free questions" link lands here and the card is scrolled into view. **Start free sample** opens `free-exam.js`: a full-screen workspace mirroring the app.iparkar.com practice exams — 15-minute countdown (`practice.freeMinutes`), question navigator with flags and filters, the TI-30XS MultiView calculator (engine ported from `iparkar-lms/src/lib/calculator/engine.ts`), Check answer with explanations, Previous · Cancel · Next / Submit, and a scored review at the end
 - `/about/` — founder and learning approach
 
@@ -44,7 +44,7 @@ New pages (existing URLs are unchanged, so no redirects were needed):
 - `/resources/sat/` — free SAT course; `/resources/learning-resources/` — official BCSP, BGC and BOHS links (moved from `/resources/`)
 - `/practice-exams/asp/`, `/csp/`, `/cih/`, `/ges-epi/`, `/qep/`, `/cit/`, `/pmp/` — one page per package; PMP is **Coming soon** with no purchase action (`comingSoon: true` in `site-config.js`)
 
-`/resources/` keeps the `#study-courses`, `#study-guides` and `#free-courses` anchors. `/practice-exams/` keeps the pricing cards and `#sample`, and adds a directory of all seven packages.
+`/resources/` keeps the `#study-courses`, `#study-guides` and `#free-courses` anchors. `/practice-exams/` keeps `#pricing` and `#sample`; the certification tabs and each exam's "Full details" link reach all seven package pages.
 
 PMP® course prices are in `COURSE_PRICES` in `regional-prices.js` and must equal `COURSE_PRICES` in `iparkar-lms/src/lib/payments/catalogue.ts` (Bahrain pays US$, as at checkout).
 

@@ -163,108 +163,84 @@
     const p = S.practice;
     const exams = p.plans.filter(pl => pl.period);
     const codes = exams.map(pl => pl.code);
-    const examNames = exams.map(pl => pl.examName);
+    const soon = examPlans().filter(pl => pl.comingSoon);
     const perDay = plan => (plan.price / plan.days).toFixed(2);
     const links = [];
     codes.forEach(code => durs(code).forEach((plan, i) => links.push({ code, i, label: planLabel(code, i), href: planHref(code, i), price: plan.price })));
+    const d0 = durs("ASP");
+    // Option C (Nov 2026): certification tabs → selected exam block → three plan cards. One layout for every screen size.
+    const examBlocks = exams.map((pl, i) => `<article class="pxc-exam pxc-exam--${examSlug(pl.code)}" data-feature-exam="${pl.code}" aria-label="${esc(pl.code)} practice exam"${i ? " hidden" : ""}>
+              <div class="pxc-exam__info"><p class="pxc-exam__stat">${esc(pl.code)} · ${esc(pl.tagline || "")}</p><h3 class="pxc-exam__name">${esc(pl.examName)}</h3><p class="pxc-exam__lead">Original questions written to the current blueprint, with the tools you will see on exam day.</p><p class="pxc-exam__links"><a href="${examPage(pl.code)}">Full ${esc(pl.code)} details →</a><a href="#sample">Try 10 free questions →</a></p></div>
+              <div class="pxc-exam__panel"><p class="pxc-exam__panel-title">Included with every ${esc(pl.code)} package</p><ul class="pxc-ticks">${pl.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>
+            </article>`).join("");
+    const planCards = p.durations.map((dd, i) => { const d = d0[i] || dd; return `<div class="plan-mcard plan-mcard--t${i}${i === 1 ? " is-selected plan-mcard--featured" : ""}" data-m-plan="${i}">
+              <div class="plan-mcard__band"><span class="plan-mcard__head"><span class="plan-mcard__name">${esc(d.name)}</span><span class="plan-mcard__days">${durationLabel(d)} of access</span></span>${i ? `<span class="plan-mcard__badge">${esc(d.badge)}</span>` : ""}</div>
+              <div class="plan-mcard__body"><p class="plan-mcard__price"><small data-m-sym>US$</small><span data-m-price>${d.price}</span><span class="plan-mcard__once">one-time</span></p><p class="plan-mcard__per"><span data-m-per>US$${perDay(d)}</span> a day</p><a class="ip-btn plan-mcard__cta${i === 1 ? " ip-btn--primary" : ""}" data-m-cta href="${esc(planHref("ASP", i))}">${esc(planLabel("ASP", i))}</a></div>
+            </div>`; }).join("");
     return `
       <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">${esc(codes.join(" · "))} PRACTICE EXAMS</p>${header(p.title, p.lead)}
       <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
-      ${renderPackages()}
       <div id="plans">
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" class="plan-sr">Choose your package</h2>
           <p class="plan-sr" aria-live="polite" id="pricing-selection">Selected: ASP, ${esc(p.durations[1].name)}, ${p.durations[1].days} days, US$${p.durations[1].price}</p>
-          <div class="plan-courses" data-plan-courses>${exams.map((pl, j) => { const d = durs(pl.code)[1]; return `<article class="plan-course plan-anim plan-course--${pl.code === "GES/EPI" ? "epi" : pl.code.toLowerCase()}" data-course="${pl.code}" style="--d:${j * 70}ms">
-            <div class="plan-course__head"><div class="plan-course__top"><h3 class="plan-course__code">${esc(pl.code)}</h3><span class="plan-course__pill">${esc(pl.tagline || "")}</span></div><p class="plan-course__name">${esc(pl.examName)}</p></div>
-            <div class="plan-course__body">
-              <div class="plan-seg" role="group" aria-label="Access period for ${esc(pl.code)}">${durs(pl.code).map((dd, i) => `<button type="button" class="plan-seg__btn" data-course-plan="${i}" aria-pressed="${i === 1}">${durationLabel(dd)}</button>`).join("")}</div>
-              <div class="plan-course__row"><p class="plan-course__price" data-course-swap><small data-course-sym>US$</small><span data-course-price>${d.price}</span></p><p class="plan-course__meta"><span data-course-name>${esc(d.name)}</span><br><span data-course-per>US$${perDay(d)} a day</span></p></div>
-              <p class="plan-course__badges"><span class="plan-course__badge" data-course-badge>${esc(d.badge)}</span></p>
-              <a class="ip-btn plan-course__cta" data-course-cta href="${esc(planHref(pl.code, 1))}">${esc(planLabel(pl.code, 1))}</a>
-            </div>
-          </article>`; }).join("")}</div>
-          <div class="plan-mobile" data-plan-mobile>
-            <div class="plan-tabs" role="group" aria-label="Certification">${codes.map((code, i) => `<button type="button" class="plan-tab" data-m-exam="${code}" aria-pressed="${i === 0}">${esc(code)}</button>`).join("")}</div>
-            <div class="plan-rail" role="group" aria-label="Access period">${p.durations.map((dd, i) => `<button type="button" class="plan-mcard${i === 2 ? " plan-mcard--annual" : ""}" data-m-plan="${i}" aria-pressed="${i === 1}"><span class="plan-mcard__top"><span class="plan-mcard__name">${esc(dd.name)}</span>${i ? `<span class="plan-mcard__badge">${esc(dd.badge)}</span>` : ""}</span><span class="plan-mcard__days">${dd.days} days of access</span><span class="plan-mcard__price"><small data-m-sym>US$</small><span data-m-price>${dd.price}</span></span><span class="plan-mcard__per">One-time · <span data-m-per>US$${perDay(dd)}</span> a day</span></button>`).join("")}</div>
+          <div class="pxc" data-plan-mobile>
+            <div class="plan-tabs" role="group" aria-label="Certification">${codes.map((code, i) => `<button type="button" class="plan-tab" data-m-exam="${code}" aria-pressed="${i === 0}">${esc(code)}</button>`).join("")}${soon.map(pl => `<a class="plan-tab plan-tab--soon" href="${examPage(pl.code)}">${esc(pl.code)} <small>Coming soon</small></a>`).join("")}</div>
+            <div class="pxc-exams">${examBlocks}</div>
+            <h2 class="pxc-plans-title">How long do you want to study?</h2>
+            <div class="plan-rail" role="group" aria-label="Access period">${planCards}</div>
             <div class="plan-dots" aria-hidden="true">${p.durations.map((dd, i) => `<span class="plan-dot${i === 1 ? " is-on" : ""}"></span>`).join("")}</div>
-            <p class="plan-mobile__note"><strong>Every package includes</strong> the full <span data-m-exam-name>ASP</span> bank, timed mocks, answer explanations and score analytics.</p>
           </div>
           <noscript><p class="fineprint">JavaScript is off. Choose a package directly:</p><ul class="plan-noscript">${links.map(l=>`<li><a href="${esc(l.href)}">${esc(l.label)} · US$${l.price}</a></li>`).join("")}</ul></noscript>
           <div class="plan-buybar" data-plan-buybar role="region" aria-label="Selected package">
             <p class="plan-buybar__text"><span data-plan-bar-title>ASP · ${esc(p.durations[1].name)}</span><strong><span data-plan-bar-price>US$${p.durations[1].price}</span> <span data-plan-bar-days>· ${p.durations[1].days} days</span></strong></p>
             <a class="ip-btn ip-btn--primary" data-plan-bar-cta href="${esc(planHref("ASP", 1))}">${p.durations[1].available ? "Buy" : "Request"}</a>
           </div>
+          <p class="pay-methods"><span>Secure payment by Razorpay: cards, UPI, net banking, wallets and</span> <img src="/assets/apple-pay-mark.svg" alt="Apple Pay" width="45" height="29"></p>
           <p class="fineprint pricing-terms" data-price-terms>Prices are in USD and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.</p>
         </section>
         <section class="practice-sample" id="sample" aria-labelledby="sample-heading"><div><span class="eyebrow">START WITH A SAMPLE</span><h2 id="sample-heading">Ten questions. A clearer starting point.</h2><p>Try 10 random questions in a 15-minute timed sample, with the same calculator, question navigator and answer explanations as the full practice exams. Free, with no account needed.</p></div><button class="ip-btn ip-btn--primary" data-action="start-free">Start free sample</button></section>
-        <section class="practice-features" aria-labelledby="included-heading"><div><p class="eyebrow">INCLUDED IN YOUR PACKAGE</p><h2 id="included-heading">Practice with purpose.</h2><p>The same practice tools, with the time you need to use them.</p></div>
-        <div class="practice-features__content">${exams.map((pl,i)=>`<article data-feature-exam="${codes[i]}"><h3>${codes[i]} practice features</h3><ul>${pl.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></article>`).join('')}</div></section>
-        <p class="pay-methods"><span>Secure payment by Razorpay: cards, UPI, net banking, wallets and</span> <img src="/assets/apple-pay-mark.svg" alt="Apple Pay" width="45" height="29"></p><section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>Will I be charged again automatically?</summary><p>No. These are one-time purchases with 90, 180 or 365 days of access. There is no automatic renewal.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification, select the access period and click Buy. You pay securely online with Razorpay and your access opens as soon as the payment is confirmed.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
+        <section class="pricing-faq" aria-labelledby="pricing-faq-heading"><h2 id="pricing-faq-heading">Before you choose</h2><details><summary>Does one purchase include every certification?</summary><p>Each purchase covers one selected exam: ${esc(codes.slice(0, -1).join(", "))} or ${esc(codes[codes.length - 1])}. The same three access durations are offered for each exam; prices can differ by exam.</p></details><details><summary>How do I get a 180-day or 365-day package?</summary><p>Choose your certification, pick the access period and click Buy. You pay securely online with Razorpay and your access opens as soon as the payment is confirmed.</p></details><details><summary>Where can I find the refund policy?</summary><p>Read our <a href="/refunds">refund policy</a> before purchasing. For purchase questions, <a href="/contact/">contact iParkar Learning</a>.</p></details></section>
       </div>
       <p class="fineprint">${esc(p.member.text)} <a href="${esc(p.member.href)}">${esc(p.member.label)}</a></p>
       <p class="fineprint">${esc(p.note)}</p>`;
   }
 
-  // Option B course cards (desktop) + Option E swipe cards and sticky buy bar (mobile).
-  // Every link is rendered statically; JS only switches prices, labels and hrefs.
+  // Option C (Nov 2026): certification tabs, the selected exam's block and three plan cards, on every screen size.
+  // Every link is rendered statically; JS only switches prices, labels, hrefs and the visible exam block.
+  // On phones the plan cards swipe and a sticky buy bar follows the selected card.
   const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const isMobile = () => window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
   function replay(el, cls) { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
-  function countPrice(el, to, fmt = String, animate = true) {
-    if (!el) return;
-    const from = el._val ?? to;
-    el._val = to;
-    if (el._raf) cancelAnimationFrame(el._raf);
-    if (!animate || reduceMotion() || from === to) { el.textContent = fmt(to); return; }
-    let t0 = null;
-    const step = (t) => { t0 ??= t; const k = Math.min(1, (t - t0) / 360); el.textContent = fmt(k < 1 ? Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))) : to); if (k < 1) el._raf = requestAnimationFrame(step); };
-    el._raf = requestAnimationFrame(step);
-  }
   const mobileState = { exam: "ASP", plan: 1 };
-  function showFeatures(code) {
-    document.querySelectorAll("[data-feature-exam]").forEach(panel => { panel.hidden = panel.dataset.featureExam !== code; });
+  function showFeatures(code, animate) {
+    document.querySelectorAll("[data-feature-exam]").forEach(panel => {
+      panel.hidden = panel.dataset.featureExam !== code;
+      if (animate && !panel.hidden && !reduceMotion()) replay(panel, "plan-swap");
+    });
   }
   function announce(code, i) {
     const plan = durs(code)[i], el = $("#pricing-selection");
     if (el) el.textContent = `Selected: ${code}, ${plan.name}, ${plan.days} days, ${money(local(code, i)).text}`;
-  }
-  function updateCourse(card, i, animate) {
-    const code = card.dataset.course, plan = durs(code)[i];
-    card.querySelectorAll("[data-course-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.coursePlan) === i)));
-    const lp = local(code, i);
-    card.querySelector("[data-course-sym]").textContent = money(lp).sym;
-    countPrice(card.querySelector("[data-course-price]"), lp.amount, n => money({ amount: n, currency: lp.currency }).num, animate);
-    card.querySelector("[data-course-name]").textContent = plan.name;
-    card.querySelector("[data-course-per]").textContent = `${perDayText(code, i)} a day`;
-    const badge = card.querySelector("[data-course-badge]");
-    badge.textContent = i ? plan.badge : "";
-    badge.classList.toggle("is-empty", !i);
-    badge.classList.toggle("plan-course__badge--value", i === 2);
-    const cta = card.querySelector("[data-course-cta]");
-    cta.href = planHref(code, i);
-    cta.textContent = planLabel(code, i);
-    if (animate) { replay(card.querySelector("[data-course-swap]"), "plan-swap"); replay(cta, "plan-swap"); }
-    showFeatures(code);
-    announce(code, i);
   }
   function updateMobile(change = {}, scroll = true) {
     const box = $("[data-plan-mobile]");
     if (!box) return;
     Object.assign(mobileState, change);
     const { exam: code, plan: i } = mobileState, plan = durs(code)[i];
-    // Prices on the swipe cards follow the selected exam.
+    // Prices, per-day rates and Buy links on the plan cards follow the selected exam.
     box.querySelectorAll("[data-m-plan]").forEach((c, k) => {
       const d = durs(code)[k]; if (!d) return;
-      const pr = c.querySelector("[data-m-price]"), per = c.querySelector("[data-m-per]"), sym = c.querySelector("[data-m-sym]"), m = money(local(code, k));
+      const pr = c.querySelector("[data-m-price]"), per = c.querySelector("[data-m-per]"), sym = c.querySelector("[data-m-sym]"), cta = c.querySelector("[data-m-cta]"), m = money(local(code, k));
       if (pr) pr.textContent = m.num;
       if (sym) sym.textContent = m.sym;
       if (per) per.textContent = perDayText(code, k);
+      if (cta) { cta.href = planHref(code, k); cta.textContent = planLabel(code, k); }
+      c.classList.toggle("is-selected", k === i);
+      if (change.exam && !reduceMotion()) replay(c.querySelector(".plan-mcard__body"), "plan-swap");
     });
     box.querySelectorAll("[data-m-exam]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mExam === code)));
-    box.querySelectorAll("[data-m-plan]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.mPlan) === i)));
     box.querySelectorAll(".plan-dot").forEach((d, k) => d.classList.toggle("is-on", k === i));
-    const name = box.querySelector("[data-m-exam-name]"); if (name) name.textContent = code;
     const set = (sel, text) => { const el = $(sel); if (el) el.textContent = text; };
     set("[data-plan-bar-title]", `${code} · ${plan.name}`);
     set("[data-plan-bar-price]", money(local(code, i)).text);
@@ -272,76 +248,58 @@
     const barCta = $("[data-plan-bar-cta]");
     if (barCta) { barCta.href = planHref(code, i); barCta.textContent = plan.available ? "Buy" : "Request"; }
     if (change.exam || change.plan !== undefined) replay($(".plan-buybar__text"), "plan-swap");
-    if (change.exam) showFeatures(code);
+    if (change.exam) showFeatures(code, true);
     if (change.exam || change.plan !== undefined) announce(code, i);
-    if (scroll && change.plan !== undefined) centerCard(i, reduceMotion() ? "auto" : "smooth");
+    if (scroll && change.plan !== undefined && isMobile()) centerCard(i, reduceMotion() ? "auto" : "smooth");
   }
   function centerCard(i, behavior) {
     const rail = $(".plan-rail"), card = $(`[data-m-plan="${i}"]`);
     if (rail && card) rail.scrollTo({ left: card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2, behavior });
   }
   function initPricing() {
-    const courses = $("[data-plan-courses]");
-    if (!courses) return;
-    showFeatures("ASP");
-    courses.querySelectorAll("[data-course]").forEach(card => updateCourse(card, 1, false));
-    showFeatures("ASP"); announce("ASP", 1);
-    courses.addEventListener("click", e => {
-      const btn = e.target.closest("[data-course-plan]");
-      if (!btn) return;
-      updateCourse(btn.closest("[data-course]"), Number(btn.dataset.coursePlan), true);
-    });
-    courses.addEventListener("focusin", e => { const card = e.target.closest("[data-course]"); if (card) showFeatures(card.dataset.course); });
     const box = $("[data-plan-mobile]");
-    if (box) {
-      updateMobile();
-      box.addEventListener("click", e => {
-        const tab = e.target.closest("[data-m-exam]"), card = e.target.closest("[data-m-plan]");
-        if (tab) updateMobile({ exam: tab.dataset.mExam });
-        else if (card) updateMobile({ plan: Number(card.dataset.mPlan) });
-      });
-      // Swiping the rail selects the card that snaps to the centre.
-      const rail = $(".plan-rail");
-      let t;
-      rail.addEventListener("scroll", () => {
-        clearTimeout(t);
-        t = setTimeout(() => {
-          const mid = rail.scrollLeft + rail.clientWidth / 2;
-          let best = 0, dist = Infinity;
-          rail.querySelectorAll("[data-m-plan]").forEach((c, k) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = k; } });
-          if (best !== mobileState.plan) updateMobile({ plan: best }, false);
-        }, 120);
-      }, { passive: true });
-      if (isMobile()) requestAnimationFrame(() => centerCard(mobileState.plan, "auto"));
-    }
+    if (!box) return;
+    updateMobile();
+    showFeatures(mobileState.exam); announce(mobileState.exam, mobileState.plan);
+    box.addEventListener("click", e => {
+      const tab = e.target.closest("[data-m-exam]"), card = e.target.closest("[data-m-plan]");
+      if (tab) updateMobile({ exam: tab.dataset.mExam });
+      else if (card && !e.target.closest("a")) updateMobile({ plan: Number(card.dataset.mPlan) });
+    });
+    // On phones, swiping the rail selects the card that snaps to the centre.
+    const rail = $(".plan-rail");
+    let t;
+    rail.addEventListener("scroll", () => {
+      if (!isMobile()) return;
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const mid = rail.scrollLeft + rail.clientWidth / 2;
+        let best = 0, dist = Infinity;
+        rail.querySelectorAll("[data-m-plan]").forEach((c, k) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = k; } });
+        if (best !== mobileState.plan) updateMobile({ plan: best }, false);
+      }, 120);
+    }, { passive: true });
+    if (isMobile()) requestAnimationFrame(() => centerCard(mobileState.plan, "auto"));
     if (!("IntersectionObserver" in window)) return;
-    if (!reduceMotion()) {
-      courses.classList.add("plan-courses--animate");
-      new IntersectionObserver((entries, obs) => entries.forEach(e => { if (e.isIntersecting) { courses.classList.add("is-in"); obs.disconnect(); } }), { threshold: 0.1 }).observe(courses);
-    }
     const bar = $("[data-plan-buybar]");
-    if (bar && box) new IntersectionObserver(([e]) => bar.classList.toggle("is-visible", e.isIntersecting), { rootMargin: "0px 0px -80px 0px" }).observe(box);
+    if (bar) new IntersectionObserver(([e]) => bar.classList.toggle("is-visible", e.isIntersecting), { rootMargin: "0px 0px -80px 0px" }).observe(rail);
   }
   initPricing();
   // Re-draw every price once the visitor's country is known.
   function refreshPrices(P) {
-    document.querySelectorAll("[data-plan-courses] [data-course]").forEach(card => {
-      const on = card.querySelector('[data-course-plan][aria-pressed="true"]');
-      updateCourse(card, on ? Number(on.dataset.coursePlan) : 1, false);
-    });
     updateMobile({}, false);
     showFeatures(mobileState.exam); announce(mobileState.exam, mobileState.plan);
     const terms = $("[data-price-terms]");
     if (terms && P.region) terms.textContent = `Prices are shown in ${P.currencyName(P.region.currency)} for ${P.region.name} and cover one certification package. Applicable taxes are calculated at checkout. All durations include the same features for your selected exam. Access begins when payment is confirmed.`;
   }
-  if (window.IP_PRICES && $("[data-plan-courses]")) window.IP_PRICES.onReady(refreshPrices);
+  if (window.IP_PRICES && $("[data-plan-mobile]")) window.IP_PRICES.onReady(refreshPrices);
 
   /* Free sample — 10 random questions in the timed exam workspace (free-exam.js) */
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function showPlans() {
     const target = $("#pricing") || $("#plans");
     if (target) target.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
-    $(isMobile() ? "[data-m-exam][aria-pressed='true']" : "[data-course-plan][aria-pressed='true']")?.focus({ preventScroll: true });
+    $("[data-m-exam][aria-pressed='true']")?.focus({ preventScroll: true });
   }
   function startFree() {
     if (!window.IP_FREE_EXAM || !Q.length) return;

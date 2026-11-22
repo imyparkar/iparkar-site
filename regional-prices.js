@@ -81,7 +81,16 @@
     // Static price tags on any page: <span data-local-price="SPS" data-usd="120" data-i="0">US$120</span>
     document.querySelectorAll("[data-local-price]").forEach(el => {
       const p = P.price(el.dataset.localPrice, Number(el.dataset.i || 0), Number(el.dataset.usd));
-      el.textContent = P.format(p.amount, p.currency);
+      if (el.hasAttribute("data-split")) {
+        // Small currency symbol before a large number: <small>US$</small>99
+        const m = P.parts(p.amount, p.currency), sym = document.createElement("small");
+        sym.textContent = m.sym; el.replaceChildren(sym, m.num);
+      } else el.textContent = P.format(p.amount, p.currency);
+    });
+    // Per-day rate: <span data-local-perday="CSP" data-i="1" data-usd="149" data-days="180">US$0.83</span>
+    document.querySelectorAll("[data-local-perday]").forEach(el => {
+      const p = P.price(el.dataset.localPerday, Number(el.dataset.i || 0), Number(el.dataset.usd)), a = p.amount / Number(el.dataset.days);
+      el.textContent = P.format(a, p.currency, a >= 10 ? 0 : 2);
     });
     document.querySelectorAll("[data-local-currency-note]").forEach(el => {
       // data-for="<code>": describe the currency that product is actually priced in for this country.

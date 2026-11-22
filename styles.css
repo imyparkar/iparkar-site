@@ -543,7 +543,7 @@ summary { cursor:pointer; font-weight:600; }
 }
 
 /* Mobile block and buy bar are hidden on wider screens. */
-.plan-mobile, .plan-buybar { display: none; }
+.plan-buybar { display: none; }
 
 /* Motion: entry stagger (JS adds the class only when motion is allowed), value swap. */
 .plan-courses--animate .plan-anim { opacity: 0; transform: translateY(12px); transition: opacity 420ms cubic-bezier(.2,.7,.2,1), transform 420ms cubic-bezier(.2,.7,.2,1), border-color 200ms ease; transition-delay: var(--d, 0ms); }
@@ -555,33 +555,9 @@ summary { cursor:pointer; font-weight:600; }
 @media (max-width: 760px) {
   .practice-pricing { margin-bottom: 40px; }
   .plan-courses { display: none; }
-  .plan-mobile { display: block; margin: 0 -20px; }
-  .plan-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 0 20px; padding: 4px; background: var(--white); border: 1px solid var(--border-hairline); border-radius: 10px; }
-  .plan-tab { height: 44px; padding: 0 2px; font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--midnight); background: transparent; border: 0; border-radius: var(--radius-button); cursor: pointer; white-space: nowrap; transition: background-color 200ms ease, color 200ms ease; }
-  .plan-tab[aria-pressed="true"] { background: var(--midnight); color: var(--white); }
-  .plan-rail { display: flex; gap: 12px; margin-top: 20px; padding: 4px 20px 8px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-  .plan-rail::-webkit-scrollbar { display: none; }
-  .plan-mcard { flex: 0 0 min(286px, 82%); scroll-snap-align: center; display: flex; flex-direction: column; gap: 6px; padding: 20px; text-align: left; font-family: var(--font-sans); color: var(--midnight); background: var(--white); border: 1px solid var(--border-hairline); border-radius: var(--radius-card); cursor: pointer; transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease; }
-  .plan-mcard:active { transform: scale(.98); }
-  .plan-mcard[aria-pressed="true"] { background: var(--sky-tint); border-color: var(--midnight); box-shadow: inset 0 0 0 1px var(--midnight); }
-  .plan-mcard--annual, .plan-mcard--annual[aria-pressed="true"] { background: var(--midnight); color: var(--white); }
-  .plan-mcard--annual[aria-pressed="true"] { border-color: var(--marigold); box-shadow: inset 0 0 0 1px var(--marigold); }
-  .plan-mcard:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-  .plan-mcard__top { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 24px; }
-  .plan-mcard__name { font-size: 18px; font-weight: 600; }
-  .plan-mcard__badge { padding: 3px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; background: var(--sky-tint); color: var(--midnight); white-space: nowrap; }
-  .plan-mcard[aria-pressed="true"]:not(.plan-mcard--annual) .plan-mcard__badge { background: var(--white); }
-  .plan-mcard--annual .plan-mcard__badge { background: var(--marigold); }
-  .plan-mcard__days, .plan-mcard__per { font-size: 14px; color: var(--slate); }
-  .plan-mcard__per { font-size: 13px; }
-  .plan-mcard--annual .plan-mcard__days, .plan-mcard--annual .plan-mcard__per { color: #dedfe8; }
-  .plan-mcard__price { margin-top: 10px; font-size: 44px; font-weight: 600; letter-spacing: -1.6px; line-height: 1; font-feature-settings: "lnum"; }
-  .plan-mcard__price small { font-size: 16px; letter-spacing: 0; margin-right: 2px; }
   .plan-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
   .plan-dot { width: 6px; height: 6px; border-radius: var(--radius-pill); background: rgba(0,0,0,.2); transition: width 240ms ease, background-color 200ms ease; }
   .plan-dot.is-on { width: 20px; background: var(--midnight); }
-  .plan-mobile__note { margin: 20px 20px 0; padding: 16px; font-size: 14px; line-height: 1.6; color: var(--graphite); background: var(--white); border: 1px solid var(--border-hairline); border-radius: var(--radius-card); }
-  .plan-mobile__note strong { color: var(--ink); font-weight: 600; }
   .plan-buybar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; align-items: center; gap: 12px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--white); border-top: 1px solid var(--border-hairline); transform: translateY(110%); visibility: hidden; transition: transform 320ms cubic-bezier(.2,.7,.2,1), visibility 0s linear 320ms; }
   .plan-buybar.is-visible { transform: none; visibility: visible; transition: transform 320ms cubic-bezier(.2,.7,.2,1), visibility 0s; }
   .plan-buybar__text { flex: 1; min-width: 0; margin: 0; display: flex; flex-direction: column; font-size: 13px; color: var(--slate); }
@@ -1370,3 +1346,83 @@ html:not(.js) .nav-group:hover > .nav-menu, html:not(.js) .nav-group:focus-withi
 }
 @media (max-width:480px) { .px-grid { grid-template-columns:1fr; } }
 @media (prefers-reduced-motion: reduce) { .sps-mini, .px-card { transition:none; } .sps-mini:hover, .px-card:hover { transform:none; } }
+
+/* =====================================================================
+   Practice exams — Option C (Nov 2026): certification tabs, the selected
+   exam's block (tinted info card + coloured features panel) and three
+   plan cards with rose bands. One layout; phones swipe the plan cards.
+   ===================================================================== */
+:root { --rose-tint:#ffe3ec; --rose:#e8578a; --berry:#8e1f4c; }
+.pxc .plan-tabs { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:8px 0 28px; }
+.pxc .plan-tab { min-height:44px; padding:0 20px; display:inline-flex; align-items:center; gap:8px; font-family:var(--font-sans); font-size:15px; font-weight:600; color:var(--ink); background:var(--white); border:1px solid var(--border-hairline); border-radius:var(--radius-pill); cursor:pointer; text-decoration:none; white-space:nowrap; transition:background-color 200ms ease, color 200ms ease, border-color 200ms ease; }
+.pxc .plan-tab:hover { border-color:rgba(0,0,0,.24); }
+.pxc .plan-tab[aria-pressed="true"] { background:var(--midnight); border-color:var(--midnight); color:var(--white); }
+.pxc .plan-tab:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
+.pxc .plan-tab--soon { color:var(--graphite); background:transparent; border-style:dashed; border-color:var(--ink-20); }
+.pxc .plan-tab--soon small { font-size:12px; font-weight:500; }
+.pxc-exam { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.pxc-exam[hidden] { display:none; }
+.pxc-exam__info { display:flex; flex-direction:column; gap:12px; padding:32px; border-radius:var(--radius-card); background:var(--tint, var(--white)); }
+.pxc-exam__stat { margin:0; font-size:13px; font-weight:600; color:var(--graphite); }
+.pxc-exam__name { margin:0; font-size:clamp(26px,2.6vw,34px); line-height:1.12; font-weight:700; letter-spacing:-1px; }
+.pxc-exam__lead { margin:0; font-family:var(--font-serif); font-size:18px; line-height:1.5; color:var(--graphite); }
+.pxc-exam__links { margin:auto 0 0; padding-top:8px; display:flex; flex-wrap:wrap; gap:8px 24px; font-size:15px; font-weight:600; }
+.pxc-exam__links a { color:var(--midnight); text-decoration:none; }
+.pxc-exam__links a:hover { text-decoration:underline; }
+.pxc-exam__panel { display:flex; flex-direction:column; gap:16px; padding:32px; border-radius:var(--radius-card); background:var(--panel, var(--midnight)); color:var(--panel-ink, var(--ink)); }
+.pxc-exam__panel-title { margin:0; font-size:13px; font-weight:600; }
+.pxc-ticks { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; }
+.pxc-ticks li { position:relative; padding-left:28px; font-size:16px; line-height:1.45; }
+.pxc-ticks li::before { content:''; position:absolute; left:3px; top:5px; width:11px; height:6px; border-left:2.5px solid currentColor; border-bottom:2.5px solid currentColor; transform:rotate(-45deg); }
+.pxc-exam--asp { --panel:var(--marigold); --tint:#fff4dc; }
+.pxc-exam--csp { --panel:var(--sky-wash); --tint:var(--sky-tint); }
+.pxc-exam--cih { --panel:var(--coral); --tint:#fee7e3; }
+.pxc-exam--ges-epi { --panel:var(--moss-green); --tint:#eef1e4; }
+.pxc-exam--qep { --panel:var(--forest-green); --panel-ink:var(--white); --tint:#e3efe6; }
+.pxc-exam--cit { --panel:var(--midnight); --panel-ink:var(--white); --tint:#e8e9f2; }
+.pxc-plans-title { margin:56px 0 20px; text-align:center; font-size:clamp(24px,2.4vw,28px); font-weight:700; letter-spacing:-.6px; }
+.pxc .plan-rail { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.pxc .plan-mcard { display:flex; flex-direction:column; overflow:hidden; background:var(--white); border:1px solid var(--border-hairline); border-radius:var(--radius-card); cursor:pointer; transition:border-color 200ms ease; }
+.pxc .plan-mcard:hover { border-color:rgba(0,0,0,.24); }
+.pxc .plan-mcard--featured, .pxc .plan-mcard--featured:hover { border:2px solid var(--midnight); }
+.plan-mcard--t0 { --band:var(--rose-tint); }
+.plan-mcard--t1 { --band:var(--rose); }
+.plan-mcard--t2 { --band:var(--berry); --band-ink:var(--white); }
+.plan-mcard__band { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:20px 28px; background:var(--band); color:var(--band-ink, var(--ink)); }
+.plan-mcard__head { display:flex; flex-direction:column; gap:2px; }
+.pxc .plan-mcard__name { font-size:18px; font-weight:700; letter-spacing:-.2px; }
+.pxc .plan-mcard__days { font-size:13px; font-weight:500; color:inherit; }
+.pxc .plan-mcard__badge { padding:4px 10px; border-radius:var(--radius-pill); font-size:12px; font-weight:600; background:var(--white); color:var(--ink); white-space:nowrap; }
+.plan-mcard__body { flex:1; display:flex; flex-direction:column; gap:6px; padding:24px 28px 28px; }
+.pxc .plan-mcard__price { margin:0; display:flex; align-items:baseline; gap:6px; font-feature-settings:"lnum"; }
+.pxc .plan-mcard__price small { font-size:16px; font-weight:600; letter-spacing:0; color:var(--graphite); }
+.pxc .plan-mcard__price [data-m-price] { font-size:48px; font-weight:700; letter-spacing:-1.8px; line-height:1; color:var(--ink); }
+.plan-mcard__once { font-size:14px; color:var(--slate); }
+.pxc .plan-mcard__per { margin:0; font-size:14px; color:var(--slate); }
+.plan-mcard__cta { margin-top:18px; justify-content:center; text-align:center; padding:14px 16px; font-size:15px; font-weight:600; background:var(--sky-tint); color:var(--midnight); border-radius:var(--radius-button); }
+.plan-mcard__cta:hover { background:#d4eafd; }
+.plan-mcard__cta.ip-btn--primary { background:var(--action-blue); color:var(--white); }
+.plan-mcard__cta.ip-btn--primary:hover { background:#0066c2; }
+.pxc .plan-dots { display:none; }
+.practice-pricing .pay-methods { margin-top:24px; }
+@media (max-width:760px) {
+  .pxc { margin:0 -20px; }
+  .pxc .plan-tabs { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; margin:0 0 20px; padding:2px 20px 6px; scrollbar-width:none; }
+  .pxc .plan-tabs::-webkit-scrollbar { display:none; }
+  .pxc .plan-tab { flex:none; padding:0 16px; font-size:14px; }
+  .pxc-exams { padding:0 20px; }
+  .pxc-exam { grid-template-columns:1fr; gap:12px; }
+  .pxc-exam__info, .pxc-exam__panel { padding:24px; }
+  .pxc-exam__lead { font-size:17px; }
+  .pxc-ticks li { font-size:15px; }
+  .pxc-plans-title { margin:40px 20px 16px; }
+  .pxc .plan-rail { position:relative; display:flex; gap:12px; padding:4px 20px 8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .pxc .plan-rail::-webkit-scrollbar { display:none; }
+  .pxc .plan-mcard { flex:0 0 min(300px,84%); scroll-snap-align:center; }
+  .pxc .plan-mcard.is-selected { border-color:var(--midnight); box-shadow:inset 0 0 0 1px var(--midnight); }
+  .pxc .plan-dots { display:flex; }
+  .plan-mcard__band { padding:18px 22px; }
+  .plan-mcard__body { padding:20px 22px 22px; }
+  .pxc .plan-mcard__price [data-m-price] { font-size:44px; }
+}
+@media (prefers-reduced-motion: reduce) { .pxc .plan-tab, .pxc .plan-mcard { transition:none; } }

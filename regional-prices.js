@@ -9,6 +9,7 @@
      exam : [90-day, 180-day, 365-day] for ASP, CSP, CIH, GES/EPI and QEP
      cit  : [90-day, 180-day, 365-day] for CIT
      sps  : Self Paced Study Course (ASP / CSP), 365 days
+   Course-specific prices (PMP® Exam Prep Course) are in COURSE_PRICES below.
    Prices follow the US$ prices at Nov 2026 exchange rates (US$1 ≈ ₹94,
    KWD 0.307, AED 3.67, SAR 3.75, QAR 3.64, BHD 0.376, OMR 0.385, £0.75, €0.86).
    Gulf prices are rounded to the nearest 5 or 10; India is set about 10% lower
@@ -28,6 +29,12 @@
     { name: "United Kingdom",       currency: "GBP", countries: ["GB"], exam: [75, 112, 149],        cit: [37, 59, 75],        sps: 90 },
     { name: "Euro area",            currency: "EUR", countries: ["AT","BE","HR","CY","EE","FI","FR","DE","GR","IE","IT","LV","LT","LU","MT","NL","PT","SK","SI","ES"], exam: [85, 129, 169], cit: [42, 68, 85], sps: 105 },
   ];
+  // Course-specific prices that replace the shared tiers above (owner, 21 Nov 2026), 365 days.
+  // Must match COURSE_PRICES in iparkar-lms/src/lib/payments/catalogue.ts, which sets the checkout amount.
+  // A region whose currency is not listed (e.g. Bahrain, BHD) pays the course's US$ price, exactly as the checkout does.
+  const COURSE_PRICES = {
+    "PMP-SPS": { USD: 299, byCurrency: { KWD: 99, GBP: 240, EUR: 290, AED: 1150, SAR: 1200, QAR: 1160, OMR: 120, INR: 25000 } },
+  };
   // Currency symbols where a common one exists; Gulf currencies show their codes (KWD, AED, SAR, QAR, BHD, OMR).
   const SYMBOLS = { USD: "US$", INR: "₹", GBP: "£", EUR: "€" };
 
@@ -35,12 +42,17 @@
   const listeners = [];
   const P = {
     regions: REGIONS,
+    coursePrices: COURSE_PRICES,
     region: null,       // the visitor's region, or null for US$ prices
     country: "",
     ready: false,
     /* Price for a product. code: "ASP", "CIT", "SPS"…; i: duration index; usd: the US$ price. */
     price(code, i, usd) {
-      const r = P.region;
+      const r = P.region, own = COURSE_PRICES[code];
+      if (own) {
+        const local = r ? own.byCurrency[r.currency] : undefined;
+        return local == null ? { amount: own.USD, currency: "USD" } : { amount: local, currency: r.currency };
+      }
       if (!r) return { amount: usd, currency: "USD" };
       const amount = code === "SPS" ? r.sps : (code === "CIT" ? r.cit : r.exam)[i];
       return amount == null ? { amount: usd, currency: "USD" } : { amount, currency: r.currency };
@@ -72,7 +84,9 @@
       el.textContent = P.format(p.amount, p.currency);
     });
     document.querySelectorAll("[data-local-currency-note]").forEach(el => {
-      el.textContent = P.region ? `Prices shown in ${P.currencyName(P.region.currency)} for ${P.region.name}. ` : "";
+      // data-for="<code>": describe the currency that product is actually priced in for this country.
+      const cur = el.dataset.for ? P.price(el.dataset.for, 0, 0).currency : (P.region && P.region.currency);
+      el.textContent = P.region && cur && cur !== "USD" ? `Prices shown in ${P.currencyName(cur)} for ${P.region.name}. ` : "";
     });
     listeners.splice(0).forEach(fn => fn(P));
   }

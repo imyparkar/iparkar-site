@@ -37,8 +37,40 @@ window.SITE = {
     { id: "courses",        label: "Certificate courses",    show: true },
     { id: "quiz", label: "Live Quiz", show: true },
     { id: "resources",      label: "Resources",              show: true },
-    { id: "practice",       label: "Practice exam",          show: true },
+    { id: "practice",       label: "Practice Exam",          show: true },
     { id: "about",          label: "About us",               show: true },
+  ],
+
+  /* ---------- Top navigation (desktop and mobile share this list) ----------
+     Items with `menu` get a dropdown (desktop) or an expandable group (mobile);
+     the label itself always opens the overview page. Only Resources and
+     Practice Exam have menus. A menu entry with `children` is a group heading
+     that also links to its own page. `status` shows a small label. */
+  nav: [
+    { id: "home",           label: "Home",                   href: "/" },
+    { id: "certifications", label: "Certification pathways", href: "/certification-pathways/" },
+    { id: "courses",        label: "Certificate courses",    href: "/certificate-courses/" },
+    { id: "quiz",           label: "Live Quiz",              href: "/live-quiz/" },
+    { id: "resources",      label: "Resources",              href: "/resources/", menu: [
+      { id: "studyCourses", label: "Self-paced Study Courses", href: "/resources/study-courses/", children: [
+        { id: "aspCourse", label: "ASP Course",      href: "/resources/study-courses/asp/" },
+        { id: "cspCourse", label: "CSP Course",      href: "/resources/study-courses/csp/" },
+        { id: "pmpCourse", label: "PMP Prep Course", href: "/resources/study-courses/pmp/", status: "New" },
+      ] },
+      { id: "sat",      label: "Systematic Approach to Training (SAT)", href: "/resources/sat/" },
+      { id: "books",    label: "Reference Books",    href: "/resources/reference-books/" },
+      { id: "learning", label: "Learning Resources", href: "/resources/learning-resources/" },
+    ] },
+    { id: "practice",       label: "Practice Exam",          href: "/practice-exams/", menu: [
+      { id: "pxASP", label: "ASP",     href: "/practice-exams/asp/" },
+      { id: "pxCSP", label: "CSP",     href: "/practice-exams/csp/" },
+      { id: "pxCIH", label: "CIH",     href: "/practice-exams/cih/" },
+      { id: "pxEPI", label: "GES/EPI", href: "/practice-exams/ges-epi/" },
+      { id: "pxQEP", label: "QEP",     href: "/practice-exams/qep/" },
+      { id: "pxCIT", label: "CIT",     href: "/practice-exams/cit/" },
+      { id: "pxPMP", label: "PMP",     href: "/practice-exams/pmp/", status: "Coming soon" },
+    ] },
+    { id: "about",          label: "About us",               href: "/about/" },
   ],
 
   /* ---------- Tab 1: About us ---------- */
@@ -624,6 +656,23 @@ window.SITE = {
         ],
         button: { label: "Buy CIT access", href: "https://app.iparkar.com/courses/CIT", sameTab: true },
         color: "dark",
+      },
+      {
+        name: "PMP practice exam",
+        code: "PMP",
+        tagline: "Coming soon",
+        examName: "Project Management Professional",
+        price: "",
+        period: "",
+        status: "Coming soon",
+        comingSoon: true,
+        // No button and no period: the PMP practice exam is listed but cannot be bought.
+        features: [
+          "Timed practice exams written to the PMP® Examination Content Outline",
+          "Questions across People, Process and Business Environment",
+          "Answer explanations and score analytics, as in the other packages",
+        ],
+        color: "sky",
       },
     ],
     note: "Practice questions are original and written for study only. They are not actual exam questions, and practice scores do not guarantee a pass.",

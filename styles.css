@@ -1374,12 +1374,12 @@ html:not(.js) .nav-group:hover > .nav-menu, html:not(.js) .nav-group:focus-withi
 .pxc-ticks { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; }
 .pxc-ticks li { position:relative; padding-left:28px; font-size:16px; line-height:1.45; }
 .pxc-ticks li::before { content:''; position:absolute; left:3px; top:5px; width:11px; height:6px; border-left:2.5px solid currentColor; border-bottom:2.5px solid currentColor; transform:rotate(-45deg); }
-.pxc-exam--asp { --panel:var(--marigold); --tint:#fff4dc; }
-.pxc-exam--csp { --panel:var(--sky-wash); --tint:var(--sky-tint); }
-.pxc-exam--cih { --panel:var(--coral); --tint:#fee7e3; }
-.pxc-exam--ges-epi { --panel:var(--moss-green); --tint:#eef1e4; }
-.pxc-exam--qep { --panel:var(--forest-green); --panel-ink:var(--white); --tint:#e3efe6; }
-.pxc-exam--cit { --panel:var(--midnight); --panel-ink:var(--white); --tint:#e8e9f2; }
+.pxc-exam--asp, .px-theme--asp { --panel:var(--marigold); --tint:#fff4dc; }
+.pxc-exam--csp, .px-theme--csp { --panel:var(--sky-wash); --tint:var(--sky-tint); }
+.pxc-exam--cih, .px-theme--cih { --panel:var(--coral); --tint:#fee7e3; }
+.pxc-exam--ges-epi, .px-theme--ges-epi { --panel:var(--moss-green); --tint:#eef1e4; }
+.pxc-exam--qep, .px-theme--qep { --panel:var(--forest-green); --panel-ink:var(--white); --rule:rgba(255,255,255,.22); --tint:#e3efe6; }
+.pxc-exam--cit, .px-theme--cit { --panel:var(--midnight); --panel-ink:var(--white); --rule:rgba(255,255,255,.22); --tint:#e8e9f2; }
 .pxc-plans-title { margin:56px 0 20px; text-align:center; font-size:clamp(24px,2.4vw,28px); font-weight:700; letter-spacing:-.6px; }
 .pxc .plan-rail { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
 .pxc .plan-mcard { display:flex; flex-direction:column; overflow:hidden; background:var(--white); border:1px solid var(--border-hairline); border-radius:var(--radius-card); cursor:pointer; transition:border-color 200ms ease; }
@@ -1426,3 +1426,20 @@ html:not(.js) .nav-group:hover > .nav-menu, html:not(.js) .nav-group:focus-withi
   .pxc .plan-mcard__price [data-m-price] { font-size:44px; }
 }
 @media (prefers-reduced-motion: reduce) { .pxc .plan-tab, .pxc .plan-mcard { transition:none; } }
+
+/* Practice exam pages (/practice-exams/<code>/): exam colour on the hero and features, rose plan cards. */
+.px-theme--pmp { --panel:var(--peach); --tint:#fbeee2; }
+.px-hero[class*="px-theme--"] { background:var(--tint, var(--white)); border:0; }
+.px-hero[class*="px-theme--"] .px-hero__code { background:var(--panel); color:var(--panel-ink, var(--ink)); }
+.px-features { background:var(--panel); color:var(--panel-ink, var(--ink)); border:0; }
+.px-features h2 { color:inherit; }
+.px-features .tick-list li { border-top-color:var(--rule, rgba(0,0,0,.12)); }
+.px-features .tick-list li::before { background-color:var(--white); }
+.px-plans.pxc .px-plans__grid { margin-bottom:8px; }
+.px-plan.plan-mcard { padding:0; }
+.px-plan .plan-mcard__name { margin:0; }
+.px-plan .plan-mcard__per { line-height:1.5; }
+@media (max-width:760px) { .px-plans.pxc { margin:0; } .px-plans .pxc-plans-title { margin:36px 0 16px; } }
+.px-plan .plan-mcard__price [data-split] { font-size:48px; font-weight:700; letter-spacing:-1.8px; line-height:1; color:var(--ink); font-feature-settings:"lnum"; }
+.px-plan .plan-mcard__price [data-split] small { margin-right:6px; font-size:16px; font-weight:600; letter-spacing:0; color:var(--graphite); }
+@media (max-width:760px) { .px-plan .plan-mcard__price [data-split] { font-size:44px; } }

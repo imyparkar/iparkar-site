@@ -46,7 +46,7 @@ assert.equal((fs.readFileSync('sitemap.xml','utf8').match(/<loc>/g)||[]).length,
 {const h=fs.readFileSync('practice-exams/pmp/index.html','utf8').split('<main')[1].split('</main>')[0]; assert(h.includes('Coming soon')); assert(!/app\.iparkar\.com|>\s*Buy\b|Buy PMP|data-course-cta|razorpay/i.test(h),'PMP practice: no buy or checkout');
  const o=fs.readFileSync('practice-exams/index.html','utf8'); assert(!/app\.iparkar\.com\/courses\/PMP/i.test(o),'no PMP practice checkout on overview');}
 // Study courses and practice exams keep separate destinations and product identifiers.
-{const h=fs.readFileSync('resources/study-courses/pmp/index.html','utf8'); assert(h.includes('https://app.iparkar.com/learn/pmp-sps/buy')); assert(h.includes('data-local-price="PMP-SPS" data-usd="299"')); assert(h.includes('35-hour'));
+{const h=fs.readFileSync('resources/study-courses/pmp/index.html','utf8'); assert(h.includes('https://app.iparkar.com/learn/pmp-sps/buy')); assert(h.includes('data-local-price="PMP-SPS" data-usd="299"')); assert(h.includes('35-hour')); assert(h.includes('3 Days Free Trial')&&!h.includes('7 Days Free Trial'),'PMP: 3-day trial'); assert(fs.readFileSync('resources/study-courses/asp/index.html','utf8').includes('7 Days Free Trial'),'ASP keeps 7 days');
  for(const c of ['asp','csp']){const x=fs.readFileSync(`resources/study-courses/${c}/index.html`,'utf8'); assert(x.includes(`https://app.iparkar.com/learn/${c}-sps/buy`));}
  for(const c of ['ASP','CSP','CIH','QEP','CIT']){const x=fs.readFileSync(`practice-exams/${c.toLowerCase()}/index.html`,'utf8'); assert(x.includes(`https://app.iparkar.com/courses/${c}?plan=90`),c);}
  assert(fs.readFileSync('practice-exams/ges-epi/index.html','utf8').includes('https://app.iparkar.com/courses/EPI?plan=180'));}

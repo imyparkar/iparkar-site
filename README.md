@@ -53,7 +53,7 @@ PMP® course prices are in `COURSE_PRICES` in `regional-prices.js` and must equa
 
 ## Site-wide motion
 
-`animations.js` is added to every page by `build.mjs` (generated pages, legal pages and 404). It needs no per-page setup:
+`animations.js` is added by `build.mjs` to every generated page except Contact, and to the 404 page; Terms, Privacy and Refund policy have no motion. It needs no per-page setup:
 
 - Page titles rise in word by word and highlights sweep in; breadcrumbs, leads and hero banners fade in on load; side panels (price box, pathway card, quiz stats) slide in.
 - Below the title, each section appears once as it scrolls into view. Grids, step strips, lists and plan cards come in one item after another; table rows follow each other.

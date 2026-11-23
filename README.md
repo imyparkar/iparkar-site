@@ -51,6 +51,17 @@ PMP® course prices are in `COURSE_PRICES` in `regional-prices.js` and must equa
 
 **Sign in / Dashboard:** `nav.js` calls `https://app.iparkar.com/api/session` with credentials. It answers `{ "signedIn": true|false }` only for the iparkar.com origins; the header then shows Dashboard or Sign in.
 
+## Site-wide motion
+
+`animations.js` is added to every page by `build.mjs` (generated pages, legal pages and 404). It needs no per-page setup:
+
+- Page titles rise in word by word and highlights sweep in; breadcrumbs, leads and hero banners fade in on load; side panels (price box, pathway card, quiz stats) slide in.
+- Below the title, each section appears once as it scrolls into view. Grids, step strips, lists and plan cards come in one item after another; table rows follow each other.
+- Link cards lift and tilt slightly on hover, arrows slide, "Your next step" pills pulse once, live-quiz buttons get a pulsing dot, and the Live Quiz stats count up.
+- Home page extras: 01–03 count up with drawn lines, the study-course pill shines and "35" counts up, Answer / Review / Try again cycles while visible.
+- Blocks that hold fixed or sticky parts (plan buy bar, reference-book tabs, the free-exam workspace) are never moved; their children animate instead. The practice plan cards keep their own existing motion.
+- Nothing runs with reduced motion turned on, and pages are fully visible without JavaScript. Once an item has arrived, its animation classes are removed so the site's own hover styles apply.
+
 ## Quiz behaviour and performance
 
 The quiz is linked in the same tab from its page under Resources. An on-demand embedded player was tested and failed to load with the existing Cloudflare Access setup, so the broken player was removed. No quiz-service request is made until the visitor chooses to continue. Access policies, quiz infrastructure and authentication are unchanged. Keeping the full quiz in the site shell requires a compatible sign-in or hosting setup. ASP access also navigates in the same tab.

@@ -184,7 +184,7 @@
               <div class="plan-mcard__body"><p class="plan-mcard__price"><small data-m-sym>US$</small><span data-m-price>${d.price}</span><span class="plan-mcard__once">one-time</span></p><p class="plan-mcard__per"><span data-m-per>US$${perDay(d)}</span> a day</p><a class="ip-btn plan-mcard__cta${i === 1 ? " ip-btn--primary" : ""}" data-m-cta href="${esc(planHref("ASP", i))}">${esc(planLabel("ASP", i))}</a></div>
             </div>`; }).join("");
     return `
-      <div class="practice-heading"><div class="practice-heading__text"><p class="eyebrow">${esc(codes.join(" · "))} PRACTICE EXAMS</p>${header(p.title, p.lead)}
+      <div class="practice-heading"><div class="practice-heading__text">${header(p.title, p.lead).replace(/(\S+)(<\/h2>)/, '<span class="ip-highlight ip-highlight--rose">$1</span>$2')}
       <div class="practice-assurances"><span>90 to 365 days of access</span><span>One certification per package</span><span>No automatic renewal</span></div></div></div>
       <div id="plans">
         <section class="practice-pricing" id="pricing" aria-labelledby="pricing-heading">

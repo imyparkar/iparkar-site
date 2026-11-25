@@ -718,6 +718,7 @@ window.SITE = {
       { label: "Terms",          href: "terms" },
       { label: "Privacy",        href: "privacy" },
       { label: "Refund policy",  href: "refunds" },
+      { label: "Verify a certificate", href: "verify/" },
     ],
     copyright: "© 2026 iParkar Learning",
     social: [
